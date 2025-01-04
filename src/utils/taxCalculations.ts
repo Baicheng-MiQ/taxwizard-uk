@@ -1,4 +1,4 @@
-export interface TaxBreakdown {
+export interface TaxResults {
   takeHomePay: number;
   incomeTax: number;
   nationalInsurance: number;
@@ -12,7 +12,7 @@ export interface TaxBreakdown {
   additionalRate: number;
 }
 
-export const calculateTax = (grossIncome: number, pensionContribution: number): TaxBreakdown => {
+export const calculateTax = (grossIncome: number, pensionContribution: number): TaxResults => {
   // Constants
   const PERSONAL_ALLOWANCE_THRESHOLD = 100000;
   const PERSONAL_ALLOWANCE_BASE = 12570;
@@ -83,7 +83,7 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
     totalDeductible,
     effectiveTaxRate,
     marginalTaxRate,
-    totalIncome: takeHomePay + pensionContribution, // Fixed: total income is take home pay + pension
+    totalIncome: takeHomePay + pensionContribution,
     personalAllowance,
     basicRate,
     higherRate,
