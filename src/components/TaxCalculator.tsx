@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { calculateTax } from "@/utils/taxCalculations";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, BarChart, Bar, AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const TaxCalculator = () => {
   const [grossIncome, setGrossIncome] = useState(35000);
@@ -45,6 +45,24 @@ const TaxCalculator = () => {
       rate: "45%" 
     },
   ].filter(item => item.amount > 0);
+
+  // Generate data for area chart showing income breakdown at different salary levels
+  const areaChartData = useMemo(() => {
+    const salaryPoints = Array.from({ length: 20 }, (_, i) => 
+      Math.round((grossIncome * 0.5) + (grossIncome * i * 0.05))
+    );
+
+    return salaryPoints.map(salary => {
+      const tax = calculateTax(salary, (salary * pensionContribution) / grossIncome);
+      return {
+        salary,
+        takeHome: tax.takeHomePay,
+        incomeTax: tax.incomeTax,
+        nationalInsurance: tax.nationalInsurance,
+        pension: (salary * pensionContribution) / grossIncome,
+      };
+    });
+  }, [grossIncome, pensionContribution]);
 
   const COLORS = ["#84cc16", "#475569", "#94a3b8", "#0ea5e9"];
 
@@ -164,6 +182,57 @@ const TaxCalculator = () => {
           </div>
         </Card>
       </div>
+
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold mb-4">Income Projection</h2>
+        <div className="h-[400px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={areaChartData}>
+              <XAxis 
+                dataKey="salary" 
+                tickFormatter={(value) => formatCurrency(value)}
+              />
+              <YAxis tickFormatter={(value) => formatCurrency(value)} />
+              <Tooltip 
+                formatter={(value, name) => formatCurrency(Number(value))}
+                labelFormatter={(value) => `Gross Income: ${formatCurrency(Number(value))}`}
+              />
+              <Area
+                type="monotone"
+                dataKey="takeHome"
+                stackId="1"
+                stroke={COLORS[0]}
+                fill={COLORS[0]}
+                name="Take Home"
+              />
+              <Area
+                type="monotone"
+                dataKey="incomeTax"
+                stackId="1"
+                stroke={COLORS[1]}
+                fill={COLORS[1]}
+                name="Income Tax"
+              />
+              <Area
+                type="monotone"
+                dataKey="nationalInsurance"
+                stackId="1"
+                stroke={COLORS[2]}
+                fill={COLORS[2]}
+                name="NI"
+              />
+              <Area
+                type="monotone"
+                dataKey="pension"
+                stackId="1"
+                stroke={COLORS[3]}
+                fill={COLORS[3]}
+                name="Pension"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
     </div>
   );
 };
