@@ -112,16 +112,46 @@ const TaxCalculator = () => {
 
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Summary</h2>
-          <div className="space-y-2">
-            <p className="text-2xl font-bold text-secondary">
-              Take Home Pay: {formatCurrency(results.takeHomePay)}
-            </p>
-            <p>Income Tax: {formatCurrency(results.incomeTax)}</p>
-            <p>National Insurance: {formatCurrency(results.nationalInsurance)}</p>
-            <p>Total Deductions: {formatCurrency(results.totalDeductible)}</p>
-            <p>Effective Tax Rate: {results.effectiveTaxRate.toFixed(1)}%</p>
-            <p>Marginal Tax Rate: {results.marginalTaxRate}%</p>
-            <p>Total Income: {formatCurrency(results.totalIncome)}</p>
+          <div className="space-y-4">
+            <div className="p-4 bg-secondary/10 rounded-lg">
+              <p className="text-3xl font-bold text-secondary">
+                Take Home Pay: {formatCurrency(results.takeHomePay)}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm text-muted-foreground">Income Tax</p>
+                <p className="text-lg font-semibold">{formatCurrency(results.incomeTax)}</p>
+              </div>
+              
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm text-muted-foreground">National Insurance</p>
+                <p className="text-lg font-semibold">{formatCurrency(results.nationalInsurance)}</p>
+              </div>
+              
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm text-muted-foreground">Total Deductions</p>
+                <p className="text-lg font-semibold">{formatCurrency(results.totalDeductible)}</p>
+              </div>
+              
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm text-muted-foreground">Total Income</p>
+                <p className="text-lg font-semibold">{formatCurrency(results.totalIncome)}</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-4">
+              <div className="flex-1 p-3 bg-muted rounded-lg">
+                <p className="text-sm text-muted-foreground">Effective Tax Rate</p>
+                <p className="text-lg font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+              </div>
+              
+              <div className="flex-1 p-3 bg-muted rounded-lg">
+                <p className="text-sm text-muted-foreground">Marginal Tax Rate</p>
+                <p className="text-lg font-semibold">{results.marginalTaxRate}%</p>
+              </div>
+            </div>
           </div>
         </Card>
       </div>
