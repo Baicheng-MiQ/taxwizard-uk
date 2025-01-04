@@ -48,8 +48,8 @@ const TaxCalculator = () => {
 
   // Generate data for area chart showing income breakdown at different salary levels
   const areaChartData = useMemo(() => {
-    const salaryPoints = Array.from({ length: 20 }, (_, i) => 
-      Math.round((grossIncome * 0.5) + (grossIncome * i * 0.05))
+    const salaryPoints = Array.from({ length: 40 }, (_, i) => 
+      Math.round(5000 * i) // This will generate points from 0 to 195,000 in steps of 5000
     );
 
     return salaryPoints.map(salary => {
@@ -185,14 +185,19 @@ const TaxCalculator = () => {
 
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4">Income Projection</h2>
-        <div className="h-[400px]">
+        <div className="h-[600px]"> {/* Increased height from 400px to 600px */}
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={areaChartData}>
               <XAxis 
                 dataKey="salary" 
                 tickFormatter={(value) => formatCurrency(value)}
+                domain={[0, 200000]}
+                ticks={[0, 50000, 100000, 150000, 200000]}
               />
-              <YAxis tickFormatter={(value) => formatCurrency(value)} />
+              <YAxis 
+                tickFormatter={(value) => formatCurrency(value)}
+                domain={[0, 200000]}
+              />
               <Tooltip 
                 formatter={(value, name) => formatCurrency(Number(value))}
                 labelFormatter={(value) => `Gross Income: ${formatCurrency(Number(value))}`}
