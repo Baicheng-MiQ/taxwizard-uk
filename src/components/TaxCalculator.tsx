@@ -35,6 +35,26 @@ const TaxCalculator = () => {
     }).format(value);
   };
 
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name, value }: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = outerRadius * 1.4; // Increased radius for labels
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="currentColor"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        className="text-xs"
+      >
+        {`${name}: ${formatCurrency(value)}`}
+      </text>
+    );
+  };
+
   return (
     <div className="container mx-auto p-4 space-y-6">
       <h1 className="text-3xl font-bold text-center mb-8">UK Income Tax Calculator</h1>
@@ -91,17 +111,18 @@ const TaxCalculator = () => {
       <div className="grid md:grid-cols-2 gap-6">
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Income Breakdown</h2>
-          <div className="h-[300px]">
+          <div className="h-[400px]"> {/* Increased height */}
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  outerRadius={100}
+                  outerRadius={120} // Increased radius
                   fill="#8884d8"
                   dataKey="value"
-                  label={({ name, value }) => `${name}: ${formatCurrency(value)}`}
+                  label={renderCustomizedLabel}
+                  labelLine={true}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -115,7 +136,7 @@ const TaxCalculator = () => {
 
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Tax Bands</h2>
-          <div className="h-[300px]">
+          <div className="h-[400px]"> {/* Increased height to match pie chart */}
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData}>
                 <XAxis dataKey="name" />
