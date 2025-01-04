@@ -83,7 +83,7 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
     totalDeductible,
     effectiveTaxRate,
     marginalTaxRate,
-    totalIncome: grossIncome,
+    totalIncome: takeHomePay + pensionContribution, // Fixed: total income is take home pay + pension
     personalAllowance,
     basicRate,
     higherRate,
