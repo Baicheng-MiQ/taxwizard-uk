@@ -81,38 +81,6 @@ export const AreaChartSection = ({
               formatter={(value, name) => formatCurrency(Number(value))}
               labelFormatter={(value) => `Gross Income: ${formatCurrency(Number(value))}`}
             />
-            <Area
-              type="monotone"
-              dataKey="takeHome"
-              stackId="1"
-              stroke={COLORS[0]}
-              fill="url(#colorTakeHome)"
-              name="Take Home"
-            />
-            <Area
-              type="monotone"
-              dataKey="incomeTax"
-              stackId="1"
-              stroke={COLORS[1]}
-              fill="url(#colorIncomeTax)"
-              name="Income Tax"
-            />
-            <Area
-              type="monotone"
-              dataKey="nationalInsurance"
-              stackId="1"
-              stroke={COLORS[2]}
-              fill="url(#colorNI)"
-              name="NI"
-            />
-            <Area
-              type="monotone"
-              dataKey="pension"
-              stackId="1"
-              stroke={COLORS[3]}
-              fill="url(#colorPension)"
-              name="Pension"
-            />
             <ReferenceLine
               x={grossIncome}
               stroke="#ef4444"
@@ -126,6 +94,38 @@ export const AreaChartSection = ({
               isFront={true}
               ifOverflow="extendDomain"
               z={1000}
+            />
+            <Area
+              type="monotone"
+              dataKey="pension"
+              stackId="1"
+              stroke={COLORS[3]}
+              fill="url(#colorPension)"
+              name="Pension"
+            />
+            <Area
+              type="monotone"
+              dataKey="nationalInsurance"
+              stackId="1"
+              stroke={COLORS[2]}
+              fill="url(#colorNI)"
+              name="NI"
+            />
+            <Area
+              type="monotone"
+              dataKey="incomeTax"
+              stackId="1"
+              stroke={COLORS[1]}
+              fill="url(#colorIncomeTax)"
+              name="Income Tax"
+            />
+            <Area
+              type="monotone"
+              dataKey="takeHome"
+              stackId="1"
+              stroke={COLORS[0]}
+              fill="url(#colorTakeHome)"
+              name="Take Home"
             />
           </AreaChart>
         </ResponsiveContainer>
