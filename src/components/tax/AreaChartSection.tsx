@@ -33,7 +33,7 @@ export const AreaChartSection = ({
         <Label>Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
         <Slider
           min={50000}
-          max={500000}
+          max={200000}
           step={10000}
           value={[maxIncomeRange]}
           onValueChange={(value) => setMaxIncomeRange(value[0])}
