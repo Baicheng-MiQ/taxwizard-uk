@@ -26,7 +26,8 @@ const TaxCalculator = () => {
     { name: "Additional Rate", amount: results.additionalRate / 0.45, rate: "45%" },
   ].filter(item => item.amount > 0);
 
-  const COLORS = ["#84cc16", "#475569", "#94a3b8", "#0ea5e9"];
+  // Updated colors for better visual appeal
+  const COLORS = ["#8B5CF6", "#0EA5E9", "#F97316", "#10B981"];
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-GB", {
@@ -37,21 +38,45 @@ const TaxCalculator = () => {
 
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name, value }: any) => {
     const RADIAN = Math.PI / 180;
-    const radius = outerRadius * 1.4; // Increased radius for labels
+    const radius = outerRadius * 1.5; // Increased radius for better label spacing
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    
+    // Calculate percentage
+    const total = pieData.reduce((sum, entry) => sum + entry.value, 0);
+    const percentage = ((value / total) * 100).toFixed(1);
 
     return (
-      <text
-        x={x}
-        y={y}
-        fill="currentColor"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        className="text-xs"
-      >
-        {`${name}: ${formatCurrency(value)}`}
-      </text>
+      <g>
+        {/* Draw line from pie to label */}
+        <line
+          x1={cx + (outerRadius + 10) * Math.cos(-midAngle * RADIAN)}
+          y1={cy + (outerRadius + 10) * Math.sin(-midAngle * RADIAN)}
+          x2={x}
+          y2={y}
+          stroke={COLORS[index % COLORS.length]}
+          strokeWidth={2}
+        />
+        {/* Draw label background */}
+        <rect
+          x={x + (x > cx ? 5 : -105)}
+          y={y - 12}
+          width={100}
+          height={24}
+          fill="white"
+          rx={4}
+        />
+        {/* Draw label text */}
+        <text
+          x={x + (x > cx ? 10 : -100)}
+          y={y}
+          fill={COLORS[index % COLORS.length]}
+          className="text-xs font-medium"
+          dominantBaseline="central"
+        >
+          {`${name}: ${percentage}%`}
+        </text>
+      </g>
     );
   };
 
@@ -111,24 +136,38 @@ const TaxCalculator = () => {
       <div className="grid md:grid-cols-2 gap-6">
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Income Breakdown</h2>
-          <div className="h-[400px]"> {/* Increased height */}
+          <div className="h-[500px]"> {/* Increased height for better spacing */}
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
-                  cy="50%"
-                  outerRadius={120} // Increased radius
+                  cy="45%"
+                  outerRadius={140}
+                  innerRadius={70} // Added innerRadius for donut chart
                   fill="#8884d8"
                   dataKey="value"
                   label={renderCustomizedLabel}
-                  labelLine={true}
+                  labelLine={false}
                 >
                   {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={COLORS[index % COLORS.length]}
+                      stroke="white"
+                      strokeWidth={2}
+                    />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                <Tooltip 
+                  formatter={(value) => formatCurrency(Number(value))}
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    padding: '8px'
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -136,7 +175,7 @@ const TaxCalculator = () => {
 
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Tax Bands</h2>
-          <div className="h-[400px]"> {/* Increased height to match pie chart */}
+          <div className="h-[500px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData}>
                 <XAxis dataKey="name" />
@@ -144,10 +183,21 @@ const TaxCalculator = () => {
                 <Tooltip 
                   formatter={(value) => formatCurrency(Number(value))}
                   labelFormatter={(label) => `${label}`}
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    padding: '8px'
+                  }}
                 />
                 <Bar dataKey="amount" fill="#475569">
                   {barData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={COLORS[index % COLORS.length]}
+                      stroke="white"
+                      strokeWidth={1}
+                    />
                   ))}
                 </Bar>
               </BarChart>
