@@ -20,10 +20,30 @@ const TaxCalculator = () => {
   ];
 
   const barData = [
-    { name: "Personal Allowance", amount: results.personalAllowance, rate: "0%" },
-    { name: "Basic Rate", amount: results.basicRate / 0.2, rate: "20%" },
-    { name: "Higher Rate", amount: results.higherRate / 0.4, rate: "40%" },
-    { name: "Additional Rate", amount: results.additionalRate / 0.45, rate: "45%" },
+    { 
+      name: "Personal Allowance", 
+      amount: results.personalAllowance,
+      tax: 0,
+      rate: "0%" 
+    },
+    { 
+      name: "Basic Rate", 
+      amount: results.basicRate / 0.2,
+      tax: results.basicRate,
+      rate: "20%" 
+    },
+    { 
+      name: "Higher Rate", 
+      amount: results.higherRate / 0.4,
+      tax: results.higherRate,
+      rate: "40%" 
+    },
+    { 
+      name: "Additional Rate", 
+      amount: results.additionalRate / 0.45,
+      tax: results.additionalRate,
+      rate: "45%" 
+    },
   ].filter(item => item.amount > 0);
 
   const COLORS = ["#84cc16", "#475569", "#94a3b8", "#0ea5e9"];
@@ -98,6 +118,7 @@ const TaxCalculator = () => {
                   data={pieData}
                   cx="50%"
                   cy="50%"
+                  innerRadius={60}
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
@@ -121,12 +142,21 @@ const TaxCalculator = () => {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip 
-                  formatter={(value) => formatCurrency(Number(value))}
+                  formatter={(value, name) => {
+                    if (name === "amount") return formatCurrency(Number(value));
+                    if (name === "tax") return formatCurrency(Number(value));
+                    return value;
+                  }}
                   labelFormatter={(label) => `${label}`}
                 />
-                <Bar dataKey="amount" fill="#475569">
+                <Bar dataKey="amount" stackId="a" fill="#e2e8f0" name="Income">
                   {barData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} fillOpacity={0.3} />
+                  ))}
+                </Bar>
+                <Bar dataKey="tax" stackId="a" fill="#475569" name="Tax">
+                  {barData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} fillOpacity={0.7} />
                   ))}
                 </Bar>
               </BarChart>
