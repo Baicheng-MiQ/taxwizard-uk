@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { calculateTax } from "@/utils/taxCalculations";
-import { PieChart, Pie, Cell, BarChart, Bar, AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, BarChart, Bar, AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 
 const TaxCalculator = () => {
   const [grossIncome, setGrossIncome] = useState(35000);
@@ -185,7 +185,7 @@ const TaxCalculator = () => {
 
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4">Income Projection</h2>
-        <div className="h-[600px]"> {/* Increased height from 400px to 600px */}
+        <div className="h-[600px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={areaChartData}>
               <XAxis 
@@ -201,6 +201,17 @@ const TaxCalculator = () => {
               <Tooltip 
                 formatter={(value, name) => formatCurrency(Number(value))}
                 labelFormatter={(value) => `Gross Income: ${formatCurrency(Number(value))}`}
+              />
+              <ReferenceLine
+                x={grossIncome}
+                stroke="#ef4444"
+                strokeWidth={2}
+                label={{
+                  value: "Current Income",
+                  position: "top",
+                  fill: "#ef4444",
+                  fontSize: 12
+                }}
               />
               <Area
                 type="monotone"
