@@ -33,7 +33,7 @@ export const AreaChartSection = ({
         <Label>Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
         <Slider
           min={50000}
-          max={200000}
+          max={500000}
           step={10000}
           value={[maxIncomeRange]}
           onValueChange={(value) => setMaxIncomeRange(value[0])}
@@ -44,26 +44,8 @@ export const AreaChartSection = ({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={areaChartData}
-            margin={{ top: 20, right: 30, left: 80, bottom: 20 }}
+            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
           >
-            <defs>
-              <linearGradient id="colorTakeHome" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLORS[0]} stopOpacity={0.8}/>
-                <stop offset="95%" stopColor={COLORS[0]} stopOpacity={0.2}/>
-              </linearGradient>
-              <linearGradient id="colorIncomeTax" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLORS[1]} stopOpacity={0.8}/>
-                <stop offset="95%" stopColor={COLORS[1]} stopOpacity={0.2}/>
-              </linearGradient>
-              <linearGradient id="colorNI" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLORS[2]} stopOpacity={0.8}/>
-                <stop offset="95%" stopColor={COLORS[2]} stopOpacity={0.2}/>
-              </linearGradient>
-              <linearGradient id="colorPension" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLORS[3]} stopOpacity={0.8}/>
-                <stop offset="95%" stopColor={COLORS[3]} stopOpacity={0.2}/>
-              </linearGradient>
-            </defs>
             <XAxis 
               dataKey="salary" 
               tickFormatter={(value) => formatCurrency(value)}
@@ -75,7 +57,6 @@ export const AreaChartSection = ({
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               allowDataOverflow={true}
-              width={75}
             />
             <Tooltip 
               formatter={(value, name) => formatCurrency(Number(value))}
@@ -93,39 +74,38 @@ export const AreaChartSection = ({
               }}
               isFront={true}
               ifOverflow="extendDomain"
-              z={1000}
-            />
-            <Area
-              type="monotone"
-              dataKey="pension"
-              stackId="1"
-              stroke={COLORS[3]}
-              fill="url(#colorPension)"
-              name="Pension"
-            />
-            <Area
-              type="monotone"
-              dataKey="nationalInsurance"
-              stackId="1"
-              stroke={COLORS[2]}
-              fill="url(#colorNI)"
-              name="NI"
-            />
-            <Area
-              type="monotone"
-              dataKey="incomeTax"
-              stackId="1"
-              stroke={COLORS[1]}
-              fill="url(#colorIncomeTax)"
-              name="Income Tax"
             />
             <Area
               type="monotone"
               dataKey="takeHome"
               stackId="1"
               stroke={COLORS[0]}
-              fill="url(#colorTakeHome)"
+              fill={COLORS[0]}
               name="Take Home"
+            />
+            <Area
+              type="monotone"
+              dataKey="incomeTax"
+              stackId="1"
+              stroke={COLORS[1]}
+              fill={COLORS[1]}
+              name="Income Tax"
+            />
+            <Area
+              type="monotone"
+              dataKey="nationalInsurance"
+              stackId="1"
+              stroke={COLORS[2]}
+              fill={COLORS[2]}
+              name="NI"
+            />
+            <Area
+              type="monotone"
+              dataKey="pension"
+              stackId="1"
+              stroke={COLORS[3]}
+              fill={COLORS[3]}
+              name="Pension"
             />
           </AreaChart>
         </ResponsiveContainer>

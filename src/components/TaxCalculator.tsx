@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { calculateTax } from "@/utils/taxCalculations";
 import { PieChartSection } from "./tax/PieChartSection";
@@ -83,16 +84,17 @@ const TaxCalculator = () => {
           <h2 className="text-xl font-semibold mb-4">Income Details</h2>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="income">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
-              <Slider
-                id="income"
-                min={0}
-                max={200000}
-                step={100}
-                value={[grossIncome]}
-                onValueChange={(value) => setGrossIncome(value[0])}
-                className="my-4"
-              />
+              <Label htmlFor="income">Gross Yearly Income</Label>
+              <div className="relative">
+                <span className="absolute left-3 top-2.5">£</span>
+                <Input
+                  id="income"
+                  type="number"
+                  value={grossIncome}
+                  onChange={(e) => setGrossIncome(Number(e.target.value))}
+                  className="pl-6"
+                />
+              </div>
             </div>
             
             <div>
