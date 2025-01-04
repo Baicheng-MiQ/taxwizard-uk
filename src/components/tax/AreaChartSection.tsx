@@ -42,16 +42,21 @@ export const AreaChartSection = ({
       </div>
       <div className="h-[600px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={areaChartData}>
+          <AreaChart 
+            data={areaChartData}
+            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+          >
             <XAxis 
               dataKey="salary" 
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               ticks={[0, maxIncomeRange/4, maxIncomeRange/2, (maxIncomeRange*3)/4, maxIncomeRange]}
+              allowDataOverflow={true}
             />
             <YAxis 
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
+              allowDataOverflow={true}
             />
             <Tooltip 
               formatter={(value, name) => formatCurrency(Number(value))}
@@ -67,6 +72,8 @@ export const AreaChartSection = ({
                 fill: "#ef4444",
                 fontSize: 12
               }}
+              isFront={true}
+              ifOverflow="extendDomain"
             />
             <Area
               type="monotone"
