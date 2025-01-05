@@ -73,7 +73,7 @@ export const TaxSummarySection = ({
       </Card>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-6">
+        <div className="grid grid-rows-[auto_auto_1fr] gap-6">
           <Card className="p-6 bg-white">
             <h3 className="text-2xl font-bold mb-1">Pension</h3>
             <p className="text-4xl font-bold mb-3">{formatCurrency(pensionContribution)}</p>
@@ -101,9 +101,9 @@ export const TaxSummarySection = ({
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="grid grid-rows-[1fr_auto] gap-6">
           <Card className="p-6 bg-white">
-            <div className="h-[250px]">
+            <div className="h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
