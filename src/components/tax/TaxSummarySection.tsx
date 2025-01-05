@@ -79,14 +79,6 @@ export const TaxSummarySection = ({
                 {((results.nationalInsurance / grossIncome) * 100).toFixed(1)}% of gross income
               </p>
             </div>
-            
-            <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">Pension</p>
-              <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Monthly contribution: {formatCurrency(pensionContribution / 12)}
-              </p>
-            </div>
           </div>
 
           <div className="col-span-3 h-[300px]">
@@ -115,7 +107,15 @@ export const TaxSummarySection = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4">
+          <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
+            <p className="text-sm text-muted-foreground">Pension</p>
+            <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Monthly contribution: {formatCurrency(pensionContribution / 12)}
+            </p>
+          </div>
+
           <div className="p-2 bg-muted rounded-lg">
             <p className="text-xs text-muted-foreground">Effective Rate</p>
             <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
