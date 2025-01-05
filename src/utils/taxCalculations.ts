@@ -42,16 +42,16 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   if (taxableIncome > 0) {
     // Basic rate (20%) - from PA up to £50,270
     const basicRateAmount = Math.min(
-      BASIC_RATE_THRESHOLD - PERSONAL_ALLOWANCE_BASE,
+      37700, // Basic rate band is £37,700
       taxableIncome
     );
     basicRate = basicRateAmount * 0.2;
     
     // Higher rate (40%) - from £50,270 to £125,140
-    if (taxableIncome > (BASIC_RATE_THRESHOLD - PERSONAL_ALLOWANCE_BASE)) {
+    if (taxableIncome > 37700) {
       const higherRateAmount = Math.min(
-        HIGHER_RATE_THRESHOLD - BASIC_RATE_THRESHOLD,
-        taxableIncome - (BASIC_RATE_THRESHOLD - PERSONAL_ALLOWANCE_BASE)
+        HIGHER_RATE_THRESHOLD - (personalAllowance + 37700),
+        taxableIncome - 37700
       );
       higherRate = higherRateAmount * 0.4;
       
@@ -66,7 +66,7 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   let nationalInsurance = 0;
   
   if (adjustedIncome > NI_LOWER_THRESHOLD) {
-    // 12% on income between lower and upper threshold
+    // 8% on income between lower and upper threshold
     const niBasicAmount = Math.min(
       NI_UPPER_THRESHOLD - NI_LOWER_THRESHOLD,
       Math.max(0, adjustedIncome - NI_LOWER_THRESHOLD)
