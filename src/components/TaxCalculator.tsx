@@ -148,19 +148,14 @@ const TaxCalculator = () => {
             </div>
 
             {/* Right side - Pie Chart (3 columns) */}
-            <div className="col-span-3 flex items-center justify-center">
-              <PieChart width={300} height={200}>
-                <Legend 
-                  layout="vertical" 
-                  align="right"
-                  verticalAlign="middle"
-                />
+            <div className="col-span-3">
+              <PieChart width={300} height={250}>
                 <Pie
                   data={pieData}
-                  cx={120}
+                  cx={150}
                   cy={100}
                   innerRadius={50}
-                  outerRadius={70}
+                  outerRadius={80}
                   paddingAngle={2}
                   dataKey="value"
                 >
@@ -168,6 +163,11 @@ const TaxCalculator = () => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
+                <Legend 
+                  layout="horizontal"
+                  align="center"
+                  verticalAlign="bottom"
+                />
               </PieChart>
             </div>
           </div>
@@ -194,3 +194,4 @@ const TaxCalculator = () => {
 };
 
 export default TaxCalculator;
+
