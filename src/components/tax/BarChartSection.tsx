@@ -13,9 +13,9 @@ interface BarChartSectionProps {
 
 export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSectionProps) => {
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Tax Bands</h2>
-      <div className="h-[200px]">
+    <div className="h-full flex flex-col">
+      <h2 className="text-lg font-semibold mb-4">Tax Bands</h2>
+      <div className="flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={barData}>
             <XAxis 

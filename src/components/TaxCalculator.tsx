@@ -85,8 +85,8 @@ const TaxCalculator = () => {
   // Additional calculations for insights
   const monthlyTakeHome = results.takeHomePay / 12;
   const weeklyTakeHome = results.takeHomePay / 52;
-  const dailyTakeHome = results.takeHomePay / 260; // Assuming 260 working days per year
-  const hourlyRate = dailyTakeHome / 8; // Assuming 8-hour workday
+  const dailyTakeHome = results.takeHomePay / 260;
+  const hourlyRate = dailyTakeHome / 8;
 
   const totalDeductions = results.incomeTax + results.nationalInsurance + pensionContribution;
   const deductionsPercentage = (totalDeductions / grossIncome) * 100;
@@ -102,7 +102,7 @@ const TaxCalculator = () => {
       <h1 className="text-3xl font-bold text-center mb-6">UK Income Tax Calculator</h1>
       
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="space-y-6">
+        <div className="grid grid-rows-[auto_1fr] gap-6">
           <Card className="p-6">
             <IncomeDetailsSection
               grossIncome={grossIncome}
