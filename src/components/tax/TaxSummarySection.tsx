@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
+import { calculateTax } from '@/utils/taxCalculations';
 
 interface TaxSummarySectionProps {
   results: {
@@ -47,7 +48,6 @@ export const TaxSummarySection = ({
 }: TaxSummarySectionProps) => {
   // Calculate take home without pension
   const calculateTakeHomeWithoutPension = () => {
-    const { calculateTax } = require('@/utils/taxCalculations');
     const resultsWithoutPension = calculateTax(grossIncome, 0);
     return resultsWithoutPension.takeHomePay;
   };
