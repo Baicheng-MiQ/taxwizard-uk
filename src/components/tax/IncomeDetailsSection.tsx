@@ -33,6 +33,7 @@ export const IncomeDetailsSection = ({
             value={[grossIncome]}
             onValueChange={(value) => setGrossIncome(value[0])}
             className="my-2"
+            variant="income"
           />
         </div>
         
@@ -48,6 +49,7 @@ export const IncomeDetailsSection = ({
             value={[pensionPercentage]}
             onValueChange={(value) => setPensionPercentage(value[0])}
             className="my-2"
+            variant="pension"
           />
         </div>
       </div>
