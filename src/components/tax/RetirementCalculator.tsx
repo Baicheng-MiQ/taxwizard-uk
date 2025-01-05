@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Separator } from "@/components/ui/separator";
 
 interface RetirementCalculatorProps {
   formatCurrency: (value: number) => string;
@@ -202,6 +203,23 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
+
+      <Separator className="my-8" />
+      
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Calculator Assumptions</h3>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+          <li>Life expectancy is set to 90 years old</li>
+          <li>Investment returns are assumed to be constant year over year at the specified rate</li>
+          <li>Inflation rate is assumed to be constant</li>
+          <li>Uses a modified 4% rule for withdrawal calculations, adjusted based on real returns</li>
+          <li>All additional investments and pension contributions are made at the end of each year</li>
+          <li>No consideration for state pension or other sources of retirement income</li>
+          <li>Tax implications during withdrawal phase are not considered</li>
+          <li>Market volatility and sequence of returns risk are not factored in</li>
+          <li>Assumes continuous employment and consistent contributions until retirement</li>
+        </ul>
       </div>
     </Card>
   );
