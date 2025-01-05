@@ -50,14 +50,26 @@ export const TaxSummarySection = ({
       <div className="space-y-4">
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-2 space-y-2">
-            <div className="p-2 bg-[#84cc16]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">Take Home</p>
-              <p className="text-xl font-bold">{formatCurrency(results.takeHomePay)}</p>
-              <div className="mt-1 space-y-0.5">
-                <p className="text-xs text-muted-foreground">Monthly: {formatCurrency(monthlyTakeHome)}</p>
-                <p className="text-xs text-muted-foreground">Weekly: {formatCurrency(weeklyTakeHome)}</p>
-                <p className="text-xs text-muted-foreground">Daily: {formatCurrency(dailyTakeHome)}</p>
-                <p className="text-xs text-muted-foreground">Hourly: {formatCurrency(hourlyRate)}</p>
+            <div className="p-4 bg-[#84cc16]/20 rounded-lg">
+              <p className="text-sm text-muted-foreground">Annual Take Home</p>
+              <p className="text-2xl font-bold">{formatCurrency(results.takeHomePay)}</p>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Monthly</p>
+                  <p className="text-lg font-semibold">{formatCurrency(monthlyTakeHome)}</p>
+                </div>
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Weekly</p>
+                  <p className="text-lg font-semibold">{formatCurrency(weeklyTakeHome)}</p>
+                </div>
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Daily</p>
+                  <p className="text-lg font-semibold">{formatCurrency(dailyTakeHome)}</p>
+                </div>
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Hourly</p>
+                  <p className="text-lg font-semibold">{formatCurrency(hourlyRate)}</p>
+                </div>
               </div>
             </div>
 
