@@ -23,14 +23,19 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
             <YAxis width={60} />
             <Tooltip 
               formatter={(value, name, entry) => {
-                if (name === "amount") return formatCurrency(Number(value));
-                if (name === "tax") return formatCurrency(Number(value));
-                return value;
+                if (name === "amount") return [formatCurrency(Number(value)), "Income"];
+                if (name === "tax") return [formatCurrency(Number(value)), "Tax"];
+                return [value, name];
               }}
               labelFormatter={(label, payload) => {
                 if (payload && payload.length > 0) {
                   const rate = payload[0].payload.rate;
-                  return `${label} (${rate} tax rate)`;
+                  return (
+                    <div className="font-semibold mb-1">
+                      <div>{label}</div>
+                      <div className="text-secondary text-sm">Tax Rate: {rate}</div>
+                    </div>
+                  );
                 }
                 return label;
               }}
@@ -38,15 +43,20 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
                 backgroundColor: '#1A1F2C',
                 border: 'none',
                 borderRadius: '0.375rem',
-                padding: '0.75rem'
+                padding: '0.75rem',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
               }}
               itemStyle={{
-                color: '#FFFFFF'
+                color: '#FFFFFF',
+                padding: '4px 0'
               }}
               labelStyle={{
                 color: '#FFFFFF',
                 fontWeight: 'bold',
                 marginBottom: '0.5rem'
+              }}
+              wrapperStyle={{
+                outline: 'none'
               }}
             />
             <Bar dataKey="amount" stackId="a" fill="#e2e8f0" name="Income">
