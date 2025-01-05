@@ -8,7 +8,7 @@ interface IncomeSectionProps {
   pensionPercentage: number;
   setPensionPercentage: (value: number) => void;
   setGrossIncome: (value: number) => void;
-  formatCurrency: (value: number) => void;
+  formatCurrency: (value: number) => string;  // Changed return type to string
 }
 
 export const IncomeDetailsSection = ({
