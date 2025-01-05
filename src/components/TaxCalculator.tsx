@@ -111,9 +111,9 @@ const TaxCalculator = () => {
         </Card>
 
         <Card className="p-4">
-          <div className="grid grid-cols-2 gap-4">
-            {/* Left side - Summary */}
-            <div className="space-y-2">
+          <div className="grid grid-cols-5 gap-4">
+            {/* Left side - Summary (3 columns) */}
+            <div className="col-span-2 space-y-2">
               <div className="p-2 bg-[#84cc16]/20 rounded-lg">
                 <p className="text-sm text-muted-foreground">Take Home</p>
                 <p className="text-xl font-bold">{formatCurrency(results.takeHomePay)}</p>
@@ -147,9 +147,9 @@ const TaxCalculator = () => {
               </div>
             </div>
 
-            {/* Right side - Pie Chart */}
-            <div className="flex items-center justify-center">
-              <PieChart width={200} height={200}>
+            {/* Right side - Pie Chart (2 columns) */}
+            <div className="col-span-3 flex items-center justify-center">
+              <PieChart width={250} height={200}>
                 <Legend 
                   layout="vertical" 
                   align="right"
@@ -157,7 +157,7 @@ const TaxCalculator = () => {
                 />
                 <Pie
                   data={pieData}
-                  cx={75}
+                  cx={100}
                   cy={100}
                   innerRadius={50}
                   outerRadius={70}
