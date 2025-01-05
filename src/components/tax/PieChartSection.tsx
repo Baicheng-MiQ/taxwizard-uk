@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { Card } from "@/components/ui/card";
 
 interface PieChartSectionProps {
@@ -22,13 +22,20 @@ export const PieChartSection = ({ pieData, formatCurrency, COLORS }: PieChartSec
               outerRadius={80}
               fill="#8884d8"
               dataKey="value"
-              label={({ name, value }) => `${name}: ${formatCurrency(value)}`}
             >
               {pieData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+            <Tooltip 
+              formatter={(value) => formatCurrency(Number(value))}
+            />
+            <Legend 
+              formatter={(value) => `${value}`}
+              layout="vertical"
+              align="right"
+              verticalAlign="middle"
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
