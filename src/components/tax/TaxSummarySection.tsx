@@ -115,15 +115,16 @@ export const TaxSummarySection = ({
               </ResponsiveContainer>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Effective Rate</p>
-                <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
-              </div>
-              
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Marginal Rate</p>
-                <p className="font-semibold">{results.marginalTaxRate}%</p>
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="p-2 bg-muted rounded-lg space-y-2">
+                <div>
+                  <p className="text-xs text-muted-foreground">Effective Rate</p>
+                  <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Marginal Rate</p>
+                  <p className="font-semibold">{results.marginalTaxRate}%</p>
+                </div>
               </div>
 
               <div className="col-span-2 p-2 bg-muted rounded-lg">
