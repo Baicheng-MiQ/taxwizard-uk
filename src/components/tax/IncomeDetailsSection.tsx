@@ -8,7 +8,7 @@ interface IncomeSectionProps {
   pensionPercentage: number;
   setPensionPercentage: (value: number) => void;
   setGrossIncome: (value: number) => void;
-  formatCurrency: (value: number) => string;
+  formatCurrency: (value: number) => string;  // Changed return type to string
 }
 
 export const IncomeDetailsSection = ({
@@ -27,20 +27,20 @@ export const IncomeDetailsSection = ({
   };
 
   return (
-    <Card className="p-6 shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Income Details</h2>
-      <div className="space-y-6">
+    <Card className="p-4">
+      <h2 className="text-lg font-semibold mb-2">Income Details</h2>
+      <div className="space-y-2">
         <div>
-          <Label htmlFor="income" className="text-sm font-medium text-gray-700 mb-2 block">
+          <Label htmlFor="income" className="text-sm">
             Gross Yearly Income
           </Label>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center my-2">
             <Input
               type="text"
               id="income"
               value={formatCurrency(grossIncome)}
               onChange={handleIncomeChange}
-              className="w-36 bg-white border-gray-200 focus:ring-2 focus:ring-blue-500"
+              className="w-36"
             />
             <Slider
               id="income-slider"
@@ -56,7 +56,7 @@ export const IncomeDetailsSection = ({
         </div>
         
         <div>
-          <Label htmlFor="pension" className="text-sm font-medium text-gray-700 mb-2 block">
+          <Label htmlFor="pension" className="text-sm">
             Pension Contribution: {pensionPercentage}%
           </Label>
           <Slider
@@ -66,7 +66,7 @@ export const IncomeDetailsSection = ({
             step={0.1}
             value={[pensionPercentage]}
             onValueChange={(value) => setPensionPercentage(value[0])}
-            className="mt-2"
+            className="my-2"
             variant="pension"
           />
         </div>

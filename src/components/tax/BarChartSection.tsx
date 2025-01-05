@@ -14,20 +14,13 @@ interface BarChartSectionProps {
 
 export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSectionProps) => {
   return (
-    <Card className="p-6 shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Tax Bands</h2>
-      <div className="h-[250px]">
+    <Card className="p-4">
+      <h2 className="text-lg font-semibold mb-2">Tax Bands</h2>
+      <div className="h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={barData}>
-            <XAxis 
-              dataKey="name" 
-              tick={{ fill: '#4B5563', fontSize: 12 }}
-            />
-            <YAxis 
-              width={80}
-              tick={{ fill: '#4B5563', fontSize: 12 }}
-              tickFormatter={(value) => formatCurrency(value).split('.')[0]}
-            />
+            <XAxis dataKey="name" />
+            <YAxis width={60} />
             <Tooltip 
               formatter={(value, name, entry) => {
                 if (name === "amount") return [formatCurrency(Number(value)), "Income"];
@@ -40,27 +33,30 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
                   return (
                     <div className="font-semibold mb-1">
                       <div>{label}</div>
-                      <div className="text-green-500 text-sm">Tax Rate: {rate}</div>
+                      <div className="text-secondary text-sm">Tax Rate: {rate}</div>
                     </div>
                   );
                 }
                 return label;
               }}
               contentStyle={{
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                border: '1px solid #E5E7EB',
-                borderRadius: '0.5rem',
+                backgroundColor: '#1A1F2C',
+                border: 'none',
+                borderRadius: '0.375rem',
                 padding: '0.75rem',
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
               }}
               itemStyle={{
-                color: '#374151',
+                color: '#FFFFFF',
                 padding: '4px 0'
               }}
               labelStyle={{
-                color: '#111827',
+                color: '#FFFFFF',
                 fontWeight: 'bold',
                 marginBottom: '0.5rem'
+              }}
+              wrapperStyle={{
+                outline: 'none'
               }}
             />
             <Bar dataKey="amount" stackId="a" fill="#e2e8f0" name="Income">
