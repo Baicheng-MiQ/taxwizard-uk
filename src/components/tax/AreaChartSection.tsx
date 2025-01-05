@@ -36,17 +36,6 @@ export const AreaChartSection = ({
   return (
     <Card className="p-4">
       <h2 className="text-lg font-semibold mb-2">Income Projection</h2>
-      <div className="mb-4">
-        <Label className="text-sm">Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
-        <Slider
-          min={50000}
-          max={200000}
-          step={10000}
-          value={[maxIncomeRange]}
-          onValueChange={(value) => setMaxIncomeRange(value[0])}
-          className="my-2"
-        />
-      </div>
       <div className="h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
@@ -122,6 +111,17 @@ export const AreaChartSection = ({
             />
           </AreaChart>
         </ResponsiveContainer>
+      </div>
+      <div className="mt-4">
+        <Label className="text-sm">Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
+        <Slider
+          min={50000}
+          max={200000}
+          step={10000}
+          value={[maxIncomeRange]}
+          onValueChange={(value) => setMaxIncomeRange(value[0])}
+          className="my-2"
+        />
       </div>
     </Card>
   );
