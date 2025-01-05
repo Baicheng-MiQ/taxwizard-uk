@@ -13,11 +13,13 @@ export interface TaxBreakdown {
 }
 
 export const calculateTax = (grossIncome: number, pensionContribution: number): TaxBreakdown => {
-  // Constants for 2023/24 tax year
+  // Constants for 2024/25 tax year
   const PERSONAL_ALLOWANCE_THRESHOLD = 100000;
   const PERSONAL_ALLOWANCE_BASE = 12570;
-  const BASIC_RATE_THRESHOLD = 37700; // This is the amount AFTER personal allowance
+  const BASIC_RATE_THRESHOLD = 50270; // Total income threshold for basic rate
   const HIGHER_RATE_THRESHOLD = 125140;
+  const NI_LOWER_THRESHOLD = 12570; // Weekly £242 * 52
+  const NI_UPPER_THRESHOLD = 50268; // Weekly £967 * 52
   
   // Calculate adjusted income after pension
   const adjustedIncome = grossIncome - pensionContribution;
@@ -29,45 +31,53 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
     personalAllowance = Math.max(0, PERSONAL_ALLOWANCE_BASE - reduction);
   }
   
-  // Calculate tax bands
+  // Initialize tax bands
   let basicRate = 0;
   let higherRate = 0;
   let additionalRate = 0;
   
+  // Calculate taxable income
   const taxableIncome = adjustedIncome - personalAllowance;
   
-  // Basic rate (20%) - up to £37,700 after personal allowance
   if (taxableIncome > 0) {
-    basicRate = Math.min(BASIC_RATE_THRESHOLD, taxableIncome) * 0.2;
-  }
-  
-  // Higher rate (40%) - between £37,700 and £125,140 (total income)
-  if (taxableIncome > BASIC_RATE_THRESHOLD) {
-    const higherRateIncome = Math.min(
-      HIGHER_RATE_THRESHOLD - (BASIC_RATE_THRESHOLD + PERSONAL_ALLOWANCE_BASE),
-      taxableIncome - BASIC_RATE_THRESHOLD
+    // Basic rate (20%) - from PA up to £50,270
+    const basicRateAmount = Math.min(
+      BASIC_RATE_THRESHOLD - PERSONAL_ALLOWANCE_BASE,
+      taxableIncome
     );
-    higherRate = higherRateIncome * 0.4;
-  }
-  
-  // Additional rate (45%) - everything above £125,140
-  if (adjustedIncome > HIGHER_RATE_THRESHOLD) {
-    additionalRate = (adjustedIncome - HIGHER_RATE_THRESHOLD) * 0.45;
+    basicRate = basicRateAmount * 0.2;
+    
+    // Higher rate (40%) - from £50,270 to £125,140
+    if (taxableIncome > (BASIC_RATE_THRESHOLD - PERSONAL_ALLOWANCE_BASE)) {
+      const higherRateAmount = Math.min(
+        HIGHER_RATE_THRESHOLD - BASIC_RATE_THRESHOLD,
+        taxableIncome - (BASIC_RATE_THRESHOLD - PERSONAL_ALLOWANCE_BASE)
+      );
+      higherRate = higherRateAmount * 0.4;
+      
+      // Additional rate (45%) - above £125,140
+      if (adjustedIncome > HIGHER_RATE_THRESHOLD) {
+        additionalRate = (adjustedIncome - HIGHER_RATE_THRESHOLD) * 0.45;
+      }
+    }
   }
   
   // Calculate National Insurance
-  // 2023/24 thresholds and rates
-  const NI_THRESHOLD = 12570;  // Primary Threshold
-  const NI_UPPER_THRESHOLD = 50270;  // Upper Earnings Limit
   let nationalInsurance = 0;
   
-  if (adjustedIncome > NI_THRESHOLD) {
-    // 12% on income between Primary Threshold and Upper Earnings Limit
-    const upToUpperThreshold = Math.min(adjustedIncome, NI_UPPER_THRESHOLD) - NI_THRESHOLD;
-    // 2% on income above Upper Earnings Limit
-    const aboveUpperThreshold = Math.max(0, adjustedIncome - NI_UPPER_THRESHOLD);
+  if (adjustedIncome > NI_LOWER_THRESHOLD) {
+    // 12% on income between lower and upper threshold
+    const niBasicAmount = Math.min(
+      NI_UPPER_THRESHOLD - NI_LOWER_THRESHOLD,
+      Math.max(0, adjustedIncome - NI_LOWER_THRESHOLD)
+    );
+    nationalInsurance += niBasicAmount * 0.08;
     
-    nationalInsurance = (upToUpperThreshold * 0.12) + (aboveUpperThreshold * 0.02);
+    // 2% on income above upper threshold
+    if (adjustedIncome > NI_UPPER_THRESHOLD) {
+      const niHigherAmount = adjustedIncome - NI_UPPER_THRESHOLD;
+      nationalInsurance += niHigherAmount * 0.02;
+    }
   }
   
   // Calculate totals
@@ -75,13 +85,13 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   const totalDeductible = incomeTax + nationalInsurance + pensionContribution;
   const takeHomePay = grossIncome - totalDeductible;
   
-  // Calculate rates
+  // Calculate effective tax rate
   const effectiveTaxRate = ((incomeTax + nationalInsurance) / grossIncome) * 100;
   
-  // Calculate marginal rate
+  // Calculate marginal tax rate
   let marginalTaxRate = 0;
   if (adjustedIncome <= personalAllowance) marginalTaxRate = 0;
-  else if (adjustedIncome <= BASIC_RATE_THRESHOLD + personalAllowance) marginalTaxRate = 20;
+  else if (adjustedIncome <= BASIC_RATE_THRESHOLD) marginalTaxRate = 20;
   else if (adjustedIncome <= HIGHER_RATE_THRESHOLD) marginalTaxRate = 40;
   else marginalTaxRate = 45;
   
