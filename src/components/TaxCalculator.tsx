@@ -1,17 +1,18 @@
 import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { calculateTax } from "@/utils/taxCalculations";
 import { BarChartSection } from "./tax/BarChartSection";
 import { AreaChartSection } from "./tax/AreaChartSection";
 import { PieChart, Pie, Cell, Legend } from 'recharts';
+import { IncomeDetailsSection } from "./tax/IncomeDetailsSection";
 
 const TaxCalculator = () => {
   const [grossIncome, setGrossIncome] = useState(35000);
-  const [pensionContribution, setPensionContribution] = useState(0);
+  const [pensionPercentage, setPensionPercentage] = useState(0);
   const [maxIncomeRange, setMaxIncomeRange] = useState(200000);
 
+  // Calculate actual pension contribution from percentage
+  const pensionContribution = (grossIncome * pensionPercentage) / 100;
   const results = calculateTax(grossIncome, pensionContribution);
 
   const pieData = [
@@ -54,24 +55,23 @@ const TaxCalculator = () => {
       Math.round((maxIncomeRange / 1000) * i)
     );
     
-    // Add current gross income to the points if it's not already included
     if (!salaryPoints.includes(grossIncome) && grossIncome > 0) {
       salaryPoints.push(grossIncome);
-      // Sort to maintain order
       salaryPoints.sort((a, b) => a - b);
     }
 
     return salaryPoints.map(salary => {
-      const tax = calculateTax(salary, (salary * pensionContribution) / grossIncome);
+      const actualPension = (salary * pensionPercentage) / 100;
+      const tax = calculateTax(salary, actualPension);
       return {
         salary,
         takeHome: tax.takeHomePay,
         incomeTax: tax.incomeTax,
         nationalInsurance: tax.nationalInsurance,
-        pension: (salary * pensionContribution) / grossIncome,
+        pension: actualPension,
       };
     });
-  }, [grossIncome, pensionContribution, maxIncomeRange]);
+  }, [grossIncome, pensionPercentage, maxIncomeRange]);
 
   const COLORS = ["#84cc16", "#475569", "#94a3b8", "#0ea5e9"];
 
@@ -88,36 +88,13 @@ const TaxCalculator = () => {
       
       <div className="grid md:grid-cols-2 gap-2">
         <div className="space-y-2">
-          <Card className="p-4">
-            <h2 className="text-lg font-semibold mb-2">Income Details</h2>
-            <div className="space-y-2">
-              <div>
-                <Label htmlFor="income" className="text-sm">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
-                <Slider
-                  id="income"
-                  min={0}
-                  max={200000}
-                  step={100}
-                  value={[grossIncome]}
-                  onValueChange={(value) => setGrossIncome(value[0])}
-                  className="my-2"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="pension" className="text-sm">Pension Contribution: {formatCurrency(pensionContribution)}</Label>
-                <Slider
-                  id="pension"
-                  min={0}
-                  max={grossIncome}
-                  step={100}
-                  value={[pensionContribution]}
-                  onValueChange={(value) => setPensionContribution(value[0])}
-                  className="my-2"
-                />
-              </div>
-            </div>
-          </Card>
+          <IncomeDetailsSection
+            grossIncome={grossIncome}
+            pensionPercentage={pensionPercentage}
+            setPensionPercentage={setPensionPercentage}
+            setGrossIncome={setGrossIncome}
+            formatCurrency={formatCurrency}
+          />
 
           <BarChartSection 
             barData={barData} 
@@ -128,7 +105,6 @@ const TaxCalculator = () => {
 
         <Card className="p-4">
           <div className="grid grid-cols-5 gap-4">
-            {/* Left side - Summary (2 columns) */}
             <div className="col-span-2 space-y-2">
               <div className="p-2 bg-[#84cc16]/20 rounded-lg">
                 <p className="text-sm text-muted-foreground">Take Home</p>
@@ -163,7 +139,6 @@ const TaxCalculator = () => {
               </div>
             </div>
 
-            {/* Right side - Pie Chart (3 columns) */}
             <div className="col-span-3">
               <PieChart width={300} height={250}>
                 <Pie
