@@ -87,36 +87,44 @@ const TaxCalculator = () => {
       <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
       
       <div className="grid md:grid-cols-2 gap-2">
-        <Card className="p-4">
-          <h2 className="text-lg font-semibold mb-2">Income Details</h2>
-          <div className="space-y-2">
-            <div>
-              <Label htmlFor="income" className="text-sm">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
-              <Slider
-                id="income"
-                min={0}
-                max={200000}
-                step={100}
-                value={[grossIncome]}
-                onValueChange={(value) => setGrossIncome(value[0])}
-                className="my-2"
-              />
+        <div className="space-y-2">
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold mb-2">Income Details</h2>
+            <div className="space-y-2">
+              <div>
+                <Label htmlFor="income" className="text-sm">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
+                <Slider
+                  id="income"
+                  min={0}
+                  max={200000}
+                  step={100}
+                  value={[grossIncome]}
+                  onValueChange={(value) => setGrossIncome(value[0])}
+                  className="my-2"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="pension" className="text-sm">Pension Contribution: {formatCurrency(pensionContribution)}</Label>
+                <Slider
+                  id="pension"
+                  min={0}
+                  max={grossIncome}
+                  step={100}
+                  value={[pensionContribution]}
+                  onValueChange={(value) => setPensionContribution(value[0])}
+                  className="my-2"
+                />
+              </div>
             </div>
-            
-            <div>
-              <Label htmlFor="pension" className="text-sm">Pension Contribution: {formatCurrency(pensionContribution)}</Label>
-              <Slider
-                id="pension"
-                min={0}
-                max={grossIncome}
-                step={100}
-                value={[pensionContribution]}
-                onValueChange={(value) => setPensionContribution(value[0])}
-                className="my-2"
-              />
-            </div>
-          </div>
-        </Card>
+          </Card>
+
+          <BarChartSection 
+            barData={barData} 
+            formatCurrency={formatCurrency} 
+            COLORS={COLORS} 
+          />
+        </div>
 
         <Card className="p-4">
           <div className="grid grid-cols-5 gap-4">
@@ -182,12 +190,7 @@ const TaxCalculator = () => {
         </Card>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-2">
-        <BarChartSection 
-          barData={barData} 
-          formatCurrency={formatCurrency} 
-          COLORS={COLORS} 
-        />
+      <div className="w-full">
         <AreaChartSection 
           areaChartData={areaChartData}
           formatCurrency={formatCurrency}
