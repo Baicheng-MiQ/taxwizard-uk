@@ -49,12 +49,17 @@ const TaxCalculator = () => {
   ].filter(item => item.amount > 0);
 
   const areaChartData = useMemo(() => {
-    // Generate more data points by using a smaller increment
-    const numberOfPoints = maxIncomeRange; // One point per pound
-    const salaryPoints = Array.from(
-      { length: numberOfPoints + 1 }, 
-      (_, i) => Math.round(i)
+    // Generate 40 evenly spaced points
+    const salaryPoints = Array.from({ length: 40 }, (_, i) => 
+      Math.round((maxIncomeRange / 40) * i)
     );
+    
+    // Add current gross income to the points if it's not already included
+    if (!salaryPoints.includes(grossIncome) && grossIncome > 0) {
+      salaryPoints.push(grossIncome);
+      // Sort to maintain order
+      salaryPoints.sort((a, b) => a - b);
+    }
 
     return salaryPoints.map(salary => {
       const tax = calculateTax(salary, (salary * pensionContribution) / grossIncome);
