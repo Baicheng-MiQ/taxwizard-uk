@@ -48,14 +48,23 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       });
     }
 
-    // Calculate maximum sustainable withdrawal
-    const maxYearlyWithdrawal = (totalSavings * realReturn) / 
-      (1 - Math.pow(1 + realReturn, -yearsInRetirement));
+    // Calculate sustainable withdrawal rate (4% rule adjusted for real return)
+    // This ensures we don't deplete the principal too quickly
+    const sustainableWithdrawalRate = Math.min(0.04, realReturn + 0.02); // Cap at 4%
+    const maxYearlyWithdrawal = totalSavings * sustainableWithdrawalRate;
 
-    // Calculate drawdown phase
+    // Calculate drawdown phase with dynamic withdrawals
     let remainingSavings = totalSavings;
     for (let year = 1; year <= yearsInRetirement; year++) {
-      remainingSavings = (remainingSavings - maxYearlyWithdrawal) * (1 + realReturn);
+      // Calculate this year's withdrawal (adjusted for inflation)
+      const thisYearWithdrawal = Math.min(
+        maxYearlyWithdrawal,
+        remainingSavings * sustainableWithdrawalRate
+      );
+      
+      // Update remaining savings
+      remainingSavings = (remainingSavings - thisYearWithdrawal) * (1 + realReturn);
+      
       yearlyData.push({
         age: retirementAge + year,
         savings: Math.round(remainingSavings),
