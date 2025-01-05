@@ -3,9 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { calculateTax } from "@/utils/taxCalculations";
-import { PieChartSection } from "./tax/PieChartSection";
 import { BarChartSection } from "./tax/BarChartSection";
 import { AreaChartSection } from "./tax/AreaChartSection";
+import { PieChart, Cell, Legend } from 'recharts';
 
 const TaxCalculator = () => {
   const [grossIncome, setGrossIncome] = useState(35000);
@@ -78,7 +78,7 @@ const TaxCalculator = () => {
     <div className="container mx-auto p-2 space-y-2">
       <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
       
-      <div className="grid md:grid-cols-3 gap-2">
+      <div className="grid md:grid-cols-2 gap-2">
         <Card className="p-4">
           <h2 className="text-lg font-semibold mb-2">Income Details</h2>
           <div className="space-y-2">
@@ -111,55 +111,67 @@ const TaxCalculator = () => {
         </Card>
 
         <Card className="p-4">
-          <h2 className="text-lg font-semibold mb-2">Summary</h2>
-          <div className="space-y-2">
-            <div className="p-2 bg-secondary/10 rounded-lg">
-              <p className="text-xl font-bold text-secondary">
-                Take Home: {formatCurrency(results.takeHomePay)}
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Income Tax</p>
+          <div className="grid grid-cols-2 gap-4">
+            {/* Left side - Summary */}
+            <div className="space-y-2">
+              <div className="p-2 bg-[#84cc16]/20 rounded-lg">
+                <p className="text-sm text-muted-foreground">Take Home</p>
+                <p className="text-xl font-bold">{formatCurrency(results.takeHomePay)}</p>
+              </div>
+              
+              <div className="p-2 bg-[#475569]/20 rounded-lg">
+                <p className="text-sm text-muted-foreground">Income Tax</p>
                 <p className="font-semibold">{formatCurrency(results.incomeTax)}</p>
               </div>
               
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">NI</p>
+              <div className="p-2 bg-[#94a3b8]/20 rounded-lg">
+                <p className="text-sm text-muted-foreground">NI</p>
                 <p className="font-semibold">{formatCurrency(results.nationalInsurance)}</p>
               </div>
               
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Deductions</p>
-                <p className="font-semibold">{formatCurrency(results.totalDeductible)}</p>
+              <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
+                <p className="text-sm text-muted-foreground">Pension</p>
+                <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
               </div>
-              
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Total</p>
-                <p className="font-semibold">{formatCurrency(results.totalIncome)}</p>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div className="p-2 bg-muted rounded-lg">
+                  <p className="text-xs text-muted-foreground">Effective Rate</p>
+                  <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+                </div>
+                
+                <div className="p-2 bg-muted rounded-lg">
+                  <p className="text-xs text-muted-foreground">Marginal Rate</p>
+                  <p className="font-semibold">{results.marginalTaxRate}%</p>
+                </div>
               </div>
             </div>
-            
-            <div className="flex gap-2 text-sm">
-              <div className="flex-1 p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Effective Rate</p>
-                <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
-              </div>
-              
-              <div className="flex-1 p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Marginal Rate</p>
-                <p className="font-semibold">{results.marginalTaxRate}%</p>
-              </div>
+
+            {/* Right side - Pie Chart */}
+            <div className="flex items-center justify-center">
+              <PieChart width={200} height={200}>
+                <Legend 
+                  layout="vertical" 
+                  align="right"
+                  verticalAlign="middle"
+                />
+                <pie
+                  data={pieData}
+                  cx={75}
+                  cy={100}
+                  innerRadius={50}
+                  outerRadius={70}
+                  paddingAngle={2}
+                  dataKey="value"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </pie>
+              </PieChart>
             </div>
           </div>
         </Card>
-
-        <PieChartSection 
-          pieData={pieData} 
-          formatCurrency={formatCurrency} 
-          COLORS={COLORS} 
-        />
       </div>
 
       <div className="grid md:grid-cols-2 gap-2">
