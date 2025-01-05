@@ -89,51 +89,51 @@ export const TaxSummarySection = ({
             </div>
           </div>
 
-          <div className="col-span-3 h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius="40%"
-                  outerRadius="80%"
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Legend 
-                  layout="horizontal"
-                  align="center"
-                  verticalAlign="bottom"
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <div className="p-2 bg-muted rounded-lg">
-              <p className="text-xs text-muted-foreground">Effective Rate</p>
-              <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+          <div className="col-span-3">
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="40%"
+                    outerRadius="80%"
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend 
+                    layout="horizontal"
+                    align="center"
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            
-            <div className="p-2 bg-muted rounded-lg">
-              <p className="text-xs text-muted-foreground">Marginal Rate</p>
-              <p className="font-semibold">{results.marginalTaxRate}%</p>
-            </div>
-          </div>
 
-          <div className="p-2 bg-muted rounded-lg">
-            <p className="text-xs text-muted-foreground">Total Deductions</p>
-            <p className="font-semibold">{formatCurrency(totalDeductions)}</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {deductionsPercentage.toFixed(1)}% of gross income
-            </p>
+            <div className="grid grid-cols-4 gap-4 mt-4">
+              <div className="p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Effective Rate</p>
+                <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+              </div>
+              
+              <div className="p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Marginal Rate</p>
+                <p className="font-semibold">{results.marginalTaxRate}%</p>
+              </div>
+
+              <div className="col-span-2 p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Total Deductions</p>
+                <p className="font-semibold">{formatCurrency(totalDeductions)}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {deductionsPercentage.toFixed(1)}% of gross income
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
