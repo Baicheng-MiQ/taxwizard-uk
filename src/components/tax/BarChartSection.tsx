@@ -22,12 +22,18 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
             <XAxis dataKey="name" />
             <YAxis width={60} />
             <Tooltip 
-              formatter={(value, name) => {
+              formatter={(value, name, entry) => {
                 if (name === "amount") return formatCurrency(Number(value));
                 if (name === "tax") return formatCurrency(Number(value));
                 return value;
               }}
-              labelFormatter={(label) => `${label}`}
+              labelFormatter={(label, payload) => {
+                if (payload && payload.length > 0) {
+                  const rate = payload[0].payload.rate;
+                  return `${label} (${rate} tax rate)`;
+                }
+                return label;
+              }}
               contentStyle={{
                 backgroundColor: '#1A1F2C',
                 border: 'none',
