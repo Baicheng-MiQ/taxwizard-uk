@@ -65,7 +65,8 @@ export const TaxSummarySection = ({
               <p className="text-sm text-muted-foreground">Pension</p>
               <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Monthly contribution: {formatCurrency(pensionContribution / 12)}
+                Monthly contribution:
+{formatCurrency(pensionContribution / 12)}
               </p>
             </div>
             
