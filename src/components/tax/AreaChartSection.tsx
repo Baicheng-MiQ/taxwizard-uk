@@ -32,34 +32,41 @@ export const AreaChartSection = ({
   const tickValues = Array.from({ length: 9 }, (_, i) => (maxIncomeRange * i) / 8);
 
   return (
-    <Card className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Income Projection</h2>
-      <div className="h-[200px]">
+    <Card className="p-6 shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">Income Projection</h2>
+      <div className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={areaChartData}
-            margin={{ top: 5, right: 20, left: 50, bottom: 0 }}
+            margin={{ top: 10, right: 30, left: 60, bottom: 0 }}
           >
             <XAxis 
               dataKey="salary" 
-              tickFormatter={(value) => formatCurrency(value)}
+              tickFormatter={(value) => formatCurrency(value).split('.')[0]}
               domain={[0, maxIncomeRange]}
               ticks={tickValues}
               allowDataOverflow={true}
-              tick={{ fontSize: 10 }}
+              tick={{ fill: '#4B5563', fontSize: 12 }}
               interval={0}
             />
             <YAxis 
-              tickFormatter={(value) => formatCurrency(value)}
+              tickFormatter={(value) => formatCurrency(value).split('.')[0]}
               domain={[0, maxIncomeRange]}
               allowDataOverflow={true}
-              width={50}
-              tick={{ fontSize: 10 }}
+              width={80}
+              tick={{ fill: '#4B5563', fontSize: 12 }}
               interval={0}
             />
             <Tooltip 
-              formatter={(value, name) => formatCurrency(Number(value))}
+              formatter={(value) => formatCurrency(Number(value))}
               labelFormatter={(value) => `Gross Income: ${formatCurrency(Number(value))}`}
+              contentStyle={{
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                border: '1px solid #E5E7EB',
+                borderRadius: '0.5rem',
+                padding: '0.75rem',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+              }}
             />
             {validGrossIncome > 0 && Number.isFinite(validGrossIncome) && (
               <ReferenceLine
@@ -70,7 +77,7 @@ export const AreaChartSection = ({
                   value: "Current",
                   position: "top",
                   fill: "#ef4444",
-                  fontSize: 10
+                  fontSize: 12
                 }}
                 isFront={true}
               />
@@ -110,7 +117,7 @@ export const AreaChartSection = ({
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      <div className="mt-4">
+      <div className="mt-6">
         <Slider
           min={50000}
           max={200000}

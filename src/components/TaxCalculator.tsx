@@ -98,52 +98,56 @@ const TaxCalculator = () => {
   };
 
   return (
-    <div className="container mx-auto p-2 space-y-2">
-      <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
-      
-      <div className="grid md:grid-cols-2 gap-2">
-        <div className="space-y-2">
-          <IncomeDetailsSection
-            grossIncome={grossIncome}
-            pensionPercentage={pensionPercentage}
-            setPensionPercentage={setPensionPercentage}
-            setGrossIncome={setGrossIncome}
-            formatCurrency={formatCurrency}
-          />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          UK Income Tax Calculator
+        </h1>
+        
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <IncomeDetailsSection
+              grossIncome={grossIncome}
+              pensionPercentage={pensionPercentage}
+              setPensionPercentage={setPensionPercentage}
+              setGrossIncome={setGrossIncome}
+              formatCurrency={formatCurrency}
+            />
 
-          <BarChartSection 
-            barData={barData} 
-            formatCurrency={formatCurrency} 
-            COLORS={COLORS} 
+            <BarChartSection 
+              barData={barData} 
+              formatCurrency={formatCurrency} 
+              COLORS={COLORS} 
+            />
+          </div>
+
+          <TaxSummarySection 
+            results={results}
+            pieData={pieData}
+            COLORS={COLORS}
+            formatCurrency={formatCurrency}
+            monthlyTakeHome={monthlyTakeHome}
+            weeklyTakeHome={weeklyTakeHome}
+            dailyTakeHome={dailyTakeHome}
+            hourlyRate={hourlyRate}
+            pensionContribution={pensionContribution}
+            grossIncome={grossIncome}
+            totalDeductions={totalDeductions}
+            deductionsPercentage={deductionsPercentage}
+            taxBreakdown={taxBreakdown}
           />
         </div>
 
-        <TaxSummarySection 
-          results={results}
-          pieData={pieData}
-          COLORS={COLORS}
-          formatCurrency={formatCurrency}
-          monthlyTakeHome={monthlyTakeHome}
-          weeklyTakeHome={weeklyTakeHome}
-          dailyTakeHome={dailyTakeHome}
-          hourlyRate={hourlyRate}
-          pensionContribution={pensionContribution}
-          grossIncome={grossIncome}
-          totalDeductions={totalDeductions}
-          deductionsPercentage={deductionsPercentage}
-          taxBreakdown={taxBreakdown}
-        />
-      </div>
-
-      <div className="w-full">
-        <AreaChartSection 
-          areaChartData={areaChartData}
-          formatCurrency={formatCurrency}
-          COLORS={COLORS}
-          grossIncome={grossIncome}
-          maxIncomeRange={maxIncomeRange}
-          setMaxIncomeRange={setMaxIncomeRange}
-        />
+        <div className="w-full">
+          <AreaChartSection 
+            areaChartData={areaChartData}
+            formatCurrency={formatCurrency}
+            COLORS={COLORS}
+            grossIncome={grossIncome}
+            maxIncomeRange={maxIncomeRange}
+            setMaxIncomeRange={setMaxIncomeRange}
+          />
+        </div>
       </div>
     </div>
   );
