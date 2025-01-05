@@ -1,5 +1,5 @@
-import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
 
 interface TaxSummarySectionProps {
@@ -107,7 +107,7 @@ export const TaxSummarySection = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
             <p className="text-sm text-muted-foreground">Pension</p>
             <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
@@ -116,14 +116,16 @@ export const TaxSummarySection = ({
             </p>
           </div>
 
-          <div className="p-2 bg-muted rounded-lg">
-            <p className="text-xs text-muted-foreground">Effective Rate</p>
-            <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
-          </div>
-          
-          <div className="p-2 bg-muted rounded-lg">
-            <p className="text-xs text-muted-foreground">Marginal Rate</p>
-            <p className="font-semibold">{results.marginalTaxRate}%</p>
+          <div className="space-y-2">
+            <div className="p-2 bg-muted rounded-lg">
+              <p className="text-xs text-muted-foreground">Effective Rate</p>
+              <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+            </div>
+            
+            <div className="p-2 bg-muted rounded-lg">
+              <p className="text-xs text-muted-foreground">Marginal Rate</p>
+              <p className="font-semibold">{results.marginalTaxRate}%</p>
+            </div>
           </div>
 
           <div className="p-2 bg-muted rounded-lg">
