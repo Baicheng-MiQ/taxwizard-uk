@@ -13,11 +13,11 @@ interface BarChartSectionProps {
 
 export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSectionProps) => {
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-hidden">
       <h2 className="text-lg font-semibold mb-4">Tax Bands</h2>
-      <div className="flex-1">
-        <ResponsiveContainer width="110%" height="90%">
-          <BarChart data={barData} className="-ml-8">
+      <div className="flex-1 min-w-0">
+        <ResponsiveContainer width="100%" height="90%">
+          <BarChart data={barData}>
             <XAxis 
               dataKey="name" 
               tick={{ fontSize: 10 }}

@@ -100,24 +100,26 @@ const TaxCalculator = () => {
       <h1 className="text-3xl font-bold text-center mb-1">UK Income Tax Calculator</h1>
       
       <div className="grid md:grid-cols-3 gap-3">
-        <div className="grid grid-rows-[auto_1fr] gap-3 min-w-0 w-full">
-          <Card className="p-6">
-            <IncomeDetailsSection
-              grossIncome={grossIncome}
-              pensionPercentage={pensionPercentage}
-              setPensionPercentage={setPensionPercentage}
-              setGrossIncome={setGrossIncome}
-              formatCurrency={formatCurrency}
-            />
-          </Card>
+        <div className="min-w-0 w-full">
+          <div className="grid grid-rows-[auto_1fr] gap-3 h-full">
+            <Card className="p-6">
+              <IncomeDetailsSection
+                grossIncome={grossIncome}
+                pensionPercentage={pensionPercentage}
+                setPensionPercentage={setPensionPercentage}
+                setGrossIncome={setGrossIncome}
+                formatCurrency={formatCurrency}
+              />
+            </Card>
 
-          <Card className="p-4">
-            <BarChartSection 
-              barData={barData} 
-              formatCurrency={formatCurrency} 
-              COLORS={COLORS} 
-            />
-          </Card>
+            <Card className="p-4">
+              <BarChartSection 
+                barData={barData} 
+                formatCurrency={formatCurrency} 
+                COLORS={COLORS} 
+              />
+            </Card>
+          </div>
         </div>
 
         <div className="md:col-span-2">
