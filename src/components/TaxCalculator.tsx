@@ -15,11 +15,6 @@ const TaxCalculator = () => {
   const pensionContribution = (grossIncome * pensionPercentage) / 100;
   const results = calculateTax(grossIncome, pensionContribution);
 
-  // Calculate pension efficiency
-  const resultsWithExtraPension = calculateTax(grossIncome, pensionContribution + 100);
-  const takeHomeReduction = results.takeHomePay - resultsWithExtraPension.takeHomePay;
-  const pensionEfficiency = takeHomeReduction > 0 ? (100 / takeHomeReduction).toFixed(2) : "0";
-
   const pieData = [
     { name: "Take Home", value: results.takeHomePay },
     { name: "Income Tax", value: results.incomeTax },
@@ -115,7 +110,6 @@ const TaxCalculator = () => {
               setPensionPercentage={setPensionPercentage}
               setGrossIncome={setGrossIncome}
               formatCurrency={formatCurrency}
-              pensionEfficiency={pensionEfficiency}
             />
           </Card>
 

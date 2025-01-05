@@ -9,7 +9,6 @@ interface IncomeSectionProps {
   setPensionPercentage: (value: number) => void;
   setGrossIncome: (value: number) => void;
   formatCurrency: (value: number) => string;
-  pensionEfficiency: string;
 }
 
 export const IncomeDetailsSection = ({
@@ -18,7 +17,6 @@ export const IncomeDetailsSection = ({
   setPensionPercentage,
   setGrossIncome,
   formatCurrency,
-  pensionEfficiency,
 }: IncomeSectionProps) => {
   const handleIncomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace(/[^0-9]/g, '');
@@ -59,9 +57,6 @@ export const IncomeDetailsSection = ({
           <Label htmlFor="pension" className="text-lg font-medium">
             Pension Contribution: {pensionPercentage}%
           </Label>
-          <div className="text-sm text-muted-foreground">
-            £1 of take-home pay can be converted to £{pensionEfficiency} in pension
-          </div>
           <Slider
             id="pension"
             min={0}
