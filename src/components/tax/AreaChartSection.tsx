@@ -26,6 +26,9 @@ export const AreaChartSection = ({
   maxIncomeRange,
   setMaxIncomeRange
 }: AreaChartSectionProps) => {
+  // Ensure grossIncome is within the valid range for the chart
+  const validGrossIncome = Math.min(Math.max(0, grossIncome), maxIncomeRange);
+  
   return (
     <Card className="p-4">
       <h2 className="text-lg font-semibold mb-2">Income Projection</h2>
@@ -63,19 +66,21 @@ export const AreaChartSection = ({
               formatter={(value, name) => formatCurrency(Number(value))}
               labelFormatter={(value) => `Gross Income: ${formatCurrency(Number(value))}`}
             />
-            <ReferenceLine
-              x={grossIncome}
-              stroke="#ef4444"
-              strokeWidth={2}
-              label={{
-                value: "Current",
-                position: "top",
-                fill: "#ef4444",
-                fontSize: 12
-              }}
-              isFront={true}
-              ifOverflow="extendDomain"
-            />
+            {validGrossIncome > 0 && (
+              <ReferenceLine
+                x={validGrossIncome}
+                stroke="#ef4444"
+                strokeWidth={2}
+                label={{
+                  value: "Current",
+                  position: "top",
+                  fill: "#ef4444",
+                  fontSize: 12
+                }}
+                isFront={true}
+                ifOverflow="extendDomain"
+              />
+            )}
             <Area
               type="monotone"
               dataKey="takeHome"
