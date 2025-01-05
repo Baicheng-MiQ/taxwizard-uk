@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
 
 interface TaxSummarySectionProps {
