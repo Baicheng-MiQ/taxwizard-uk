@@ -16,7 +16,7 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   // Constants for 2023/24 tax year
   const PERSONAL_ALLOWANCE_THRESHOLD = 100000;
   const PERSONAL_ALLOWANCE_BASE = 12570;
-  const BASIC_RATE_THRESHOLD = 50270;
+  const BASIC_RATE_THRESHOLD = 37700; // This is the amount AFTER personal allowance
   const HIGHER_RATE_THRESHOLD = 125140;
   
   // Calculate adjusted income after pension
@@ -34,23 +34,23 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   let higherRate = 0;
   let additionalRate = 0;
   
-  // Basic rate (20%) - from personal allowance to basic rate threshold
-  if (adjustedIncome > personalAllowance) {
-    basicRate = Math.min(
-      BASIC_RATE_THRESHOLD - personalAllowance,
-      adjustedIncome - personalAllowance
-    ) * 0.2;
+  const taxableIncome = adjustedIncome - personalAllowance;
+  
+  // Basic rate (20%) - up to £37,700 after personal allowance
+  if (taxableIncome > 0) {
+    basicRate = Math.min(BASIC_RATE_THRESHOLD, taxableIncome) * 0.2;
   }
   
-  // Higher rate (40%) - from basic rate threshold to higher rate threshold
-  if (adjustedIncome > BASIC_RATE_THRESHOLD) {
-    higherRate = Math.min(
-      HIGHER_RATE_THRESHOLD - BASIC_RATE_THRESHOLD,
-      adjustedIncome - BASIC_RATE_THRESHOLD
-    ) * 0.4;
+  // Higher rate (40%) - between £37,700 and £125,140 (total income)
+  if (taxableIncome > BASIC_RATE_THRESHOLD) {
+    const higherRateIncome = Math.min(
+      HIGHER_RATE_THRESHOLD - (BASIC_RATE_THRESHOLD + PERSONAL_ALLOWANCE_BASE),
+      taxableIncome - BASIC_RATE_THRESHOLD
+    );
+    higherRate = higherRateIncome * 0.4;
   }
   
-  // Additional rate (45%) - everything above higher rate threshold
+  // Additional rate (45%) - everything above £125,140
   if (adjustedIncome > HIGHER_RATE_THRESHOLD) {
     additionalRate = (adjustedIncome - HIGHER_RATE_THRESHOLD) * 0.45;
   }
@@ -81,7 +81,7 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   // Calculate marginal rate
   let marginalTaxRate = 0;
   if (adjustedIncome <= personalAllowance) marginalTaxRate = 0;
-  else if (adjustedIncome <= BASIC_RATE_THRESHOLD) marginalTaxRate = 20;
+  else if (adjustedIncome <= BASIC_RATE_THRESHOLD + personalAllowance) marginalTaxRate = 20;
   else if (adjustedIncome <= HIGHER_RATE_THRESHOLD) marginalTaxRate = 40;
   else marginalTaxRate = 45;
   
