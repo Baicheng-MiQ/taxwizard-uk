@@ -29,7 +29,6 @@ export const AreaChartSection = ({
     Math.min(Math.max(0, grossIncome), maxIncomeRange) : 
     0;
 
-  // Calculate more tick values for better precision
   const tickValues = Array.from({ length: 9 }, (_, i) => (maxIncomeRange * i) / 8);
 
   return (
@@ -39,7 +38,7 @@ export const AreaChartSection = ({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={areaChartData}
-            margin={{ top: 10, right: 30, left: 60, bottom: 0 }}
+            margin={{ top: 5, right: 20, left: 50, bottom: 0 }}
           >
             <XAxis 
               dataKey="salary" 
@@ -54,7 +53,7 @@ export const AreaChartSection = ({
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               allowDataOverflow={true}
-              width={60}
+              width={50}
               tick={{ fontSize: 10 }}
               interval={0}
             />
