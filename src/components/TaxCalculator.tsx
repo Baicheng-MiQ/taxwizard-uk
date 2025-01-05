@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { calculateTax } from "@/utils/taxCalculations";
 import { BarChartSection } from "./tax/BarChartSection";
 import { AreaChartSection } from "./tax/AreaChartSection";
-import { PieChart, Pie, Cell, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
 import { IncomeDetailsSection } from "./tax/IncomeDetailsSection";
 
 const TaxCalculator = () => {
@@ -139,27 +139,29 @@ const TaxCalculator = () => {
               </div>
             </div>
 
-            <div className="col-span-3 flex items-center justify-center h-full">
-              <PieChart width={400} height={300}>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Legend 
-                  layout="horizontal"
-                  align="center"
-                  verticalAlign="bottom"
-                />
-              </PieChart>
+            <div className="col-span-3 h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="40%"
+                    outerRadius="80%"
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend 
+                    layout="horizontal"
+                    align="center"
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </Card>
