@@ -50,40 +50,40 @@ export const TaxSummarySection = ({
     <Card className="p-4">
       <div className="space-y-4">
         <div className="grid grid-cols-5 gap-4">
-          <div className="col-span-2 space-y-2">
-            <div className="p-2 bg-[#84cc16]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">Take Home</p>
-              <p className="text-xl font-bold">{formatCurrency(results.takeHomePay)}</p>
-              <div className="mt-1 space-y-0.5">
-                <p className="text-xs text-muted-foreground">Monthly: {formatCurrency(monthlyTakeHome)}</p>
-                <p className="text-xs text-muted-foreground">Weekly: {formatCurrency(weeklyTakeHome)}</p>
-                <p className="text-xs text-muted-foreground">Daily: {formatCurrency(dailyTakeHome)}</p>
-                <p className="text-xs text-muted-foreground">Hourly: {formatCurrency(hourlyRate)}</p>
+          <div className="col-span-2 space-y-4">
+            <div className="p-4 bg-[#F2FCE2] rounded-xl">
+              <p className="text-lg text-gray-600 mb-1">Take Home</p>
+              <p className="text-3xl font-bold text-gray-900">{formatCurrency(results.takeHomePay)}</p>
+              <div className="mt-3 space-y-1">
+                <p className="text-sm text-gray-600">Monthly: {formatCurrency(monthlyTakeHome)}</p>
+                <p className="text-sm text-gray-600">Weekly: {formatCurrency(weeklyTakeHome)}</p>
+                <p className="text-sm text-gray-600">Daily: {formatCurrency(dailyTakeHome)}</p>
+                <p className="text-sm text-gray-600">Hourly: {formatCurrency(hourlyRate)}</p>
               </div>
             </div>
             
-            <div className="p-2 bg-[#475569]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">Income Tax</p>
-              <p className="font-semibold">{formatCurrency(results.incomeTax)}</p>
-              <div className="mt-1 space-y-0.5 text-xs text-muted-foreground">
-                <p>Basic: {taxBreakdown.basic.toFixed(1)}%</p>
-                <p>Higher: {taxBreakdown.higher.toFixed(1)}%</p>
-                <p>Additional: {taxBreakdown.additional.toFixed(1)}%</p>
+            <div className="p-4 bg-[#F1F0FB] rounded-xl">
+              <p className="text-lg text-gray-600 mb-1">Income Tax</p>
+              <p className="text-2xl font-bold text-gray-900">{formatCurrency(results.incomeTax)}</p>
+              <div className="mt-3 space-y-1">
+                <p className="text-sm text-gray-600">Basic: {taxBreakdown.basic.toFixed(1)}%</p>
+                <p className="text-sm text-gray-600">Higher: {taxBreakdown.higher.toFixed(1)}%</p>
+                <p className="text-sm text-gray-600">Additional: {taxBreakdown.additional.toFixed(1)}%</p>
               </div>
             </div>
             
-            <div className="p-2 bg-[#94a3b8]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">NI</p>
-              <p className="font-semibold">{formatCurrency(results.nationalInsurance)}</p>
-              <p className="text-xs text-muted-foreground mt-1">
+            <div className="p-4 bg-[#F1F0FB] rounded-xl">
+              <p className="text-lg text-gray-600 mb-1">NI</p>
+              <p className="text-2xl font-bold text-gray-900">{formatCurrency(results.nationalInsurance)}</p>
+              <p className="text-sm text-gray-600 mt-3">
                 {((results.nationalInsurance / grossIncome) * 100).toFixed(1)}% of gross income
               </p>
             </div>
 
-            <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">Pension</p>
-              <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
-              <p className="text-xs text-muted-foreground mt-1">
+            <div className="p-4 bg-[#D3E4FD] rounded-xl">
+              <p className="text-lg text-gray-600 mb-1">Pension</p>
+              <p className="text-2xl font-bold text-gray-900">{formatCurrency(pensionContribution)}</p>
+              <p className="text-sm text-gray-600 mt-3">
                 Monthly contribution: {formatCurrency(pensionContribution / 12)}
               </p>
             </div>
@@ -116,21 +116,23 @@ export const TaxSummarySection = ({
             </div>
 
             <div className="grid grid-cols-3 gap-4 mt-4">
-              <div className="p-2 bg-muted rounded-lg space-y-2">
-                <div>
-                  <p className="text-xs text-muted-foreground">Effective Rate</p>
-                  <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Marginal Rate</p>
-                  <p className="font-semibold">{results.marginalTaxRate}%</p>
+              <div className="p-4 bg-[#F1F0FB] rounded-xl">
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-lg text-gray-600">Effective Rate</p>
+                    <p className="text-2xl font-bold text-gray-900">{results.effectiveTaxRate.toFixed(1)}%</p>
+                  </div>
+                  <div>
+                    <p className="text-lg text-gray-600">Marginal Rate</p>
+                    <p className="text-2xl font-bold text-gray-900">{results.marginalTaxRate}%</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="col-span-2 p-2 bg-muted rounded-lg">
-                <p className="text-xs text-muted-foreground">Total Deductions</p>
-                <p className="font-semibold">{formatCurrency(totalDeductions)}</p>
-                <p className="text-xs text-muted-foreground mt-1">
+              <div className="col-span-2 p-4 bg-[#F1F0FB] rounded-xl">
+                <p className="text-lg text-gray-600 mb-1">Total Deductions</p>
+                <p className="text-2xl font-bold text-gray-900">{formatCurrency(totalDeductions)}</p>
+                <p className="text-sm text-gray-600 mt-3">
                   {deductionsPercentage.toFixed(1)}% of gross income
                 </p>
               </div>
