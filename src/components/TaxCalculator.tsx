@@ -5,6 +5,7 @@ import { BarChartSection } from "./tax/BarChartSection";
 import { AreaChartSection } from "./tax/AreaChartSection";
 import { IncomeDetailsSection } from "./tax/IncomeDetailsSection";
 import { TaxSummarySection } from "./tax/TaxSummarySection";
+import { RetirementCalculator } from "./tax/RetirementCalculator";
 
 const TaxCalculator = () => {
   const [grossIncome, setGrossIncome] = useState(85000);
@@ -151,6 +152,11 @@ const TaxCalculator = () => {
           setMaxIncomeRange={setMaxIncomeRange}
         />
       </Card>
+
+      <RetirementCalculator 
+        formatCurrency={formatCurrency}
+        pensionContribution={pensionContribution}
+      />
     </div>
   );
 };
