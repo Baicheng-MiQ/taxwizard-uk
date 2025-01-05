@@ -18,8 +18,16 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   const [inflation, setInflation] = useState(2.7);
 
   const handleInvestmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace(/[^0-9]/g, '');
-    setAdditionalInvestment(Number(value));
+    // Remove any non-numeric characters except decimal point
+    const rawValue = event.target.value.replace(/[^0-9.]/g, '');
+    
+    // Ensure only one decimal point
+    const parts = rawValue.split('.');
+    const sanitizedValue = parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
+    
+    // Convert to number and update state
+    const numericValue = parseFloat(sanitizedValue) || 0;
+    setAdditionalInvestment(numericValue);
   };
 
   const calculations = useMemo(() => {
@@ -98,8 +106,14 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
             <Input
               id="additional-investment"
               type="text"
-              value={formatCurrency(additionalInvestment)}
+              value={additionalInvestment.toLocaleString('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}
               onChange={handleInvestmentChange}
+              className="text-right"
             />
           </div>
 
