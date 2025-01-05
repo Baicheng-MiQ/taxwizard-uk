@@ -28,7 +28,7 @@ export const IncomeDetailsSection = ({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-semibold">Income Details</h2>
+      <h2 className="text-xl font-semibold">Income Details</h2>
       <div className="space-y-6">
         <div className="space-y-4">
           <Label htmlFor="income" className="text-lg font-medium">

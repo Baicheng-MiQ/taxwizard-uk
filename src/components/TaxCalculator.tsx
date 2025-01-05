@@ -99,10 +99,10 @@ const TaxCalculator = () => {
 
   return (
     <div className="container mx-auto p-4 space-y-4 max-w-7xl">
-      <h1 className="text-3xl font-bold text-center mb-6">UK Income Tax Calculator</h1>
+      <h1 className="text-3xl font-bold text-center mb-1">UK Income Tax Calculator</h1>
       
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="grid grid-rows-[auto_1fr] gap-6">
+      <div className="grid md:grid-cols-3 gap-3">
+        <div className="grid grid-rows-[auto_1fr] gap-3">
           <Card className="p-6">
             <IncomeDetailsSection
               grossIncome={grossIncome}
@@ -113,7 +113,7 @@ const TaxCalculator = () => {
             />
           </Card>
 
-          <Card className="p-6">
+          <Card className="p-4">
             <BarChartSection 
               barData={barData} 
               formatCurrency={formatCurrency} 

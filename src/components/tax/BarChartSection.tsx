@@ -16,11 +16,11 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
     <div className="h-full flex flex-col">
       <h2 className="text-lg font-semibold mb-4">Tax Bands</h2>
       <div className="flex-1">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={barData}>
+        <ResponsiveContainer width="110%" height="90%">
+          <BarChart data={barData} className="-ml-8">
             <XAxis 
               dataKey="name" 
-              tick={{ fontSize: 11 }}
+              tick={{ fontSize: 10 }}
             />
             <YAxis 
               width={60}
