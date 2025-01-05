@@ -28,6 +28,20 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
                 return value;
               }}
               labelFormatter={(label) => `${label}`}
+              contentStyle={{
+                backgroundColor: '#1A1F2C',
+                border: 'none',
+                borderRadius: '0.375rem',
+                padding: '0.75rem'
+              }}
+              itemStyle={{
+                color: '#FFFFFF'
+              }}
+              labelStyle={{
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                marginBottom: '0.5rem'
+              }}
             />
             <Bar dataKey="amount" stackId="a" fill="#e2e8f0" name="Income">
               {barData.map((entry, index) => (
