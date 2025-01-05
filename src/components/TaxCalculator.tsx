@@ -7,7 +7,7 @@ import { PieChart, Pie, Cell, Legend } from 'recharts';
 import { IncomeDetailsSection } from "./tax/IncomeDetailsSection";
 
 const TaxCalculator = () => {
-  const [grossIncome, setGrossIncome] = useState(35000);
+  const [grossIncome, setGrossIncome] = useState(85000);
   const [pensionPercentage, setPensionPercentage] = useState(0);
   const [maxIncomeRange, setMaxIncomeRange] = useState(200000);
 
