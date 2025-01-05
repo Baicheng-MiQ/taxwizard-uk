@@ -103,9 +103,9 @@ const TaxCalculator = () => {
           />
         </div>
 
-        <Card className="p-4 h-full">
-          <div className="grid grid-cols-2 gap-4 h-full">
-            <div className="space-y-2">
+        <Card className="p-4">
+          <div className="grid grid-cols-5 gap-4">
+            <div className="col-span-2 space-y-2">
               <div className="p-2 bg-[#84cc16]/20 rounded-lg">
                 <p className="text-sm text-muted-foreground">Take Home</p>
                 <p className="text-xl font-bold">{formatCurrency(results.takeHomePay)}</p>
@@ -139,7 +139,7 @@ const TaxCalculator = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center">
+            <div className="col-span-3">
               <PieChart width={300} height={250}>
                 <Pie
                   data={pieData}
