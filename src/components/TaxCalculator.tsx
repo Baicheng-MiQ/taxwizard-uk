@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { calculateTax } from "@/utils/taxCalculations";
 import { BarChartSection } from "./tax/BarChartSection";
 import { AreaChartSection } from "./tax/AreaChartSection";
-import { PieChart, Cell, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Legend } from 'recharts';
 
 const TaxCalculator = () => {
   const [grossIncome, setGrossIncome] = useState(35000);
@@ -155,7 +155,7 @@ const TaxCalculator = () => {
                   align="right"
                   verticalAlign="middle"
                 />
-                <pie
+                <Pie
                   data={pieData}
                   cx={75}
                   cy={100}
@@ -167,7 +167,7 @@ const TaxCalculator = () => {
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
-                </pie>
+                </Pie>
               </PieChart>
             </div>
           </div>
