@@ -98,24 +98,28 @@ const TaxCalculator = () => {
   };
 
   return (
-    <div className="container mx-auto p-2 space-y-2">
-      <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
+    <div className="container mx-auto p-4 space-y-4 max-w-7xl">
+      <h1 className="text-3xl font-bold text-center mb-6">UK Income Tax Calculator</h1>
       
-      <div className="grid md:grid-cols-3 gap-2">
-        <div className="space-y-2">
-          <IncomeDetailsSection
-            grossIncome={grossIncome}
-            pensionPercentage={pensionPercentage}
-            setPensionPercentage={setPensionPercentage}
-            setGrossIncome={setGrossIncome}
-            formatCurrency={formatCurrency}
-          />
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="space-y-6">
+          <Card className="p-6">
+            <IncomeDetailsSection
+              grossIncome={grossIncome}
+              pensionPercentage={pensionPercentage}
+              setPensionPercentage={setPensionPercentage}
+              setGrossIncome={setGrossIncome}
+              formatCurrency={formatCurrency}
+            />
+          </Card>
 
-          <BarChartSection 
-            barData={barData} 
-            formatCurrency={formatCurrency} 
-            COLORS={COLORS} 
-          />
+          <Card className="p-6">
+            <BarChartSection 
+              barData={barData} 
+              formatCurrency={formatCurrency} 
+              COLORS={COLORS} 
+            />
+          </Card>
         </div>
 
         <div className="md:col-span-2">
@@ -137,7 +141,7 @@ const TaxCalculator = () => {
         </div>
       </div>
 
-      <div className="w-full">
+      <Card className="p-6">
         <AreaChartSection 
           areaChartData={areaChartData}
           formatCurrency={formatCurrency}
@@ -146,7 +150,7 @@ const TaxCalculator = () => {
           maxIncomeRange={maxIncomeRange}
           setMaxIncomeRange={setMaxIncomeRange}
         />
-      </div>
+      </Card>
     </div>
   );
 };
