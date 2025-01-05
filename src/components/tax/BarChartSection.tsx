@@ -14,13 +14,24 @@ interface BarChartSectionProps {
 
 export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSectionProps) => {
   return (
-    <Card className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Tax Bands</h2>
-      <div className="h-[200px]">
+    <Card className="p-3">
+      <h2 className="text-base font-semibold mb-2">Tax Bands</h2>
+      <div className="h-[150px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={barData}>
-            <XAxis dataKey="name" />
-            <YAxis width={60} />
+          <BarChart data={barData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+            <XAxis 
+              dataKey="name" 
+              tick={{ fontSize: 10 }}
+              interval={0}
+              height={40}
+              angle={-45}
+              textAnchor="end"
+            />
+            <YAxis 
+              width={50}
+              tick={{ fontSize: 10 }}
+              tickFormatter={(value) => `£${value/1000}k`}
+            />
             <Tooltip 
               formatter={(value, name) => {
                 if (name === "amount") return formatCurrency(Number(value));

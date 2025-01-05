@@ -9,20 +9,21 @@ interface PieChartSectionProps {
 
 export const PieChartSection = ({ pieData, formatCurrency, COLORS }: PieChartSectionProps) => {
   return (
-    <Card className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Income Breakdown</h2>
-      <div className="h-[200px]">
+    <Card className="p-3">
+      <h2 className="text-base font-semibold mb-2">Income Breakdown</h2>
+      <div className="h-[150px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={pieData}
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={80}
+              innerRadius={30}
+              outerRadius={60}
               fill="#8884d8"
               dataKey="value"
               label={({ name, value }) => `${name}: ${formatCurrency(value)}`}
+              labelLine={false}
             >
               {pieData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
