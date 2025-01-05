@@ -74,56 +74,58 @@ export const TaxSummarySection = ({
 
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-6">
-          <Card className="p-6">
-            <h3 className="text-xl font-bold mb-2">Pension</h3>
-            <p className="text-3xl font-bold mb-2">{formatCurrency(pensionContribution)}</p>
-            <p className="text-base text-muted-foreground">
+          <Card className="p-6 bg-white">
+            <h3 className="text-2xl font-bold mb-1">Pension</h3>
+            <p className="text-4xl font-bold mb-3">{formatCurrency(pensionContribution)}</p>
+            <p className="text-base text-gray-600">
               Monthly contribution: {formatCurrency(pensionContribution / 12)}
             </p>
           </Card>
 
-          <Card className="p-6">
-            <h3 className="text-xl font-bold mb-2">Income Tax</h3>
-            <p className="text-3xl font-bold mb-2">{formatCurrency(results.incomeTax)}</p>
-            <div className="space-y-1 text-base text-muted-foreground">
+          <Card className="p-6 bg-white">
+            <h3 className="text-2xl font-bold mb-1">Income Tax</h3>
+            <p className="text-4xl font-bold mb-3">{formatCurrency(results.incomeTax)}</p>
+            <div className="space-y-1 text-base text-gray-600">
               <p>Basic: {taxBreakdown.basic.toFixed(1)}%</p>
               <p>Higher: {taxBreakdown.higher.toFixed(1)}%</p>
               <p>Additional: {taxBreakdown.additional.toFixed(1)}%</p>
             </div>
           </Card>
 
-          <Card className="p-6">
-            <h3 className="text-xl font-bold mb-2">NI</h3>
-            <p className="text-3xl font-bold mb-2">{formatCurrency(results.nationalInsurance)}</p>
-            <p className="text-base text-muted-foreground">
+          <Card className="p-6 bg-white">
+            <h3 className="text-2xl font-bold mb-1">NI</h3>
+            <p className="text-4xl font-bold mb-3">{formatCurrency(results.nationalInsurance)}</p>
+            <p className="text-base text-gray-600">
               {((results.nationalInsurance / grossIncome) * 100).toFixed(1)}% of gross income
             </p>
           </Card>
         </div>
 
         <div className="space-y-6">
-          <Card className="p-6">
-            <div className="h-[200px]">
+          <Card className="p-6 bg-white">
+            <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={pieData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={40}
-                    outerRadius={80}
+                    innerRadius={60}
+                    outerRadius={90}
                     fill="#8884d8"
                     dataKey="value"
+                    label={false}
                   >
                     {pieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
                   <Legend 
-                    verticalAlign="bottom" 
+                    verticalAlign="bottom"
                     height={36}
                     wrapperStyle={{
-                      fontSize: '12px'
+                      fontSize: '14px',
+                      color: '#666'
                     }}
                   />
                 </PieChart>
@@ -132,18 +134,18 @@ export const TaxSummarySection = ({
           </Card>
 
           <div className="grid grid-cols-2 gap-6">
-            <Card className="p-6">
-              <h3 className="text-sm text-muted-foreground mb-1">Effective Rate</h3>
-              <p className="text-2xl font-bold">{results.effectiveTaxRate.toFixed(1)}%</p>
-              <p className="text-sm text-muted-foreground mt-1">
+            <Card className="p-6 bg-white">
+              <h3 className="text-lg text-gray-600 mb-1">Effective Rate</h3>
+              <p className="text-3xl font-bold mb-2">{results.effectiveTaxRate.toFixed(1)}%</p>
+              <p className="text-sm text-gray-500">
                 Marginal Rate: {results.marginalTaxRate}%
               </p>
             </Card>
 
-            <Card className="p-6">
-              <h3 className="text-sm text-muted-foreground mb-1">Total Deductions</h3>
-              <p className="text-2xl font-bold">{formatCurrency(totalDeductions)}</p>
-              <p className="text-sm text-muted-foreground mt-1">
+            <Card className="p-6 bg-white">
+              <h3 className="text-lg text-gray-600 mb-1">Total Deductions</h3>
+              <p className="text-3xl font-bold mb-2">{formatCurrency(totalDeductions)}</p>
+              <p className="text-sm text-gray-500">
                 {deductionsPercentage.toFixed(1)}% of gross income
               </p>
             </Card>
