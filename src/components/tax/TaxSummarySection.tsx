@@ -1,6 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
 import { calculateTax } from '@/utils/taxCalculations';
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { InfoIcon } from "lucide-react";
 
 interface TaxSummarySectionProps {
   results: {
@@ -96,13 +99,19 @@ export const TaxSummarySection = ({
             <div className="space-y-1 text-sm text-gray-600">
               <p>Monthly contribution: {formatCurrency(pensionContribution / 12)}</p>
               {pensionContribution > 0 && (
-                <>
+                <div className="flex items-center gap-1">
                   <p>Gross Reduction: {formatCurrency(salarySacrificeImpact)}</p>
-                  <p>Effective Cost: {formatCurrency(effectivePensionCost)}</p>
-                  <p className="text-xs mt-1">
-                    (Your {formatCurrency(pensionContribution)} pension only costs you {formatCurrency(effectivePensionCost)} due to tax savings)
-                  </p>
-                </>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <InfoIcon className="h-4 w-4 text-gray-400" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Your {formatCurrency(pensionContribution)} pension only costs you {formatCurrency(effectivePensionCost)} due to tax savings</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               )}
             </div>
           </Card>
