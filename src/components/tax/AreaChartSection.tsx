@@ -26,13 +26,12 @@ export const AreaChartSection = ({
   maxIncomeRange,
   setMaxIncomeRange
 }: AreaChartSectionProps) => {
-  // Ensure grossIncome is within the valid range for the chart and is a finite number
   const validGrossIncome = isFinite(grossIncome) ? 
     Math.min(Math.max(0, grossIncome), maxIncomeRange) : 
     0;
 
-  // Calculate tick values for better visualization
-  const tickValues = [0, maxIncomeRange/4, maxIncomeRange/2, (maxIncomeRange*3)/4, maxIncomeRange];
+  // Calculate more tick values for better precision
+  const tickValues = Array.from({ length: 9 }, (_, i) => (maxIncomeRange * i) / 8);
 
   return (
     <Card className="p-4">
@@ -60,12 +59,16 @@ export const AreaChartSection = ({
               domain={[0, maxIncomeRange]}
               ticks={tickValues}
               allowDataOverflow={true}
+              tick={{ fontSize: 10 }}
+              interval={0}
             />
             <YAxis 
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               allowDataOverflow={true}
               width={60}
+              tick={{ fontSize: 10 }}
+              interval={0}
             />
             <Tooltip 
               formatter={(value, name) => formatCurrency(Number(value))}
@@ -80,7 +83,7 @@ export const AreaChartSection = ({
                   value: "Current",
                   position: "top",
                   fill: "#ef4444",
-                  fontSize: 12
+                  fontSize: 10
                 }}
                 isFront={true}
               />
