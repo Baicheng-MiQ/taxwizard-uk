@@ -1,7 +1,14 @@
-# Welcome to your Lovable project
+# This is a UK income tax calculator
+
+**Deployed**: http://tax.yinbaicheng.com
+
+<img width="1210" alt="image" src="https://github.com/user-attachments/assets/78083dda-2b62-4229-bc5f-1d2e1b67c2e5" />
+<img width="1210" alt="image" src="https://github.com/user-attachments/assets/1a0a78e4-0061-442a-93c7-785c3d661880" />
+
 
 ## Project info
 
+Mostly written by lovable:
 **URL**: https://lovable.dev/projects/410ae4f9-1cd3-4fa9-b5c0-0eb83a03d92a
 
 ## How can I edit this code?
