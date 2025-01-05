@@ -27,24 +27,24 @@ export const AreaChartSection = ({
   setMaxIncomeRange
 }: AreaChartSectionProps) => {
   return (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Income Projection</h2>
-      <div className="mb-6">
-        <Label>Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
+    <Card className="p-4">
+      <h2 className="text-lg font-semibold mb-2">Income Projection</h2>
+      <div className="mb-4">
+        <Label className="text-sm">Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
         <Slider
           min={50000}
           max={200000}
           step={10000}
           value={[maxIncomeRange]}
           onValueChange={(value) => setMaxIncomeRange(value[0])}
-          className="my-4"
+          className="my-2"
         />
       </div>
-      <div className="h-[600px]">
+      <div className="h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={areaChartData}
-            margin={{ top: 20, right: 30, left: 80, bottom: 20 }}
+            margin={{ top: 10, right: 30, left: 60, bottom: 0 }}
           >
             <XAxis 
               dataKey="salary" 
@@ -57,7 +57,7 @@ export const AreaChartSection = ({
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               allowDataOverflow={true}
-              width={75}
+              width={60}
             />
             <Tooltip 
               formatter={(value, name) => formatCurrency(Number(value))}
@@ -68,7 +68,7 @@ export const AreaChartSection = ({
               stroke="#ef4444"
               strokeWidth={2}
               label={{
-                value: "Current Income",
+                value: "Current",
                 position: "top",
                 fill: "#ef4444",
                 fontSize: 12

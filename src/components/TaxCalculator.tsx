@@ -75,15 +75,15 @@ const TaxCalculator = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <h1 className="text-3xl font-bold text-center mb-8">UK Income Tax Calculator</h1>
+    <div className="container mx-auto p-2 space-y-2">
+      <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
       
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Income Details</h2>
-          <div className="space-y-4">
+      <div className="grid md:grid-cols-3 gap-2">
+        <Card className="p-4">
+          <h2 className="text-lg font-semibold mb-2">Income Details</h2>
+          <div className="space-y-2">
             <div>
-              <Label htmlFor="income">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
+              <Label htmlFor="income" className="text-sm">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
               <Slider
                 id="income"
                 min={0}
@@ -91,12 +91,12 @@ const TaxCalculator = () => {
                 step={100}
                 value={[grossIncome]}
                 onValueChange={(value) => setGrossIncome(value[0])}
-                className="my-4"
+                className="my-2"
               />
             </div>
             
             <div>
-              <Label htmlFor="pension">Pension Contribution: {formatCurrency(pensionContribution)}</Label>
+              <Label htmlFor="pension" className="text-sm">Pension Contribution: {formatCurrency(pensionContribution)}</Label>
               <Slider
                 id="pension"
                 min={0}
@@ -104,79 +104,79 @@ const TaxCalculator = () => {
                 step={100}
                 value={[pensionContribution]}
                 onValueChange={(value) => setPensionContribution(value[0])}
-                className="my-4"
+                className="my-2"
               />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Summary</h2>
-          <div className="space-y-4">
-            <div className="p-4 bg-secondary/10 rounded-lg">
-              <p className="text-3xl font-bold text-secondary">
-                Take Home Pay: {formatCurrency(results.takeHomePay)}
+        <Card className="p-4">
+          <h2 className="text-lg font-semibold mb-2">Summary</h2>
+          <div className="space-y-2">
+            <div className="p-2 bg-secondary/10 rounded-lg">
+              <p className="text-xl font-bold text-secondary">
+                Take Home: {formatCurrency(results.takeHomePay)}
               </p>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Income Tax</p>
-                <p className="text-lg font-semibold">{formatCurrency(results.incomeTax)}</p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Income Tax</p>
+                <p className="font-semibold">{formatCurrency(results.incomeTax)}</p>
               </div>
               
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">National Insurance</p>
-                <p className="text-lg font-semibold">{formatCurrency(results.nationalInsurance)}</p>
+              <div className="p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">NI</p>
+                <p className="font-semibold">{formatCurrency(results.nationalInsurance)}</p>
               </div>
               
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Total Deductions</p>
-                <p className="text-lg font-semibold">{formatCurrency(results.totalDeductible)}</p>
+              <div className="p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Deductions</p>
+                <p className="font-semibold">{formatCurrency(results.totalDeductible)}</p>
               </div>
               
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Total Income</p>
-                <p className="text-lg font-semibold">{formatCurrency(results.totalIncome)}</p>
+              <div className="p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Total</p>
+                <p className="font-semibold">{formatCurrency(results.totalIncome)}</p>
               </div>
             </div>
             
-            <div className="flex gap-4">
-              <div className="flex-1 p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Effective Tax Rate</p>
-                <p className="text-lg font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
+            <div className="flex gap-2 text-sm">
+              <div className="flex-1 p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Effective Rate</p>
+                <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
               </div>
               
-              <div className="flex-1 p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Marginal Tax Rate</p>
-                <p className="text-lg font-semibold">{results.marginalTaxRate}%</p>
+              <div className="flex-1 p-2 bg-muted rounded-lg">
+                <p className="text-xs text-muted-foreground">Marginal Rate</p>
+                <p className="font-semibold">{results.marginalTaxRate}%</p>
               </div>
             </div>
           </div>
         </Card>
-      </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
         <PieChartSection 
           pieData={pieData} 
           formatCurrency={formatCurrency} 
           COLORS={COLORS} 
         />
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-2">
         <BarChartSection 
           barData={barData} 
           formatCurrency={formatCurrency} 
           COLORS={COLORS} 
         />
+        <AreaChartSection 
+          areaChartData={areaChartData}
+          formatCurrency={formatCurrency}
+          COLORS={COLORS}
+          grossIncome={grossIncome}
+          maxIncomeRange={maxIncomeRange}
+          setMaxIncomeRange={setMaxIncomeRange}
+        />
       </div>
-
-      <AreaChartSection 
-        areaChartData={areaChartData}
-        formatCurrency={formatCurrency}
-        COLORS={COLORS}
-        grossIncome={grossIncome}
-        maxIncomeRange={maxIncomeRange}
-        setMaxIncomeRange={setMaxIncomeRange}
-      />
     </div>
   );
 };
