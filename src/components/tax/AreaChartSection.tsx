@@ -1,6 +1,5 @@
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip, ReferenceLine } from "recharts";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 
 interface AreaChartSectionProps {
@@ -113,7 +112,6 @@ export const AreaChartSection = ({
         </ResponsiveContainer>
       </div>
       <div className="mt-4">
-        <Label className="text-sm">Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
         <Slider
           min={50000}
           max={200000}
