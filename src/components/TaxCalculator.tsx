@@ -49,8 +49,11 @@ const TaxCalculator = () => {
   ].filter(item => item.amount > 0);
 
   const areaChartData = useMemo(() => {
-    const salaryPoints = Array.from({ length: 40 }, (_, i) => 
-      Math.round((maxIncomeRange / 40) * i)
+    // Generate more data points by using a smaller increment
+    const numberOfPoints = maxIncomeRange; // One point per pound
+    const salaryPoints = Array.from(
+      { length: numberOfPoints + 1 }, 
+      (_, i) => Math.round(i)
     );
 
     return salaryPoints.map(salary => {
@@ -194,4 +197,3 @@ const TaxCalculator = () => {
 };
 
 export default TaxCalculator;
-

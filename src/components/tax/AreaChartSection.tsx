@@ -31,6 +31,9 @@ export const AreaChartSection = ({
     Math.min(Math.max(0, grossIncome), maxIncomeRange) : 
     0;
 
+  // Calculate tick values for better visualization
+  const tickValues = [0, maxIncomeRange/4, maxIncomeRange/2, (maxIncomeRange*3)/4, maxIncomeRange];
+
   return (
     <Card className="p-4">
       <h2 className="text-lg font-semibold mb-2">Income Projection</h2>
@@ -55,7 +58,7 @@ export const AreaChartSection = ({
               dataKey="salary" 
               tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
-              ticks={[0, maxIncomeRange/4, maxIncomeRange/2, (maxIncomeRange*3)/4, maxIncomeRange]}
+              ticks={tickValues}
               allowDataOverflow={true}
             />
             <YAxis 
