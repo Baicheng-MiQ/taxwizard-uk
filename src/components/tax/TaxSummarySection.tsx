@@ -65,16 +65,6 @@ export const TaxSummarySection = ({
             <div className="text-4xl font-bold text-secondary mb-6">
               {formatCurrency(results.takeHomePay)}
             </div>
-            {pensionContribution > 0 && (
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p>Pension Impact:</p>
-                <p>• Gross Reduction: {formatCurrency(salarySacrificeImpact)}</p>
-                <p>• Effective Cost: {formatCurrency(effectivePensionCost)}</p>
-                <p className="text-xs mt-1">
-                  (Your {formatCurrency(pensionContribution)} pension only costs you {formatCurrency(effectivePensionCost)} due to tax savings)
-                </p>
-              </div>
-            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:w-1/2">
@@ -103,9 +93,18 @@ export const TaxSummarySection = ({
           <Card className="p-5 bg-white">
             <h3 className="text-xl mb-1">Pension</h3>
             <p className="text-3xl font-bold text-sky-500 mb-3">-{formatCurrency(pensionContribution)}</p>
-            <p className="text-sm text-gray-600">
-              Monthly contribution: <br/> {formatCurrency(pensionContribution / 12)}
-            </p>
+            <div className="space-y-1 text-sm text-gray-600">
+              <p>Monthly contribution: {formatCurrency(pensionContribution / 12)}</p>
+              {pensionContribution > 0 && (
+                <>
+                  <p>Gross Reduction: {formatCurrency(salarySacrificeImpact)}</p>
+                  <p>Effective Cost: {formatCurrency(effectivePensionCost)}</p>
+                  <p className="text-xs mt-1">
+                    (Your {formatCurrency(pensionContribution)} pension only costs you {formatCurrency(effectivePensionCost)} due to tax savings)
+                  </p>
+                </>
+              )}
+            </div>
           </Card>
 
           <Card className="p-5 bg-white">
