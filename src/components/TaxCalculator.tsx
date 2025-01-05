@@ -14,6 +14,8 @@ const TaxCalculator = () => {
 
   const results = calculateTax(grossIncome, pensionContribution);
 
+  const COLORS = ["#84cc16", "#475569", "#94a3b8", "#0ea5e9"];
+
   const pieData = [
     { name: "Take Home", value: results.takeHomePay },
     { name: "Income Tax", value: results.incomeTax },
@@ -65,8 +67,6 @@ const TaxCalculator = () => {
     });
   }, [grossIncome, pensionContribution, maxIncomeRange]);
 
-  const COLORS = ["#84cc16", "#475569", "#94a3b8", "#0ea5e9"];
-
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-GB", {
       style: "currency",
@@ -113,26 +113,26 @@ const TaxCalculator = () => {
         <Card className="p-4">
           <h2 className="text-lg font-semibold mb-2">Summary</h2>
           <div className="space-y-2">
-            <div className="p-2 bg-secondary/10 rounded-lg">
-              <p className="text-xl font-bold text-secondary">
+            <div className="p-2 rounded-lg" style={{ backgroundColor: `${COLORS[0]}20` }}>
+              <p className="text-xl font-bold" style={{ color: COLORS[0] }}>
                 Take Home: {formatCurrency(results.takeHomePay)}
               </p>
             </div>
             
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="p-2 bg-muted rounded-lg">
+              <div className="p-2 rounded-lg" style={{ backgroundColor: `${COLORS[1]}20` }}>
                 <p className="text-xs text-muted-foreground">Income Tax</p>
-                <p className="font-semibold">{formatCurrency(results.incomeTax)}</p>
+                <p className="font-semibold" style={{ color: COLORS[1] }}>{formatCurrency(results.incomeTax)}</p>
               </div>
               
-              <div className="p-2 bg-muted rounded-lg">
+              <div className="p-2 rounded-lg" style={{ backgroundColor: `${COLORS[2]}20` }}>
                 <p className="text-xs text-muted-foreground">NI</p>
-                <p className="font-semibold">{formatCurrency(results.nationalInsurance)}</p>
+                <p className="font-semibold" style={{ color: COLORS[2] }}>{formatCurrency(results.nationalInsurance)}</p>
               </div>
               
-              <div className="p-2 bg-muted rounded-lg">
+              <div className="p-2 rounded-lg" style={{ backgroundColor: `${COLORS[3]}20` }}>
                 <p className="text-xs text-muted-foreground">Deductions</p>
-                <p className="font-semibold">{formatCurrency(results.totalDeductible)}</p>
+                <p className="font-semibold" style={{ color: COLORS[3] }}>{formatCurrency(results.totalDeductible)}</p>
               </div>
               
               <div className="p-2 bg-muted rounded-lg">
