@@ -50,7 +50,6 @@ const TaxCalculator = () => {
   ].filter(item => item.amount > 0);
 
   const areaChartData = useMemo(() => {
-    // Generate 1000 evenly spaced points for smoother curve
     const salaryPoints = Array.from({ length: 1000 }, (_, i) => 
       Math.round((maxIncomeRange / 1000) * i)
     );
@@ -82,7 +81,6 @@ const TaxCalculator = () => {
     }).format(value);
   };
 
-  // Additional calculations for insights
   const monthlyTakeHome = results.takeHomePay / 12;
   const weeklyTakeHome = results.takeHomePay / 52;
   const dailyTakeHome = results.takeHomePay / 260;
@@ -102,7 +100,7 @@ const TaxCalculator = () => {
       <h1 className="text-3xl font-bold text-center mb-1">UK Income Tax Calculator</h1>
       
       <div className="grid md:grid-cols-3 gap-3">
-        <div className="grid grid-rows-[auto_1fr] gap-3">
+        <div className="grid grid-rows-[auto_1fr] gap-3 min-w-0 w-full">
           <Card className="p-6">
             <IncomeDetailsSection
               grossIncome={grossIncome}
