@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
 
 interface TaxSummarySectionProps {
@@ -61,6 +60,14 @@ export const TaxSummarySection = ({
                 <p className="text-xs text-muted-foreground">Hourly: {formatCurrency(hourlyRate)}</p>
               </div>
             </div>
+
+            <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
+              <p className="text-sm text-muted-foreground">Pension</p>
+              <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Monthly contribution: {formatCurrency(pensionContribution / 12)}
+              </p>
+            </div>
             
             <div className="p-2 bg-[#475569]/20 rounded-lg">
               <p className="text-sm text-muted-foreground">Income Tax</p>
@@ -77,14 +84,6 @@ export const TaxSummarySection = ({
               <p className="font-semibold">{formatCurrency(results.nationalInsurance)}</p>
               <p className="text-xs text-muted-foreground mt-1">
                 {((results.nationalInsurance / grossIncome) * 100).toFixed(1)}% of gross income
-              </p>
-            </div>
-
-            <div className="p-2 bg-[#0ea5e9]/20 rounded-lg">
-              <p className="text-sm text-muted-foreground">Pension</p>
-              <p className="font-semibold">{formatCurrency(pensionContribution)}</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Monthly contribution: {formatCurrency(pensionContribution / 12)}
               </p>
             </div>
           </div>
