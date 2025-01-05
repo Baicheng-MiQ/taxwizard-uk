@@ -8,7 +8,7 @@ interface IncomeSectionProps {
   pensionPercentage: number;
   setPensionPercentage: (value: number) => void;
   setGrossIncome: (value: number) => void;
-  formatCurrency: (value: number) => string;  // Changed return type to string
+  formatCurrency: (value: number) => string;
 }
 
 export const IncomeDetailsSection = ({
@@ -27,36 +27,34 @@ export const IncomeDetailsSection = ({
   };
 
   return (
-    <Card className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Income Details</h2>
-      <div className="space-y-2">
-        <div>
-          <Label htmlFor="income" className="text-sm">
+    <div className="space-y-6">
+      <h2 className="text-2xl font-semibold">Income Details</h2>
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <Label htmlFor="income" className="text-lg font-medium">
             Gross Yearly Income
           </Label>
-          <div className="flex gap-2 items-center my-2">
-            <Input
-              type="text"
-              id="income"
-              value={formatCurrency(grossIncome)}
-              onChange={handleIncomeChange}
-              className="w-36"
-            />
-            <Slider
-              id="income-slider"
-              min={0}
-              max={200000}
-              step={100}
-              value={[grossIncome]}
-              onValueChange={(value) => setGrossIncome(value[0])}
-              className="flex-1"
-              variant="income"
-            />
-          </div>
+          <Input
+            type="text"
+            id="income"
+            value={formatCurrency(grossIncome)}
+            onChange={handleIncomeChange}
+            className="text-lg font-medium"
+          />
+          <Slider
+            id="income-slider"
+            min={0}
+            max={200000}
+            step={100}
+            value={[grossIncome]}
+            onValueChange={(value) => setGrossIncome(value[0])}
+            className="mt-2"
+            variant="income"
+          />
         </div>
         
-        <div>
-          <Label htmlFor="pension" className="text-sm">
+        <div className="space-y-4">
+          <Label htmlFor="pension" className="text-lg font-medium">
             Pension Contribution: {pensionPercentage}%
           </Label>
           <Slider
@@ -66,11 +64,10 @@ export const IncomeDetailsSection = ({
             step={0.1}
             value={[pensionPercentage]}
             onValueChange={(value) => setPensionPercentage(value[0])}
-            className="my-2"
             variant="pension"
           />
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
