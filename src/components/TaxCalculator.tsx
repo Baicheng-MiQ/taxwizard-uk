@@ -139,14 +139,14 @@ const TaxCalculator = () => {
               </div>
             </div>
 
-            <div className="col-span-3">
-              <PieChart width={300} height={250}>
+            <div className="col-span-3 flex items-center justify-center h-full">
+              <PieChart width={400} height={300}>
                 <Pie
                   data={pieData}
-                  cx={150}
-                  cy={100}
-                  innerRadius={50}
-                  outerRadius={80}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
                   paddingAngle={2}
                   dataKey="value"
                 >
