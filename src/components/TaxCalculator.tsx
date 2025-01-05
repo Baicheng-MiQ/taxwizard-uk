@@ -71,22 +71,19 @@ const TaxCalculator = () => {
     return new Intl.NumberFormat("en-GB", {
       style: "currency",
       currency: "GBP",
-      maximumFractionDigits: 0,
     }).format(value);
   };
 
   return (
-    <div className="container mx-auto p-1 space-y-1">
-      <h1 className="text-xl font-bold text-center mb-1">UK Income Tax Calculator</h1>
+    <div className="container mx-auto p-2 space-y-2">
+      <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
       
-      <div className="grid md:grid-cols-3 gap-1">
-        <Card className="p-3">
-          <h2 className="text-base font-semibold mb-2">Income Details</h2>
+      <div className="grid md:grid-cols-3 gap-2">
+        <Card className="p-4">
+          <h2 className="text-lg font-semibold mb-2">Income Details</h2>
           <div className="space-y-2">
             <div>
-              <Label htmlFor="income" className="text-sm truncate">
-                Gross Yearly Income: {formatCurrency(grossIncome)}
-              </Label>
+              <Label htmlFor="income" className="text-sm">Gross Yearly Income: {formatCurrency(grossIncome)}</Label>
               <Slider
                 id="income"
                 min={0}
@@ -94,14 +91,12 @@ const TaxCalculator = () => {
                 step={100}
                 value={[grossIncome]}
                 onValueChange={(value) => setGrossIncome(value[0])}
-                className="my-1"
+                className="my-2"
               />
             </div>
             
             <div>
-              <Label htmlFor="pension" className="text-sm truncate">
-                Pension Contribution: {formatCurrency(pensionContribution)}
-              </Label>
+              <Label htmlFor="pension" className="text-sm">Pension Contribution: {formatCurrency(pensionContribution)}</Label>
               <Slider
                 id="pension"
                 min={0}
@@ -109,52 +104,52 @@ const TaxCalculator = () => {
                 step={100}
                 value={[pensionContribution]}
                 onValueChange={(value) => setPensionContribution(value[0])}
-                className="my-1"
+                className="my-2"
               />
             </div>
           </div>
         </Card>
 
-        <Card className="p-3">
-          <h2 className="text-base font-semibold mb-2">Summary</h2>
-          <div className="space-y-1">
+        <Card className="p-4">
+          <h2 className="text-lg font-semibold mb-2">Summary</h2>
+          <div className="space-y-2">
             <div className="p-2 bg-secondary/10 rounded-lg">
-              <p className="text-lg font-bold text-secondary truncate">
+              <p className="text-xl font-bold text-secondary">
                 Take Home: {formatCurrency(results.takeHomePay)}
               </p>
             </div>
             
-            <div className="grid grid-cols-2 gap-1 text-sm">
-              <div className="p-1.5 bg-muted rounded-lg">
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="p-2 bg-muted rounded-lg">
                 <p className="text-xs text-muted-foreground">Income Tax</p>
-                <p className="font-semibold truncate">{formatCurrency(results.incomeTax)}</p>
+                <p className="font-semibold">{formatCurrency(results.incomeTax)}</p>
               </div>
               
-              <div className="p-1.5 bg-muted rounded-lg">
+              <div className="p-2 bg-muted rounded-lg">
                 <p className="text-xs text-muted-foreground">NI</p>
-                <p className="font-semibold truncate">{formatCurrency(results.nationalInsurance)}</p>
+                <p className="font-semibold">{formatCurrency(results.nationalInsurance)}</p>
               </div>
               
-              <div className="p-1.5 bg-muted rounded-lg">
+              <div className="p-2 bg-muted rounded-lg">
                 <p className="text-xs text-muted-foreground">Deductions</p>
-                <p className="font-semibold truncate">{formatCurrency(results.totalDeductible)}</p>
+                <p className="font-semibold">{formatCurrency(results.totalDeductible)}</p>
               </div>
               
-              <div className="p-1.5 bg-muted rounded-lg">
+              <div className="p-2 bg-muted rounded-lg">
                 <p className="text-xs text-muted-foreground">Total</p>
-                <p className="font-semibold truncate">{formatCurrency(results.totalIncome)}</p>
+                <p className="font-semibold">{formatCurrency(results.totalIncome)}</p>
               </div>
             </div>
             
-            <div className="flex gap-1 text-sm">
-              <div className="flex-1 p-1.5 bg-muted rounded-lg">
+            <div className="flex gap-2 text-sm">
+              <div className="flex-1 p-2 bg-muted rounded-lg">
                 <p className="text-xs text-muted-foreground">Effective Rate</p>
-                <p className="font-semibold truncate">{results.effectiveTaxRate.toFixed(1)}%</p>
+                <p className="font-semibold">{results.effectiveTaxRate.toFixed(1)}%</p>
               </div>
               
-              <div className="flex-1 p-1.5 bg-muted rounded-lg">
+              <div className="flex-1 p-2 bg-muted rounded-lg">
                 <p className="text-xs text-muted-foreground">Marginal Rate</p>
-                <p className="font-semibold truncate">{results.marginalTaxRate}%</p>
+                <p className="font-semibold">{results.marginalTaxRate}%</p>
               </div>
             </div>
           </div>
@@ -167,7 +162,7 @@ const TaxCalculator = () => {
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-1">
+      <div className="grid md:grid-cols-2 gap-2">
         <BarChartSection 
           barData={barData} 
           formatCurrency={formatCurrency} 

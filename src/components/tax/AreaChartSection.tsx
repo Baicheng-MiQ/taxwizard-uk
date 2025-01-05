@@ -27,39 +27,37 @@ export const AreaChartSection = ({
   setMaxIncomeRange
 }: AreaChartSectionProps) => {
   return (
-    <Card className="p-3">
-      <h2 className="text-base font-semibold mb-2">Income Projection</h2>
-      <div className="mb-2">
-        <Label className="text-sm truncate">Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
+    <Card className="p-4">
+      <h2 className="text-lg font-semibold mb-2">Income Projection</h2>
+      <div className="mb-4">
+        <Label className="text-sm">Maximum Income Range: {formatCurrency(maxIncomeRange)}</Label>
         <Slider
           min={50000}
           max={200000}
           step={10000}
           value={[maxIncomeRange]}
           onValueChange={(value) => setMaxIncomeRange(value[0])}
-          className="my-1"
+          className="my-2"
         />
       </div>
-      <div className="h-[150px]">
+      <div className="h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={areaChartData}
-            margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+            margin={{ top: 10, right: 30, left: 60, bottom: 0 }}
           >
             <XAxis 
               dataKey="salary" 
-              tickFormatter={(value) => `£${value/1000}k`}
+              tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               ticks={[0, maxIncomeRange/4, maxIncomeRange/2, (maxIncomeRange*3)/4, maxIncomeRange]}
               allowDataOverflow={true}
-              tick={{ fontSize: 10 }}
             />
             <YAxis 
-              tickFormatter={(value) => `£${value/1000}k`}
+              tickFormatter={(value) => formatCurrency(value)}
               domain={[0, maxIncomeRange]}
               allowDataOverflow={true}
-              width={50}
-              tick={{ fontSize: 10 }}
+              width={60}
             />
             <Tooltip 
               formatter={(value, name) => formatCurrency(Number(value))}
@@ -73,7 +71,7 @@ export const AreaChartSection = ({
                 value: "Current",
                 position: "top",
                 fill: "#ef4444",
-                fontSize: 10
+                fontSize: 12
               }}
               isFront={true}
               ifOverflow="extendDomain"
