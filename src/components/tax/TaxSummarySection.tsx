@@ -47,14 +47,14 @@ export const TaxSummarySection = ({
   taxBreakdown,
 }: TaxSummarySectionProps) => {
   // Calculate take home without pension
-  const calculateTakeHomeWithoutPension = () => {
-    const resultsWithoutPension = calculateTax(grossIncome, 0);
-    return resultsWithoutPension.takeHomePay;
-  };
-
-  const takeHomeWithoutPension = calculateTakeHomeWithoutPension();
+  const resultsWithoutPension = calculateTax(grossIncome, 0);
+  const takeHomeWithoutPension = resultsWithoutPension.takeHomePay;
+  
+  // Calculate the actual reduction in take-home pay due to pension
   const salarySacrificeImpact = takeHomeWithoutPension - results.takeHomePay;
-  const effectivePensionCost = pensionContribution - salarySacrificeImpact;
+  
+  // Calculate the effective cost (what the pension actually costs after tax savings)
+  const effectivePensionCost = pensionContribution - (pensionContribution - salarySacrificeImpact);
 
   return (
     <div className="space-y-4">
@@ -71,7 +71,7 @@ export const TaxSummarySection = ({
                 <p>• Gross Reduction: {formatCurrency(salarySacrificeImpact)}</p>
                 <p>• Effective Cost: {formatCurrency(effectivePensionCost)}</p>
                 <p className="text-xs mt-1">
-                  (Your £{formatCurrency(pensionContribution)} pension only costs you £{formatCurrency(effectivePensionCost)} due to tax savings)
+                  (Your {formatCurrency(pensionContribution)} pension only costs you {formatCurrency(effectivePensionCost)} due to tax savings)
                 </p>
               </div>
             )}
