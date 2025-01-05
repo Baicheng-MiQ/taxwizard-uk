@@ -13,7 +13,7 @@ export interface TaxBreakdown {
 }
 
 export const calculateTax = (grossIncome: number, pensionContribution: number): TaxBreakdown => {
-  // Constants
+  // Constants for 2023/24 tax year
   const PERSONAL_ALLOWANCE_THRESHOLD = 100000;
   const PERSONAL_ALLOWANCE_BASE = 12570;
   const BASIC_RATE_THRESHOLD = 50270;
@@ -34,28 +34,37 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   let higherRate = 0;
   let additionalRate = 0;
   
-  // Basic rate (20%)
+  // Basic rate (20%) - from personal allowance to basic rate threshold
   if (adjustedIncome > personalAllowance) {
-    basicRate = Math.min(BASIC_RATE_THRESHOLD - personalAllowance, adjustedIncome - personalAllowance) * 0.2;
+    basicRate = Math.min(
+      BASIC_RATE_THRESHOLD - personalAllowance,
+      adjustedIncome - personalAllowance
+    ) * 0.2;
   }
   
-  // Higher rate (40%)
+  // Higher rate (40%) - from basic rate threshold to higher rate threshold
   if (adjustedIncome > BASIC_RATE_THRESHOLD) {
-    higherRate = Math.min(HIGHER_RATE_THRESHOLD - BASIC_RATE_THRESHOLD, adjustedIncome - BASIC_RATE_THRESHOLD) * 0.4;
+    higherRate = Math.min(
+      HIGHER_RATE_THRESHOLD - BASIC_RATE_THRESHOLD,
+      adjustedIncome - BASIC_RATE_THRESHOLD
+    ) * 0.4;
   }
   
-  // Additional rate (45%)
+  // Additional rate (45%) - everything above higher rate threshold
   if (adjustedIncome > HIGHER_RATE_THRESHOLD) {
     additionalRate = (adjustedIncome - HIGHER_RATE_THRESHOLD) * 0.45;
   }
   
   // Calculate National Insurance
-  const NI_THRESHOLD = 12584;
-  const NI_UPPER_THRESHOLD = 50268;
+  // 2023/24 thresholds and rates
+  const NI_THRESHOLD = 12570;  // Primary Threshold
+  const NI_UPPER_THRESHOLD = 50270;  // Upper Earnings Limit
   let nationalInsurance = 0;
   
   if (adjustedIncome > NI_THRESHOLD) {
+    // 12% on income between Primary Threshold and Upper Earnings Limit
     const upToUpperThreshold = Math.min(adjustedIncome, NI_UPPER_THRESHOLD) - NI_THRESHOLD;
+    // 2% on income above Upper Earnings Limit
     const aboveUpperThreshold = Math.max(0, adjustedIncome - NI_UPPER_THRESHOLD);
     
     nationalInsurance = (upToUpperThreshold * 0.12) + (aboveUpperThreshold * 0.02);
@@ -83,7 +92,7 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
     totalDeductible,
     effectiveTaxRate,
     marginalTaxRate,
-    totalIncome: takeHomePay + pensionContribution, // Fixed: total income is take home pay + pension
+    totalIncome: takeHomePay + pensionContribution,
     personalAllowance,
     basicRate,
     higherRate,
