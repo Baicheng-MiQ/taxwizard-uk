@@ -1,5 +1,4 @@
 import { BarChart, Bar, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
-import { Card } from "@/components/ui/card";
 
 interface BarChartSectionProps {
   barData: Array<{
@@ -14,13 +13,20 @@ interface BarChartSectionProps {
 
 export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSectionProps) => {
   return (
-    <Card className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Tax Bands</h2>
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold">Tax Bands</h2>
       <div className="h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={barData}>
-            <XAxis dataKey="name" />
-            <YAxis width={60} />
+            <XAxis 
+              dataKey="name" 
+              tick={{ fontSize: 11 }}
+            />
+            <YAxis 
+              width={60}
+              tick={{ fontSize: 11 }}
+              tickFormatter={(value) => `${Math.round(value / 1000)}k`}
+            />
             <Tooltip 
               formatter={(value, name, entry) => {
                 if (name === "amount") return [formatCurrency(Number(value)), "Income"];
@@ -31,9 +37,9 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
                 if (payload && payload.length > 0) {
                   const rate = payload[0].payload.rate;
                   return (
-                    <div className="font-semibold mb-1">
-                      <div>{label}</div>
-                      <div className="text-secondary text-sm">Tax Rate: {rate}</div>
+                    <div className="font-medium">
+                      <div className="text-xs">{label}</div>
+                      <div className="text-secondary text-xs">Tax Rate: {rate}</div>
                     </div>
                   );
                 }
@@ -43,17 +49,18 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
                 backgroundColor: '#1A1F2C',
                 border: 'none',
                 borderRadius: '0.375rem',
-                padding: '0.75rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                padding: '0.5rem',
+                fontSize: '0.75rem'
               }}
               itemStyle={{
                 color: '#FFFFFF',
-                padding: '4px 0'
+                padding: '2px 0',
+                fontSize: '0.75rem'
               }}
               labelStyle={{
                 color: '#FFFFFF',
-                fontWeight: 'bold',
-                marginBottom: '0.5rem'
+                marginBottom: '0.25rem',
+                fontSize: '0.75rem'
               }}
               wrapperStyle={{
                 outline: 'none'
@@ -72,6 +79,6 @@ export const BarChartSection = ({ barData, formatCurrency, COLORS }: BarChartSec
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </Card>
+    </div>
   );
 };
