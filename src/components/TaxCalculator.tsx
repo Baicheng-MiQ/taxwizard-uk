@@ -101,7 +101,7 @@ const TaxCalculator = () => {
     <div className="container mx-auto p-2 space-y-2">
       <h1 className="text-2xl font-bold text-center mb-2">UK Income Tax Calculator</h1>
       
-      <div className="grid md:grid-cols-2 gap-2">
+      <div className="grid md:grid-cols-3 gap-2">
         <div className="space-y-2">
           <IncomeDetailsSection
             grossIncome={grossIncome}
@@ -118,21 +118,23 @@ const TaxCalculator = () => {
           />
         </div>
 
-        <TaxSummarySection 
-          results={results}
-          pieData={pieData}
-          COLORS={COLORS}
-          formatCurrency={formatCurrency}
-          monthlyTakeHome={monthlyTakeHome}
-          weeklyTakeHome={weeklyTakeHome}
-          dailyTakeHome={dailyTakeHome}
-          hourlyRate={hourlyRate}
-          pensionContribution={pensionContribution}
-          grossIncome={grossIncome}
-          totalDeductions={totalDeductions}
-          deductionsPercentage={deductionsPercentage}
-          taxBreakdown={taxBreakdown}
-        />
+        <div className="md:col-span-2">
+          <TaxSummarySection 
+            results={results}
+            pieData={pieData}
+            COLORS={COLORS}
+            formatCurrency={formatCurrency}
+            monthlyTakeHome={monthlyTakeHome}
+            weeklyTakeHome={weeklyTakeHome}
+            dailyTakeHome={dailyTakeHome}
+            hourlyRate={hourlyRate}
+            pensionContribution={pensionContribution}
+            grossIncome={grossIncome}
+            totalDeductions={totalDeductions}
+            deductionsPercentage={deductionsPercentage}
+            taxBreakdown={taxBreakdown}
+          />
+        </div>
       </div>
 
       <div className="w-full">
