@@ -49,9 +49,9 @@ const TaxCalculator = () => {
   ].filter(item => item.amount > 0);
 
   const areaChartData = useMemo(() => {
-    // Generate 40 evenly spaced points
-    const salaryPoints = Array.from({ length: 40 }, (_, i) => 
-      Math.round((maxIncomeRange / 40) * i)
+    // Generate 100 evenly spaced points for smoother curve
+    const salaryPoints = Array.from({ length: 100 }, (_, i) => 
+      Math.round((maxIncomeRange / 100) * i)
     );
     
     // Add current gross income to the points if it's not already included
