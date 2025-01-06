@@ -1,5 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { CalculationInputs } from "../types/retirement";
 
@@ -12,10 +11,13 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
   return (
     <div className="space-y-8">
       <div className="space-y-6">
-        <div>
-          <Label htmlFor="current-age" className="text-lg font-semibold mb-6 block">
-            Current Age: {inputs.currentAge}
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="current-age" className="text-xl font-semibold">
+              Current Age
+            </Label>
+            <span className="text-2xl font-bold text-secondary">{inputs.currentAge}</span>
+          </div>
           <Slider
             id="current-age"
             min={18}
@@ -23,14 +25,18 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={1}
             value={[inputs.currentAge]}
             onValueChange={(value) => setInputs({ ...inputs, currentAge: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
 
-        <div>
-          <Label htmlFor="retirement-age" className="text-lg font-semibold mb-6 block">
-            Retirement Age: {inputs.retirementAge}
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="retirement-age" className="text-xl font-semibold">
+              Retirement Age
+            </Label>
+            <span className="text-2xl font-bold text-secondary">{inputs.retirementAge}</span>
+          </div>
           <Slider
             id="retirement-age"
             min={inputs.currentAge + 1}
@@ -38,19 +44,20 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={1}
             value={[inputs.retirementAge]}
             onValueChange={(value) => setInputs({ ...inputs, retirementAge: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
 
-        <div>
-          <Label htmlFor="additional-investment" className="text-lg font-semibold mb-6 block">
-            Additional Yearly Investment (besides pension): {inputs.additionalInvestment.toLocaleString('en-GB', {
-              style: 'currency',
-              currency: 'GBP',
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            })}
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="additional-investment" className="text-xl font-semibold">
+              Additional Yearly Investment
+            </Label>
+            <span className="text-2xl font-bold text-secondary">
+              £{inputs.additionalInvestment.toLocaleString()}
+            </span>
+          </div>
           <Slider
             id="additional-investment"
             min={0}
@@ -58,14 +65,18 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={100}
             value={[inputs.additionalInvestment]}
             onValueChange={(value) => setInputs({ ...inputs, additionalInvestment: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
 
-        <div>
-          <Label htmlFor="employer-contribution" className="text-lg font-semibold mb-6 block">
-            Employer Contribution: {inputs.employerContribution}%
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="employer-contribution" className="text-xl font-semibold">
+              Employer Contribution
+            </Label>
+            <span className="text-2xl font-bold text-secondary">{inputs.employerContribution}%</span>
+          </div>
           <Slider
             id="employer-contribution"
             min={0}
@@ -73,14 +84,18 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={0.5}
             value={[inputs.employerContribution]}
             onValueChange={(value) => setInputs({ ...inputs, employerContribution: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
 
-        <div>
-          <Label htmlFor="wage-growth" className="text-lg font-semibold mb-6 block">
-            Annual Wage Growth: {inputs.wageGrowth}%
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="wage-growth" className="text-xl font-semibold">
+              Annual Wage Growth
+            </Label>
+            <span className="text-2xl font-bold text-secondary">{inputs.wageGrowth}%</span>
+          </div>
           <Slider
             id="wage-growth"
             min={0}
@@ -88,14 +103,18 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={0.1}
             value={[inputs.wageGrowth]}
             onValueChange={(value) => setInputs({ ...inputs, wageGrowth: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
 
-        <div>
-          <Label htmlFor="investment-growth" className="text-lg font-semibold mb-6 block">
-            Expected Investment Growth: {inputs.investmentGrowth}%
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="investment-growth" className="text-xl font-semibold">
+              Expected Investment Growth
+            </Label>
+            <span className="text-2xl font-bold text-secondary">{inputs.investmentGrowth}%</span>
+          </div>
           <Slider
             id="investment-growth"
             min={1}
@@ -103,14 +122,18 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={0.1}
             value={[inputs.investmentGrowth]}
             onValueChange={(value) => setInputs({ ...inputs, investmentGrowth: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
 
-        <div>
-          <Label htmlFor="inflation" className="text-lg font-semibold mb-6 block">
-            Expected Inflation: {inputs.inflation}%
-          </Label>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="inflation" className="text-xl font-semibold">
+              Expected Inflation
+            </Label>
+            <span className="text-2xl font-bold text-secondary">{inputs.inflation}%</span>
+          </div>
           <Slider
             id="inflation"
             min={0}
@@ -118,7 +141,8 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             step={0.1}
             value={[inputs.inflation]}
             onValueChange={(value) => setInputs({ ...inputs, inflation: value[0] })}
-            className="w-full"
+            className="my-4"
+            variant="retirement"
           />
         </div>
       </div>

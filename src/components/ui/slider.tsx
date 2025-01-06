@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "@/lib/utils"
 
 interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
-  variant?: "income" | "pension"
+  variant?: "income" | "pension" | "retirement"
 }
 
 const Slider = React.forwardRef<
@@ -16,6 +16,8 @@ const Slider = React.forwardRef<
         return "bg-lime-500"
       case "pension":
         return "bg-emerald-500"
+      case "retirement":
+        return "bg-[#84cc16]"
       default:
         return "bg-[#84cc16]"
     }
@@ -32,11 +34,11 @@ const Slider = React.forwardRef<
       )}
       {...props}
     >
-      <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gray-200">
+      <SliderPrimitive.Track className="relative h-3 w-full grow overflow-hidden rounded-full bg-secondary-light/20">
         <SliderPrimitive.Range className={cn("absolute h-full", getVariantColor())} />
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb className={cn(
-        "block h-5 w-5 rounded-full border-2 bg-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        "block h-6 w-6 rounded-full border-2 bg-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         thumbColor
       )} />
     </SliderPrimitive.Root>
