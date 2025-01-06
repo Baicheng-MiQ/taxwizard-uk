@@ -27,7 +27,8 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
 
     // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
-      const yearlyPensionContribution = (currentSalary * 5) / 100; // Employee contribution
+      // Calculate contributions based on current salary
+      const yearlyPensionContribution = (currentSalary * 5) / 100; // Employee contribution (5%)
       const yearlyEmployerContribution = (currentSalary * inputs.employerContribution) / 100;
       const yearlyContribution = inputs.additionalInvestment + yearlyPensionContribution + yearlyEmployerContribution;
       
@@ -37,7 +38,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
         savings: Math.round(totalSavings),
       });
 
-      // Increase salary for next year
+      // Increase salary for next year using wage growth rate
       currentSalary *= (1 + inputs.wageGrowth / 100);
     }
 
