@@ -1,4 +1,5 @@
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { CalculationInputs } from "../types/retirement";
 
@@ -8,152 +9,111 @@ interface RetirementInputsProps {
 }
 
 export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) => {
+  const handleInvestmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = event.target.value.replace(/[^0-9.]/g, '');
+    const parts = rawValue.split('.');
+    const sanitizedValue = parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
+    const numericValue = parseFloat(sanitizedValue) || 0;
+    setInputs({ ...inputs, additionalInvestment: numericValue });
+  };
+
   return (
     <div className="space-y-6">
-      <div className="space-y-6">
-        {/* Primary Controls - Larger size */}
-        <div className="space-y-6 bg-secondary/5 p-4 rounded-lg">
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="current-age" className="text-2xl font-semibold">
-                Current Age
-              </Label>
-              <span className="text-3xl font-bold text-secondary">{inputs.currentAge}</span>
-            </div>
-            <Slider
-              id="current-age"
-              min={18}
-              max={80}
-              step={1}
-              value={[inputs.currentAge]}
-              onValueChange={(value) => setInputs({ ...inputs, currentAge: value[0] })}
-              className="my-4"
-              variant="retirement"
-            />
-          </div>
+      <div className="space-y-4">
+        <Label htmlFor="current-age">Current Age: {inputs.currentAge}</Label>
+        <Slider
+          id="current-age"
+          min={18}
+          max={80}
+          step={1}
+          value={[inputs.currentAge]}
+          onValueChange={(value) => setInputs({ ...inputs, currentAge: value[0] })}
+        />
+      </div>
 
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="retirement-age" className="text-2xl font-semibold">
-                Retirement Age
-              </Label>
-              <span className="text-3xl font-bold text-secondary">{inputs.retirementAge}</span>
-            </div>
-            <Slider
-              id="retirement-age"
-              min={inputs.currentAge + 1}
-              max={85}
-              step={1}
-              value={[inputs.retirementAge]}
-              onValueChange={(value) => setInputs({ ...inputs, retirementAge: value[0] })}
-              className="my-4"
-              variant="retirement"
-            />
-          </div>
+      <div className="space-y-4">
+        <Label htmlFor="retirement-age">Retirement Age: {inputs.retirementAge}</Label>
+        <Slider
+          id="retirement-age"
+          min={inputs.currentAge + 1}
+          max={85}
+          step={1}
+          value={[inputs.retirementAge]}
+          onValueChange={(value) => setInputs({ ...inputs, retirementAge: value[0] })}
+        />
+      </div>
 
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="additional-investment" className="text-2xl font-semibold">
-                Additional Yearly Investment
-              </Label>
-              <span className="text-3xl font-bold text-secondary">
-                £{inputs.additionalInvestment.toLocaleString()}
-              </span>
-            </div>
-            <Slider
-              id="additional-investment"
-              min={0}
-              max={50000}
-              step={100}
-              value={[inputs.additionalInvestment]}
-              onValueChange={(value) => setInputs({ ...inputs, additionalInvestment: value[0] })}
-              className="my-4"
-              variant="retirement"
-            />
-          </div>
-        </div>
+      <div className="space-y-4">
+        <Label htmlFor="additional-investment">
+          Additional Yearly Investment (besides pension): {inputs.additionalInvestment.toLocaleString('en-GB', {
+            style: 'currency',
+            currency: 'GBP',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })}
+        </Label>
+        <Slider
+          id="additional-investment"
+          min={0}
+          max={50000}
+          step={100}
+          value={[inputs.additionalInvestment]}
+          onValueChange={(value) => setInputs({ ...inputs, additionalInvestment: value[0] })}
+        />
+      </div>
 
-        {/* Secondary Controls - Medium size */}
-        <div className="space-y-4">
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="employer-contribution" className="text-lg font-medium">
-                Employer Contribution
-              </Label>
-              <span className="text-xl font-semibold text-secondary">{inputs.employerContribution}%</span>
-            </div>
-            <Slider
-              id="employer-contribution"
-              min={0}
-              max={20}
-              step={0.5}
-              value={[inputs.employerContribution]}
-              onValueChange={(value) => setInputs({ ...inputs, employerContribution: value[0] })}
-              className="my-2"
-              variant="retirement"
-            />
-          </div>
+      <div className="space-y-4">
+        <Label htmlFor="employer-contribution">
+          Employer Contribution: {inputs.employerContribution}%
+        </Label>
+        <Slider
+          id="employer-contribution"
+          min={0}
+          max={20}
+          step={0.5}
+          value={[inputs.employerContribution]}
+          onValueChange={(value) => setInputs({ ...inputs, employerContribution: value[0] })}
+        />
+      </div>
 
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="wage-growth" className="text-lg font-medium">
-                Annual Wage Growth
-              </Label>
-              <span className="text-xl font-semibold text-secondary">{inputs.wageGrowth}%</span>
-            </div>
-            <Slider
-              id="wage-growth"
-              min={0}
-              max={10}
-              step={0.1}
-              value={[inputs.wageGrowth]}
-              onValueChange={(value) => setInputs({ ...inputs, wageGrowth: value[0] })}
-              className="my-2"
-              variant="retirement"
-            />
-          </div>
-        </div>
+      <div className="space-y-4">
+        <Label htmlFor="wage-growth">
+          Annual Wage Growth: {inputs.wageGrowth}%
+        </Label>
+        <Slider
+          id="wage-growth"
+          min={0}
+          max={10}
+          step={0.1}
+          value={[inputs.wageGrowth]}
+          onValueChange={(value) => setInputs({ ...inputs, wageGrowth: value[0] })}
+        />
+      </div>
 
-        {/* Tertiary Controls - Smaller size */}
-        <div className="space-y-3 bg-gray-50 p-3 rounded-lg">
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="investment-growth" className="text-base font-medium">
-                Expected Investment Growth
-              </Label>
-              <span className="text-lg font-semibold text-secondary">{inputs.investmentGrowth}%</span>
-            </div>
-            <Slider
-              id="investment-growth"
-              min={1}
-              max={15}
-              step={0.1}
-              value={[inputs.investmentGrowth]}
-              onValueChange={(value) => setInputs({ ...inputs, investmentGrowth: value[0] })}
-              className="my-1"
-              variant="retirement"
-            />
-          </div>
+      <div className="space-y-4">
+        <Label htmlFor="investment-growth">
+          Expected Investment Growth: {inputs.investmentGrowth}%
+        </Label>
+        <Slider
+          id="investment-growth"
+          min={1}
+          max={15}
+          step={0.1}
+          value={[inputs.investmentGrowth]}
+          onValueChange={(value) => setInputs({ ...inputs, investmentGrowth: value[0] })}
+        />
+      </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="inflation" className="text-base font-medium">
-                Expected Inflation
-              </Label>
-              <span className="text-lg font-semibold text-secondary">{inputs.inflation}%</span>
-            </div>
-            <Slider
-              id="inflation"
-              min={0}
-              max={10}
-              step={0.1}
-              value={[inputs.inflation]}
-              onValueChange={(value) => setInputs({ ...inputs, inflation: value[0] })}
-              className="my-1"
-              variant="retirement"
-            />
-          </div>
-        </div>
+      <div className="space-y-4">
+        <Label htmlFor="inflation">Expected Inflation: {inputs.inflation}%</Label>
+        <Slider
+          id="inflation"
+          min={0}
+          max={10}
+          step={0.1}
+          value={[inputs.inflation]}
+          onValueChange={(value) => setInputs({ ...inputs, inflation: value[0] })}
+        />
       </div>
     </div>
   );
