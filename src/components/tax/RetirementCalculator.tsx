@@ -23,8 +23,13 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     
     // Start with initial values
     let totalSavings = 0;
-    // Calculate initial salary (pension contribution is 5% of salary)
-    let currentSalary = pensionContribution * 20; // Since 5% = 1/20th of salary
+    
+    // Calculate initial salary based on personal contribution being 5% of salary
+    // If personal contribution is 0, we assume minimum wage (£20,000) as base
+    let currentSalary = pensionContribution > 0 
+      ? pensionContribution * 20  // Since personal contribution is 5% = 1/20th of salary
+      : 20000;  // Minimum base salary if no personal contribution
+      
     const yearlyData = [];
 
     // Calculate accumulation phase
