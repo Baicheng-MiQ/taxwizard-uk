@@ -22,28 +22,33 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     const realReturn = (1 + inputs.investmentGrowth / 100) / (1 + inputs.inflation / 100) - 1;
     
     let totalSavings = 0;
-    let currentSalary = pensionContribution * (100 / 5); // Assuming pension contribution is 5% of salary
+    // Calculate initial salary based on current pension contribution (which is 5% of salary)
+    let currentSalary = pensionContribution * (100 / 5);
     const yearlyData = [];
 
     // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
-      // Calculate contributions based on current salary
-      const yearlyPensionContribution = (currentSalary * 5) / 100; // Employee contribution (5%)
-      const yearlyEmployerContribution = (currentSalary * inputs.employerContribution) / 100;
-      const yearlyContribution = inputs.additionalInvestment + yearlyPensionContribution + yearlyEmployerContribution;
+      // Employee contribution is fixed at 5% of salary
+      const employeeContribution = (currentSalary * 5) / 100;
+      // Employer contribution is based on the input percentage
+      const employerContribution = (currentSalary * inputs.employerContribution) / 100;
+      // Total yearly contribution includes both employee and employer contributions plus additional investments
+      const yearlyContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
       
+      // Add contributions and apply investment returns
       totalSavings = (totalSavings + yearlyContribution) * (1 + realReturn);
+      
       yearlyData.push({
         age: inputs.currentAge + year,
         savings: Math.round(totalSavings),
       });
 
-      // Increase salary for next year using wage growth rate
-      currentSalary *= (1 + inputs.wageGrowth / 100);
+      // Apply wage growth for next year's calculations
+      currentSalary = currentSalary * (1 + inputs.wageGrowth / 100);
     }
 
     // Calculate sustainable withdrawal rate (4% rule adjusted for real return)
-    const sustainableWithdrawalRate = Math.min(0.04, realReturn + 0.02); // Cap at 4%
+    const sustainableWithdrawalRate = Math.min(0.04, realReturn + 0.02);
     const maxYearlyWithdrawal = totalSavings * sustainableWithdrawalRate;
 
     // Calculate drawdown phase
