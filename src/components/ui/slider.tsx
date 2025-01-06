@@ -17,9 +17,9 @@ const Slider = React.forwardRef<
       case "pension":
         return "bg-emerald-500"
       case "retirement":
-        return "bg-[#84cc16]"
+        return "bg-[#33C3F0]"
       default:
-        return "bg-[#84cc16]"
+        return "bg-[#33C3F0]"
     }
   }
 

@@ -29,10 +29,10 @@ export default {
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: '#00703C',
-					light: '#00703C33',
-					medium: '#00703C66',
-					dark: '#00703C99',
+					DEFAULT: '#33C3F0',
+					light: '#33C3F033',
+					medium: '#33C3F066',
+					dark: '#33C3F099',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
@@ -44,10 +44,10 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: '#00703C',
-					light: '#00703C33',
-					medium: '#00703C66',
-					dark: '#00703C99',
+					DEFAULT: '#33C3F0',
+					light: '#33C3F033',
+					medium: '#33C3F066',
+					dark: '#33C3F099',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
 				popover: {
@@ -63,7 +63,7 @@ export default {
 					foreground: 'hsl(var(--sidebar-foreground))',
 					primary: 'hsl(var(--sidebar-primary))',
 					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: '#00703C',
+					accent: '#33C3F0',
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
