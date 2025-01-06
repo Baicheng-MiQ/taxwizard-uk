@@ -34,18 +34,17 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
 
     // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
-      // Calculate pension contributions based on current salary
-      const employeeContribution = currentSalary * 0.05; // 5% employee contribution
+      // Calculate contributions based on current salary
+      const employeeContribution = pensionContribution; // Actual contribution amount
       const employerContribution = currentSalary * (inputs.employerContribution / 100);
       
-      // Total yearly contribution is sum of:
-      // 1. Employee pension contribution (5% of salary)
-      // 2. Employer pension contribution (employer % of salary)
-      // 3. Additional investments (fixed amount)
+      // Total yearly contribution is sum of all contributions
       const totalContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
       
-      // Add this year's contribution and apply investment returns
-      totalSavings = (totalSavings + totalContribution) * (1 + realReturn);
+      // Only apply investment returns if there are any contributions
+      if (totalContribution > 0) {
+        totalSavings = (totalSavings + totalContribution) * (1 + realReturn);
+      }
       
       yearlyData.push({
         age: inputs.currentAge + year,
