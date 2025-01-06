@@ -45,19 +45,20 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
 
       <div className="space-y-4">
         <Label htmlFor="additional-investment">
-          Additional Yearly Investment (besides pension)
-        </Label>
-        <Input
-          id="additional-investment"
-          type="text"
-          value={inputs.additionalInvestment.toLocaleString('en-GB', {
+          Additional Yearly Investment (besides pension): {inputs.additionalInvestment.toLocaleString('en-GB', {
             style: 'currency',
             currency: 'GBP',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           })}
-          onChange={handleInvestmentChange}
-          className="text-right"
+        </Label>
+        <Slider
+          id="additional-investment"
+          min={0}
+          max={50000}
+          step={100}
+          value={[inputs.additionalInvestment]}
+          onValueChange={(value) => setInputs({ ...inputs, additionalInvestment: value[0] })}
         />
       </div>
 

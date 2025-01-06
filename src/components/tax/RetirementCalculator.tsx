@@ -9,7 +9,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   const [inputs, setInputs] = useState<CalculationInputs>({
     currentAge: 22,
     retirementAge: 65,
-    additionalInvestment: 5000,
+    additionalInvestment: 20000, // Changed default to £20,000
     investmentGrowth: 7,
     inflation: 2.7,
     employerContribution: 5,
