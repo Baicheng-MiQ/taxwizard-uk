@@ -21,30 +21,34 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     const yearsInRetirement = 90 - inputs.retirementAge;
     const realReturn = (1 + inputs.investmentGrowth / 100) / (1 + inputs.inflation / 100) - 1;
     
+    // Start with initial values
     let totalSavings = 0;
-    // Calculate initial salary based on current pension contribution (which is 5% of salary)
-    let currentSalary = pensionContribution * (100 / 5);
+    // Calculate initial salary (pension contribution is 5% of salary)
+    let currentSalary = pensionContribution * 20; // Since 5% = 1/20th of salary
     const yearlyData = [];
 
     // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
-      // Employee contribution is fixed at 5% of salary
-      const employeeContribution = (currentSalary * 5) / 100;
-      // Employer contribution is based on the input percentage
-      const employerContribution = (currentSalary * inputs.employerContribution) / 100;
-      // Total yearly contribution includes both employee and employer contributions plus additional investments
-      const yearlyContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
+      // Calculate pension contributions based on current salary
+      const employeeContribution = currentSalary * 0.05; // 5% employee contribution
+      const employerContribution = currentSalary * (inputs.employerContribution / 100);
       
-      // Add contributions and apply investment returns
-      totalSavings = (totalSavings + yearlyContribution) * (1 + realReturn);
+      // Total yearly contribution is sum of:
+      // 1. Employee pension contribution (5% of salary)
+      // 2. Employer pension contribution (employer % of salary)
+      // 3. Additional investments (fixed amount)
+      const totalContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
+      
+      // Add this year's contribution and apply investment returns
+      totalSavings = (totalSavings + totalContribution) * (1 + realReturn);
       
       yearlyData.push({
         age: inputs.currentAge + year,
         savings: Math.round(totalSavings),
       });
 
-      // Apply wage growth for next year's calculations
-      currentSalary = currentSalary * (1 + inputs.wageGrowth / 100);
+      // Increase salary by wage growth rate for next year
+      currentSalary *= (1 + inputs.wageGrowth / 100);
     }
 
     // Calculate sustainable withdrawal rate (4% rule adjusted for real return)
