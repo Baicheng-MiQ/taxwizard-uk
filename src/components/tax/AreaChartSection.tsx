@@ -20,7 +20,6 @@ interface AreaChartSectionProps {
 export const AreaChartSection = ({ 
   areaChartData, 
   formatCurrency, 
-  COLORS, 
   grossIncome,
   maxIncomeRange,
   setMaxIncomeRange
@@ -30,6 +29,14 @@ export const AreaChartSection = ({
     0;
 
   const tickValues = Array.from({ length: 9 }, (_, i) => (maxIncomeRange * i) / 8);
+
+  // Updated colors for better contrast against sky blue
+  const CHART_COLORS = [
+    "#1a365d", // Dark blue for take home
+    "#dc2626", // Red for income tax
+    "#7e22ce", // Purple for NI
+    "#ea580c"  // Orange for pension
+  ];
 
   return (
     <Card className="p-4">
@@ -79,32 +86,32 @@ export const AreaChartSection = ({
               type="monotone"
               dataKey="takeHome"
               stackId="1"
-              stroke={COLORS[0]}
-              fill={COLORS[0]}
+              stroke={CHART_COLORS[0]}
+              fill={CHART_COLORS[0]}
               name="Take Home"
             />
             <Area
               type="monotone"
               dataKey="incomeTax"
               stackId="1"
-              stroke={COLORS[1]}
-              fill={COLORS[1]}
+              stroke={CHART_COLORS[1]}
+              fill={CHART_COLORS[1]}
               name="Income Tax"
             />
             <Area
               type="monotone"
               dataKey="nationalInsurance"
               stackId="1"
-              stroke={COLORS[2]}
-              fill={COLORS[2]}
+              stroke={CHART_COLORS[2]}
+              fill={CHART_COLORS[2]}
               name="NI"
             />
             <Area
               type="monotone"
               dataKey="pension"
               stackId="1"
-              stroke={COLORS[3]}
-              fill={COLORS[3]}
+              stroke={CHART_COLORS[3]}
+              fill={CHART_COLORS[3]}
               name="Pension"
             />
           </AreaChart>
