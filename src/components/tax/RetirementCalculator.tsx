@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { RetirementInputs } from "./retirement/RetirementInputs";
 import { RetirementResults } from "./retirement/RetirementResults";
+import { ResetButton } from "./retirement/ResetButton";
 import { RetirementCalculatorProps, CalculationInputs } from "./types/retirement";
 import { 
   Calendar, 
@@ -181,7 +182,10 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
 
   return (
     <Card className="p-6">
-      <h2 className="text-2xl font-semibold mb-6">Retirement Calculator</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Retirement Calculator</h2>
+        <ResetButton setInputs={setInputs} />
+      </div>
       
       <div className="grid md:grid-cols-2 gap-8">
         <RetirementInputs inputs={inputs} setInputs={setInputs} />
