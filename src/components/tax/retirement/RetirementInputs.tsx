@@ -145,6 +145,25 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
             variant="retirement"
           />
         </div>
+
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="withdrawal-rate" className="text-sm font-medium">
+              Annual Withdrawal Rate
+            </Label>
+            <span className="text-base font-medium text-secondary">{inputs.withdrawalRate}%</span>
+          </div>
+          <Slider
+            id="withdrawal-rate"
+            min={1}
+            max={10}
+            step={0.1}
+            value={[inputs.withdrawalRate]}
+            onValueChange={(value) => setInputs({ ...inputs, withdrawalRate: value[0] })}
+            className="my-2"
+            variant="retirement"
+          />
+        </div>
       </div>
     </div>
   );

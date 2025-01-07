@@ -17,12 +17,12 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
           </p>
         </div>
         <div>
-          <h3 className="text-lg font-medium mb-2">Sustainable Yearly Withdrawal</h3>
+          <h3 className="text-lg font-medium mb-2">Withdrawal Range</h3>
           <p className="text-2xl font-semibold text-secondary">
-            {formatCurrency(calculations.maxYearlyWithdrawal)}
+            {formatCurrency(calculations.initialWithdrawal)} - {formatCurrency(calculations.finalWithdrawal)}
           </p>
           <p className="text-sm text-gray-600 mt-1">
-            (Until age 90, adjusted for inflation)
+            (Per year, adjusted for growth)
           </p>
         </div>
       </div>
@@ -40,7 +40,7 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
             />
             <YAxis 
               tickFormatter={(value) => `£${(value / 1000000).toFixed(1)}M`}
-              label={{ value: 'Savings', angle: -90, position: 'insideLeft' }}
+              label={{ value: 'Amount', angle: -90, position: 'insideLeft' }}
             />
             <Tooltip 
               formatter={(value: number) => formatCurrency(value)}
@@ -49,8 +49,17 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
             <Area
               type="monotone"
               dataKey="savings"
+              name="Total Savings"
               stroke="#00703C"
               fill="#00703C"
+              fillOpacity={0.2}
+            />
+            <Area
+              type="monotone"
+              dataKey="withdrawal"
+              name="Annual Withdrawal"
+              stroke="#2563eb"
+              fill="#2563eb"
               fillOpacity={0.2}
             />
           </AreaChart>

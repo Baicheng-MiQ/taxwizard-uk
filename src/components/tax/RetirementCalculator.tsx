@@ -27,11 +27,12 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   const [inputs, setInputs] = useState<CalculationInputs>({
     currentAge: 22,
     retirementAge: 65,
-    additionalInvestment: 20000, // Changed default to £20,000
+    additionalInvestment: 20000,
     investmentGrowth: 7,
     inflation: 2.7,
     employerContribution: 5,
-    wageGrowth: 5
+    wageGrowth: 5,
+    withdrawalRate: 4 // Added withdrawal rate as a user input
   });
 
   const calculations = useMemo(() => {
@@ -39,27 +40,19 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     const yearsInRetirement = 90 - inputs.retirementAge;
     const realReturn = (1 + inputs.investmentGrowth / 100) / (1 + inputs.inflation / 100) - 1;
     
-    // Start with initial values
     let totalSavings = 0;
-    
-    // Calculate initial salary based on personal contribution being 5% of salary
-    // If personal contribution is 0, we assume minimum wage (£20,000) as base
     let currentSalary = pensionContribution > 0 
-      ? pensionContribution * 20  // Since personal contribution is 5% = 1/20th of salary
-      : 20000;  // Minimum base salary if no personal contribution
+      ? pensionContribution * 20
+      : 20000;
       
     const yearlyData = [];
 
     // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
-      // Calculate contributions based on current salary
-      const employeeContribution = pensionContribution; // Actual contribution amount
+      const employeeContribution = pensionContribution;
       const employerContribution = currentSalary * (inputs.employerContribution / 100);
-      
-      // Total yearly contribution is sum of all contributions
       const totalContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
       
-      // Only apply investment returns if there are any contributions
       if (totalContribution > 0) {
         totalSavings = (totalSavings + totalContribution) * (1 + realReturn);
       }
@@ -67,35 +60,35 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       yearlyData.push({
         age: inputs.currentAge + year,
         savings: Math.round(totalSavings),
+        withdrawal: 0 // No withdrawals during accumulation
       });
 
-      // Increase salary by wage growth rate for next year
       currentSalary *= (1 + inputs.wageGrowth / 100);
     }
 
-    // Calculate sustainable withdrawal rate (4% rule adjusted for real return)
-    const sustainableWithdrawalRate = Math.min(0.04, realReturn + 0.02);
-    const maxYearlyWithdrawal = totalSavings * sustainableWithdrawalRate;
-
-    // Calculate drawdown phase
+    // Calculate drawdown phase with user-defined withdrawal rate
     let remainingSavings = totalSavings;
     for (let year = 1; year <= yearsInRetirement; year++) {
-      const thisYearWithdrawal = Math.min(
-        maxYearlyWithdrawal,
-        remainingSavings * sustainableWithdrawalRate
-      );
+      const withdrawalRate = inputs.withdrawalRate / 100;
+      const thisYearWithdrawal = remainingSavings * withdrawalRate;
       
       remainingSavings = (remainingSavings - thisYearWithdrawal) * (1 + realReturn);
       
       yearlyData.push({
         age: inputs.retirementAge + year,
         savings: Math.round(remainingSavings),
+        withdrawal: Math.round(thisYearWithdrawal)
       });
     }
 
+    // Calculate initial and final withdrawal amounts for range display
+    const initialWithdrawal = totalSavings * (inputs.withdrawalRate / 100);
+    const finalWithdrawal = yearlyData[yearlyData.length - 1].withdrawal;
+
     return {
       totalAtRetirement: totalSavings,
-      maxYearlyWithdrawal,
+      initialWithdrawal,
+      finalWithdrawal,
       yearlyData,
     };
   }, [inputs, pensionContribution]);
