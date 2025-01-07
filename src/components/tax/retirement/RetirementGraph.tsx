@@ -12,7 +12,7 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={calculations.yearlyData}
-          margin={{ top: 10, right: 30, left: 60, bottom: 30 }}
+          margin={{ top: 10, right: 30, left: 30, bottom: 20 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
@@ -20,7 +20,7 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
             label={{ 
               value: 'Age', 
               position: 'insideBottom', 
-              offset: -15 
+              offset: -10 
             }}
           />
           <YAxis 
@@ -29,7 +29,7 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
               value: 'Amount', 
               angle: -90, 
               position: 'insideLeft',
-              offset: -45
+              offset: -20
             }}
           />
           <Tooltip 
