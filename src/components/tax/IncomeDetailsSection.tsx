@@ -60,8 +60,8 @@ export const IncomeDetailsSection = ({
           <Slider
             id="pension"
             min={0}
-            max={100}
-            step={0.1}
+            max={50}
+            step={0.5}
             value={[pensionPercentage]}
             onValueChange={(value) => setPensionPercentage(value[0])}
             variant="pension"
