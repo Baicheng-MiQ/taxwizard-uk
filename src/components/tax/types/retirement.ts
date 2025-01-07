@@ -1,5 +1,6 @@
 export interface RetirementCalculatorProps {
   formatCurrency: (value: number) => string;
+  pensionContribution: number;
 }
 
 export interface CalculationInputs {
