@@ -53,11 +53,11 @@ export const RetirementCalculator = ({ formatCurrency }: RetirementCalculatorPro
       lump_sum: inputs.lumpSum
     };
 
-    const getTargetMonthlyIncome = (pensionPot, investmentPot) => {
+    const getTargetMonthlyIncome = (pensionPot: number, investmentPot: number) => {
       return (pensionPot + investmentPot) * params.withdraw_rate / 12;
     };
 
-    const calculateYearlyProjection = (age) => {
+    const calculateYearlyProjection = (age: number) => {
       if (age < params.current_age) return { 
         pensionPot: 0, 
         investmentPot: 0,
@@ -67,6 +67,7 @@ export const RetirementCalculator = ({ formatCurrency }: RetirementCalculatorPro
       let pensionPot = 0;
       let investmentPot = 0;
       let currentSalary = params.salary;
+      let monthlyIncome = 0;  // Initialize monthlyIncome here
       let realSalaryGrowth = (1 + params.salary_growth) / (1 + params.inflation_rate) - 1;
       let realInvestmentGrowth = (1 + params.investment_growth) / (1 + params.inflation_rate) - 1;
       
@@ -92,7 +93,6 @@ export const RetirementCalculator = ({ formatCurrency }: RetirementCalculatorPro
         }
         
         // Post-retirement withdrawals and income
-        let monthlyIncome = 0;
         if (year >= params.retirement_age) {
           const targetMonthlyIncome = getTargetMonthlyIncome(pensionPot, investmentPot);
           
