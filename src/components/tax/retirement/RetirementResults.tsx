@@ -1,12 +1,6 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { CalculationResults } from '../types/retirement';
 
-interface RetirementResultsProps {
-  calculations: CalculationResults;
-  formatCurrency: (value: number) => string;
-}
-
-export const RetirementResults = ({ calculations, formatCurrency }: RetirementResultsProps) => {
+export const RetirementResults = ({ calculations, formatCurrency }) => {
   return (
     <div className="space-y-6">
       <div className="bg-secondary/5 rounded-lg p-4 space-y-4">
@@ -27,7 +21,7 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
         </div>
       </div>
 
-      <div className="h-[600px] w-full mt-8"> {/* Increased height from 400px to 600px */}
+      <div className="h-[600px] w-full mt-8">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={calculations.yearlyData}
