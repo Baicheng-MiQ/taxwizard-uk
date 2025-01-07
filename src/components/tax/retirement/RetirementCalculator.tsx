@@ -1,14 +1,22 @@
 import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { RetirementInputs } from "./retirement/RetirementInputs";
-import { RetirementResults } from "./retirement/RetirementResults";
-import { RetirementGraph } from "./retirement/RetirementGraph";
-import { ResetButton } from "./retirement/ResetButton";
-import { RetirementCalculatorProps, CalculationInputs } from "./types/retirement";
+import { RetirementInputs } from "./RetirementInputs";
+import { RetirementResults } from "./RetirementResults";
+import { RetirementGraph } from "./RetirementGraph";
+import { ResetButton } from "./ResetButton";
+import { RetirementCalculatorProps, CalculationInputs } from "../types/retirement";
 import { 
-  Calendar, TrendingUp, DollarSign, AlertCircle, Briefcase,
-  Building, LineChart, PiggyBank, BadgePercent, Clock 
+  Calendar, 
+  TrendingUp, 
+  DollarSign, 
+  AlertCircle,
+  Briefcase,
+  Building,
+  LineChart,
+  PiggyBank,
+  BadgePercent,
+  Clock
 } from "lucide-react";
 import {
   Accordion,
