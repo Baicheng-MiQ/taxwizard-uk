@@ -153,10 +153,14 @@ const TaxCalculator = () => {
         />
       </Card>
 
-      <RetirementCalculator 
-        formatCurrency={formatCurrency}
-        pensionContribution={pensionContribution}
-      />
+      <div className="grid gap-4">
+        <div className="col-span-full">
+          <RetirementCalculator 
+            formatCurrency={formatCurrency}
+            pensionContribution={pensionContribution}
+          />
+        </div>
+      </div>
     </div>
   );
 };
