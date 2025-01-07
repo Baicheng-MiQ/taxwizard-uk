@@ -13,37 +13,6 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <Label htmlFor="age-range" className="text-base font-medium">
-              Age Range
-            </Label>
-            <div className="flex gap-2 items-center">
-              <span className="text-lg font-semibold text-secondary">{inputs.currentAge}</span>
-              <span className="text-muted-foreground">to</span>
-              <span className="text-lg font-semibold text-secondary">{inputs.retirementAge}</span>
-            </div>
-          </div>
-          <Slider
-            id="age-range"
-            min={18}
-            max={85}
-            step={1}
-            value={[inputs.currentAge, inputs.retirementAge]}
-            onValueChange={(value) => {
-              if (value[0] !== value[1]) {
-                setInputs({ 
-                  ...inputs, 
-                  currentAge: value[0], 
-                  retirementAge: value[1] 
-                });
-              }
-            }}
-            className="my-2"
-            variant="retirement"
-          />
-        </div>
-
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
             <Label htmlFor="additional-investment" className="text-base font-medium">
               Additional Yearly Investment
             </Label>
