@@ -9,7 +9,7 @@ interface ResetButtonProps {
 const defaultInputs: CalculationInputs = {
   currentAge: 22,
   retirementAge: 65,
-  additionalInvestment: 20000,
+  additionalInvestment: 5000,
   investmentGrowth: 7,
   inflation: 2.7,
   employerContribution: 5,
