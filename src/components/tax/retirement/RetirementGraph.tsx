@@ -1,4 +1,4 @@
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { CalculationResults } from '../types/retirement';
 
 interface RetirementGraphProps {
@@ -26,6 +26,10 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
           <Tooltip 
             formatter={(value: number) => formatCurrency(value)}
             labelFormatter={(label) => `Age: ${label}`}
+          />
+          <Legend 
+            verticalAlign="bottom" 
+            height={36}
           />
           <Area
             type="monotone"
