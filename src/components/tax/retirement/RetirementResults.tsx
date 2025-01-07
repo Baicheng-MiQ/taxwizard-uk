@@ -1,5 +1,6 @@
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { CalculationResults } from '../types/retirement';
+import { RetirementChart } from './RetirementChart';
+import { FullscreenButton } from './FullscreenButton';
 
 interface RetirementResultsProps {
   calculations: CalculationResults;
@@ -27,51 +28,15 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
         </div>
       </div>
 
-      <div className="h-[400px] w-full mt-8">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={calculations.yearlyData}
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
-              dataKey="age" 
-              label={{ value: 'Age', position: 'bottom' }}
-            />
-            <YAxis 
-              tickFormatter={(value) => `£${(value / 1000000).toFixed(1)}M`}
-              label={{ value: 'Amount', angle: -90, position: 'insideLeft' }}
-            />
-            <Tooltip 
-              formatter={(value: number) => formatCurrency(value)}
-              labelFormatter={(label) => `Age: ${label}`}
-            />
-            <Area
-              type="monotone"
-              dataKey="pensionPot"
-              name="Pension"
-              stroke="#00703C"
-              fill="#00703C"
-              fillOpacity={0.2}
-            />
-            <Area
-              type="monotone"
-              dataKey="investmentPot"
-              name="Investments"
-              stroke="#2563eb"
-              fill="#2563eb"
-              fillOpacity={0.2}
-            />
-            <Area
-              type="monotone"
-              dataKey="withdrawal"
-              name="Annual Withdrawal"
-              stroke="#dc2626"
-              fill="#dc2626"
-              fillOpacity={0.2}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+      <div className="h-[400px] w-full mt-8 relative">
+        <FullscreenButton 
+          yearlyData={calculations.yearlyData}
+          formatCurrency={formatCurrency}
+        />
+        <RetirementChart 
+          yearlyData={calculations.yearlyData}
+          formatCurrency={formatCurrency}
+        />
       </div>
     </div>
   );
