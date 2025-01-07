@@ -55,11 +55,18 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       const employeeContribution = pensionContribution;
       const employerContribution = currentSalary * (inputs.employerContribution / 100);
       
-      // Add pension contributions
-      pensionPot = (pensionPot + employeeContribution + employerContribution) * (1 + realReturn);
+      // Add pension contributions only until retirement
+      if (currentAge <= inputs.retirementAge) {
+        pensionPot = (pensionPot + employeeContribution + employerContribution) * (1 + realReturn);
+      } else {
+        // After retirement but before pension access age, continue growing the pension pot with investment returns
+        pensionPot = pensionPot * (1 + realReturn);
+      }
       
-      // Add investment contributions
-      investmentPot = (investmentPot + inputs.additionalInvestment) * (1 + realReturn);
+      // Add investment contributions until retirement
+      if (currentAge <= inputs.retirementAge) {
+        investmentPot = (investmentPot + inputs.additionalInvestment) * (1 + realReturn);
+      }
       
       yearlyData.push({
         age: currentAge,
@@ -93,6 +100,9 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
         const pensionWithdrawal = remainingPensionPot * withdrawalRate;
         totalWithdrawal += pensionWithdrawal;
         remainingPensionPot = (remainingPensionPot - pensionWithdrawal) * (1 + realReturn);
+      } else if (remainingPensionPot > 0) {
+        // Continue growing pension pot with investment returns until access age
+        remainingPensionPot = remainingPensionPot * (1 + realReturn);
       }
 
       yearlyData.push({
