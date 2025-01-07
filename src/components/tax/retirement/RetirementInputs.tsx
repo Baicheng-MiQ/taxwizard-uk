@@ -13,37 +13,30 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <Label htmlFor="current-age" className="text-base font-medium">
-              Current Age
+            <Label htmlFor="age-range" className="text-base font-medium">
+              Age Range
             </Label>
-            <span className="text-lg font-semibold text-secondary">{inputs.currentAge}</span>
+            <div className="flex gap-2 items-center">
+              <span className="text-lg font-semibold text-secondary">{inputs.currentAge}</span>
+              <span className="text-muted-foreground">to</span>
+              <span className="text-lg font-semibold text-secondary">{inputs.retirementAge}</span>
+            </div>
           </div>
           <Slider
-            id="current-age"
+            id="age-range"
             min={18}
-            max={80}
-            step={1}
-            value={[inputs.currentAge]}
-            onValueChange={(value) => setInputs({ ...inputs, currentAge: value[0] })}
-            className="my-2"
-            variant="retirement"
-          />
-        </div>
-
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <Label htmlFor="retirement-age" className="text-base font-medium">
-              Retirement Age
-            </Label>
-            <span className="text-lg font-semibold text-secondary">{inputs.retirementAge}</span>
-          </div>
-          <Slider
-            id="retirement-age"
-            min={inputs.currentAge + 1}
             max={85}
             step={1}
-            value={[inputs.retirementAge]}
-            onValueChange={(value) => setInputs({ ...inputs, retirementAge: value[0] })}
+            value={[inputs.currentAge, inputs.retirementAge]}
+            onValueChange={(value) => {
+              if (value[0] !== value[1]) {
+                setInputs({ 
+                  ...inputs, 
+                  currentAge: value[0], 
+                  retirementAge: value[1] 
+                });
+              }
+            }}
             className="my-2"
             variant="retirement"
           />
