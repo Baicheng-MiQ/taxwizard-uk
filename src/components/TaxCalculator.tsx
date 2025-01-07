@@ -12,6 +12,7 @@ const TaxCalculator = () => {
   const [pensionPercentage, setPensionPercentage] = useState(0);
   const [maxIncomeRange, setMaxIncomeRange] = useState(200000);
 
+  // Calculate actual pension contribution from percentage
   const pensionContribution = (grossIncome * pensionPercentage) / 100;
   const results = calculateTax(grossIncome, pensionContribution);
 
@@ -96,7 +97,7 @@ const TaxCalculator = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-8 max-w-7xl">
+    <div className="container mx-auto p-4 space-y-4 max-w-7xl">
       <h1 className="text-3xl font-bold text-center mb-1">UK Income Tax Calculator</h1>
       
       <div className="grid md:grid-cols-3 gap-3">
@@ -152,12 +153,14 @@ const TaxCalculator = () => {
         />
       </Card>
 
-      <Card className="p-6">
-        <RetirementCalculator 
-          formatCurrency={formatCurrency}
-          pensionContribution={pensionContribution}
-        />
-      </Card>
+      <div className="grid gap-4">
+        <div className="col-span-full">
+          <RetirementCalculator 
+            formatCurrency={formatCurrency}
+            pensionContribution={pensionContribution}
+          />
+        </div>
+      </div>
     </div>
   );
 };
