@@ -1,6 +1,5 @@
 export interface RetirementCalculatorProps {
   formatCurrency: (value: number) => string;
-  pensionContribution: number;
 }
 
 export interface CalculationInputs {
@@ -11,15 +10,20 @@ export interface CalculationInputs {
   inflation: number;
   employerContribution: number;
   wageGrowth: number;
+  salary: number;
+  personalContribution: number;
+  withdrawalRate: number;
+  lumpSum: number;
 }
 
 export interface YearlyData {
   age: number;
-  savings: number;
+  pensionPot: number;
+  investmentPot: number;
+  totalWealth: number;
+  monthlyIncome: number;
 }
 
 export interface CalculationResults {
-  totalAtRetirement: number;
-  maxYearlyWithdrawal: number;
   yearlyData: YearlyData[];
 }
