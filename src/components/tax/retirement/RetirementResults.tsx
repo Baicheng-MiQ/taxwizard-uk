@@ -27,7 +27,7 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
         </div>
       </div>
 
-      <div className="h-[300px]">
+      <div className="h-[400px] w-full mt-8">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={calculations.yearlyData}
