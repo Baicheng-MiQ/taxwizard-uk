@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { RetirementInputs } from "./retirement/RetirementInputs";
 import { RetirementResults } from "./retirement/RetirementResults";
-import { CalculationInputs, RetirementCalculatorProps } from "./types/retirement";
+import { RetirementCalculatorProps, CalculationInputs } from "./types/retirement";
 import { 
   Calendar, 
   TrendingUp, 
@@ -22,142 +23,82 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export const RetirementCalculator = ({ formatCurrency }: RetirementCalculatorProps) => {
+export const RetirementCalculator = ({ formatCurrency, pensionContribution }: RetirementCalculatorProps) => {
   const [inputs, setInputs] = useState<CalculationInputs>({
-    currentAge: 30,
+    currentAge: 22,
     retirementAge: 65,
-    salary: 50000,
-    personalContrib: 5,
-    employerContrib: 3,
-    salaryGrowth: 2,
-    investmentGrowth: 6,
-    additionalInvestment: 5000,
-    inflationRate: 2,
-    withdrawRate: 4,
-    lumpSum: 20000
+    additionalInvestment: 20000, // Changed default to £20,000
+    investmentGrowth: 7,
+    inflation: 2.7,
+    employerContribution: 5,
+    wageGrowth: 5
   });
 
-  const projectionData = useMemo(() => {
-    const params = {
-      current_age: inputs.currentAge,
-      retirement_age: inputs.retirementAge,
-      pension_access_age: 57,
-      salary: inputs.salary,
-      personal_contrib: inputs.personalContrib / 100,
-      employer_contrib: inputs.employerContrib / 100,
-      salary_growth: inputs.salaryGrowth / 100,
-      investment_growth: inputs.investmentGrowth / 100,
-      additional_investment: inputs.additionalInvestment,
-      inflation_rate: inputs.inflationRate / 100,
-      withdraw_rate: inputs.withdrawRate / 100,
-      lump_sum: inputs.lumpSum
-    };
-
-    const getTargetMonthlyIncome = (pensionPot: number, investmentPot: number) => {
-      return (pensionPot + investmentPot) * params.withdraw_rate / 12;
-    };
-
-    const calculateYearlyProjection = (age: number) => {
-      if (age < params.current_age) return { 
-        pensionPot: 0, 
-        investmentPot: 0,
-        monthlyIncome: 0 
-      };
+  const calculations = useMemo(() => {
+    const yearsToRetirement = inputs.retirementAge - inputs.currentAge;
+    const yearsInRetirement = 90 - inputs.retirementAge;
+    const realReturn = (1 + inputs.investmentGrowth / 100) / (1 + inputs.inflation / 100) - 1;
+    
+    // Start with initial values
+    let totalSavings = 0;
+    
+    // Calculate initial salary based on personal contribution being 5% of salary
+    // If personal contribution is 0, we assume minimum wage (£20,000) as base
+    let currentSalary = pensionContribution > 0 
+      ? pensionContribution * 20  // Since personal contribution is 5% = 1/20th of salary
+      : 20000;  // Minimum base salary if no personal contribution
       
-      let pensionPot = 0;
-      let investmentPot = 0;
-      let currentSalary = params.salary;
-      let monthlyIncome = 0;  // Initialize monthlyIncome here
-      let realSalaryGrowth = (1 + params.salary_growth) / (1 + params.inflation_rate) - 1;
-      let realInvestmentGrowth = (1 + params.investment_growth) / (1 + params.inflation_rate) - 1;
-      
-      for (let year = params.current_age; year <= age; year++) {
-        // Apply salary growth at the start of the year
-        if (year > params.current_age) {
-          currentSalary *= (1 + realSalaryGrowth);
-        }
+    const yearlyData = [];
 
-        // Pre-retirement contributions
-        if (year < params.retirement_age) {
-          // Pension contributions (adjusted for real returns)
-          const pensionContribution = currentSalary * 
-            (params.personal_contrib + params.employer_contrib);
-          pensionPot += pensionContribution;
-          
-          // Additional investment (adjusted for real returns)
-          investmentPot += params.additional_investment;
-          
-          // Apply half-year growth to new contributions
-          pensionPot += (pensionContribution * realInvestmentGrowth / 2);
-          investmentPot += (params.additional_investment * realInvestmentGrowth / 2);
-        }
-        
-        // Post-retirement withdrawals and income
-        if (year >= params.retirement_age) {
-          const targetMonthlyIncome = getTargetMonthlyIncome(pensionPot, investmentPot);
-          
-          // Handle pension access age restrictions
-          if (year >= params.pension_access_age) {
-            // One-time lump sum withdrawal
-            if (year === params.pension_access_age) {
-              pensionPot = Math.max(0, pensionPot - params.lump_sum);
-            }
-            
-            // Calculate withdrawals from both sources
-            const totalWealth = pensionPot + investmentPot;
-            if (totalWealth > 0) {
-              // Withdraw proportionally from both pots
-              const pensionRatio = pensionPot / totalWealth;
-              const investmentRatio = investmentPot / totalWealth;
-              
-              const annualWithdrawal = targetMonthlyIncome * 12;
-              const pensionWithdrawal = annualWithdrawal * pensionRatio;
-              const investmentWithdrawal = annualWithdrawal * investmentRatio;
-              
-              pensionPot = Math.max(0, pensionPot - pensionWithdrawal);
-              investmentPot = Math.max(0, investmentPot - investmentWithdrawal);
-              monthlyIncome = targetMonthlyIncome;
-            }
-          } else {
-            // Before pension access age, withdraw only from investments
-            const annualWithdrawal = Math.min(
-              targetMonthlyIncome * 12,
-              investmentPot * params.withdraw_rate
-            );
-            investmentPot = Math.max(0, investmentPot - annualWithdrawal);
-            monthlyIncome = annualWithdrawal / 12;
-          }
-        }
-        
-        // Apply remaining annual growth
-        pensionPot *= (1 + realInvestmentGrowth);
-        investmentPot *= (1 + realInvestmentGrowth);
-        
-        // Store monthly income for the year
-        monthlyIncome = Math.max(0, monthlyIncome);
+    // Calculate accumulation phase
+    for (let year = 0; year <= yearsToRetirement; year++) {
+      // Calculate contributions based on current salary
+      const employeeContribution = pensionContribution; // Actual contribution amount
+      const employerContribution = currentSalary * (inputs.employerContribution / 100);
+      
+      // Total yearly contribution is sum of all contributions
+      const totalContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
+      
+      // Only apply investment returns if there are any contributions
+      if (totalContribution > 0) {
+        totalSavings = (totalSavings + totalContribution) * (1 + realReturn);
       }
       
-      return {
-        pensionPot: Math.max(0, pensionPot),
-        investmentPot: Math.max(0, investmentPot),
-        monthlyIncome
-      };
-    };
+      yearlyData.push({
+        age: inputs.currentAge + year,
+        savings: Math.round(totalSavings),
+      });
 
-    // Generate data points
-    const maxAge = Math.max(90, params.retirement_age + 25);
-    return Array.from({ length: maxAge - params.current_age + 1 }, (_, i) => {
-      const age = params.current_age + i;
-      const { pensionPot, investmentPot, monthlyIncome } = calculateYearlyProjection(age);
-      return {
-        age,
-        totalWealth: pensionPot + investmentPot,
-        pensionPot,
-        investmentPot,
-        monthlyIncome
-      };
-    });
-  }, [inputs]);
+      // Increase salary by wage growth rate for next year
+      currentSalary *= (1 + inputs.wageGrowth / 100);
+    }
+
+    // Calculate sustainable withdrawal rate (4% rule adjusted for real return)
+    const sustainableWithdrawalRate = Math.min(0.04, realReturn + 0.02);
+    const maxYearlyWithdrawal = totalSavings * sustainableWithdrawalRate;
+
+    // Calculate drawdown phase
+    let remainingSavings = totalSavings;
+    for (let year = 1; year <= yearsInRetirement; year++) {
+      const thisYearWithdrawal = Math.min(
+        maxYearlyWithdrawal,
+        remainingSavings * sustainableWithdrawalRate
+      );
+      
+      remainingSavings = (remainingSavings - thisYearWithdrawal) * (1 + realReturn);
+      
+      yearlyData.push({
+        age: inputs.retirementAge + year,
+        savings: Math.round(remainingSavings),
+      });
+    }
+
+    return {
+      totalAtRetirement: totalSavings,
+      maxYearlyWithdrawal,
+      yearlyData,
+    };
+  }, [inputs, pensionContribution]);
 
   const assumptions = [
     {
@@ -214,50 +155,42 @@ export const RetirementCalculator = ({ formatCurrency }: RetirementCalculatorPro
 
   return (
     <Card className="p-6">
-      <CardHeader>
-        <CardTitle>Retirement Calculator</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid md:grid-cols-2 gap-8">
-          <RetirementInputs 
-            inputs={inputs} 
-            setInputs={setInputs} 
-            formatCurrency={formatCurrency} 
-          />
-          <RetirementResults 
-            projectionData={projectionData} 
-            formatCurrency={formatCurrency} 
-          />
-        </div>
+      <h2 className="text-2xl font-semibold mb-6">Retirement Calculator</h2>
+      
+      <div className="grid md:grid-cols-2 gap-8">
+        <RetirementInputs inputs={inputs} setInputs={setInputs} />
+        <RetirementResults calculations={calculations} formatCurrency={formatCurrency} />
+      </div>
 
-        <div className="mt-8 space-y-4">
-          <Accordion type="single" collapsible>
-            <AccordionItem value="assumptions">
-              <AccordionTrigger className="text-lg font-medium">
-                Calculator Assumptions
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                  {assumptions.map((assumption, index) => (
-                    <div 
-                      key={index} 
-                      className="flex items-start gap-3 p-3 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
-                    >
-                      <div className="text-secondary mt-1">
-                        {assumption.icon}
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-sm">{assumption.title}</h4>
-                        <p className="text-sm text-muted-foreground">{assumption.description}</p>
-                      </div>
+      <Separator className="my-8" />
+      
+      <div className="space-y-4">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="assumptions">
+            <AccordionTrigger className="text-lg font-medium">
+              Calculator Assumptions
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                {assumptions.map((assumption, index) => (
+                  <div 
+                    key={index} 
+                    className="flex items-start gap-3 p-3 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
+                  >
+                    <div className="text-secondary mt-1">
+                      {assumption.icon}
                     </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </CardContent>
+                    <div>
+                      <h4 className="font-medium text-sm">{assumption.title}</h4>
+                      <p className="text-sm text-muted-foreground">{assumption.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
     </Card>
   );
 };
