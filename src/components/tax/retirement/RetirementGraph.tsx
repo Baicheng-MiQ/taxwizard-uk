@@ -12,16 +12,25 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={calculations.yearlyData}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 30, left: 60, bottom: 30 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="age" 
-            label={{ value: 'Age', position: 'bottom' }}
+            label={{ 
+              value: 'Age', 
+              position: 'insideBottom', 
+              offset: -15 
+            }}
           />
           <YAxis 
             tickFormatter={(value) => `£${(value / 1000000).toFixed(1)}M`}
-            label={{ value: 'Amount', angle: -90, position: 'insideLeft' }}
+            label={{ 
+              value: 'Amount', 
+              angle: -90, 
+              position: 'insideLeft',
+              offset: -45
+            }}
           />
           <Tooltip 
             formatter={(value: number) => formatCurrency(value)}
@@ -30,6 +39,9 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
           <Legend 
             verticalAlign="bottom" 
             height={36}
+            wrapperStyle={{
+              paddingTop: "20px"
+            }}
           />
           <Area
             type="monotone"
