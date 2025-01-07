@@ -37,6 +37,17 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
     );
   };
 
+  // Function to format Y-axis values
+  const formatYAxis = (value: number) => {
+    if (value === 0) return '£0';
+    if (value >= 1000000) {
+      return `£${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `£${(value / 1000).toFixed(0)}K`;
+    }
+    return `£${value}`;
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-4">
@@ -77,7 +88,7 @@ export const RetirementGraph = ({ calculations, formatCurrency }: RetirementGrap
               }}
             />
             <YAxis 
-              tickFormatter={(value) => `£${(value / 1000000).toFixed(1)}M`}
+              tickFormatter={formatYAxis}
               label={{ 
                 value: 'Amount', 
                 angle: -90, 
