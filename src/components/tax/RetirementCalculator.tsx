@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { RetirementInputs } from "./retirement/RetirementInputs";
 import { RetirementResults } from "./retirement/RetirementResults";
+import { RetirementGraph } from "./retirement/RetirementGraph";
 import { ResetButton } from "./retirement/ResetButton";
 import { RetirementCalculatorProps, CalculationInputs } from "./types/retirement";
 import { 
@@ -181,7 +182,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   ];
 
   return (
-    <Card className="p-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold">Retirement Calculator</h2>
         <ResetButton setInputs={setInputs} />
@@ -191,6 +192,10 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
         <RetirementInputs inputs={inputs} setInputs={setInputs} />
         <RetirementResults calculations={calculations} formatCurrency={formatCurrency} />
       </div>
+
+      <Card className="p-6">
+        <RetirementGraph calculations={calculations} formatCurrency={formatCurrency} />
+      </Card>
 
       <Separator className="my-8" />
       
@@ -221,6 +226,6 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
           </AccordionItem>
         </Accordion>
       </div>
-    </Card>
+    </div>
   );
 };
