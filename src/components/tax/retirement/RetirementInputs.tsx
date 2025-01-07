@@ -99,7 +99,7 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
           <Slider
             id="wage-growth"
             min={0}
-            max={10}
+            max={20}
             step={0.1}
             value={[inputs.wageGrowth]}
             onValueChange={(value) => setInputs({ ...inputs, wageGrowth: value[0] })}
@@ -117,8 +117,8 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
           </div>
           <Slider
             id="investment-growth"
-            min={1}
-            max={15}
+            min={0}
+            max={20}
             step={0.1}
             value={[inputs.investmentGrowth]}
             onValueChange={(value) => setInputs({ ...inputs, investmentGrowth: value[0] })}
@@ -137,7 +137,7 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
           <Slider
             id="inflation"
             min={0}
-            max={10}
+            max={20}
             step={0.1}
             value={[inputs.inflation]}
             onValueChange={(value) => setInputs({ ...inputs, inflation: value[0] })}
@@ -155,8 +155,8 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
           </div>
           <Slider
             id="withdrawal-rate"
-            min={1}
-            max={10}
+            min={0}
+            max={20}
             step={0.1}
             value={[inputs.withdrawalRate]}
             onValueChange={(value) => setInputs({ ...inputs, withdrawalRate: value[0] })}
