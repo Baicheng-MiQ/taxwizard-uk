@@ -28,11 +28,11 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   const [inputs, setInputs] = useState<CalculationInputs>({
     currentAge: 22,
     retirementAge: 65,
-    additionalInvestment: 20000,
+    additionalInvestment: 5000,
     investmentGrowth: 7,
     inflation: 2.7,
     employerContribution: 5,
-    wageGrowth: 5,
+    wageGrowth: 3,
     withdrawalRate: 4
   });
 
@@ -131,52 +131,52 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     {
       icon: <Calendar className="h-5 w-5" />,
       title: "Life Expectancy",
-      description: "Calculations assume a life expectancy of 90 years"
+      description: "Calculations assume a life expectancy of 90 years, based on current UK life expectancy trends"
     },
     {
       icon: <TrendingUp className="h-5 w-5" />,
       title: "Investment Returns",
-      description: "Returns are assumed to remain constant year over year at the specified rate"
+      description: "7% annual return is based on historical stock market performance adjusted for inflation"
     },
     {
       icon: <DollarSign className="h-5 w-5" />,
       title: "Inflation",
-      description: "A constant inflation rate is applied throughout the projection"
+      description: "2.7% default inflation rate reflects the Bank of England's long-term target plus a margin"
     },
     {
       icon: <PiggyBank className="h-5 w-5" />,
       title: "Withdrawal Strategy",
-      description: "Uses a modified 4% rule, adjusted based on real returns"
+      description: "4% withdrawal rate is based on the Trinity study, adjusted for a 30-year retirement period"
     },
     {
       icon: <Clock className="h-5 w-5" />,
       title: "Contribution Timing",
-      description: "All investments and pension contributions are made at year-end"
+      description: "Monthly contributions are assumed to be made at the end of each month"
     },
     {
       icon: <Building className="h-5 w-5" />,
       title: "State Pension",
-      description: "Calculations exclude state pension and other retirement income sources"
+      description: "Calculations exclude state pension benefits, which would provide additional retirement income"
     },
     {
       icon: <AlertCircle className="h-5 w-5" />,
       title: "Tax Considerations",
-      description: "Tax implications during the withdrawal phase are not included"
+      description: "Tax relief on pension contributions and tax implications during withdrawal are not included"
     },
     {
       icon: <LineChart className="h-5 w-5" />,
       title: "Market Volatility",
-      description: "Market volatility and sequence of returns risk are not considered"
+      description: "Returns are smoothed and don't account for year-to-year market volatility"
     },
     {
       icon: <Briefcase className="h-5 w-5" />,
-      title: "Employment",
-      description: "Assumes continuous employment with consistent contributions"
+      title: "Salary Growth",
+      description: "3% annual wage growth assumption based on UK historical average"
     },
     {
       icon: <BadgePercent className="h-5 w-5" />,
-      title: "Employer Contributions",
-      description: "Calculated as a percentage of gross salary"
+      title: "Employer Match",
+      description: "5% default employer contribution reflects typical UK workplace pension schemes"
     }
   ];
 
