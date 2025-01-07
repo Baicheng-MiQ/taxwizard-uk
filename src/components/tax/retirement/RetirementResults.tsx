@@ -1,59 +1,90 @@
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { CalculationResults } from '../types/retirement';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ProjectionData } from '../types/retirement';
 
 interface RetirementResultsProps {
-  calculations: CalculationResults;
+  projectionData: ProjectionData[];
   formatCurrency: (value: number) => string;
 }
 
-export const RetirementResults = ({ calculations, formatCurrency }: RetirementResultsProps) => {
+export const RetirementResults = ({ projectionData, formatCurrency }: RetirementResultsProps) => {
   return (
-    <div className="space-y-6">
-      <div className="bg-secondary/5 rounded-lg p-4 space-y-4">
-        <div>
-          <h3 className="text-lg font-medium mb-2">Expected Savings at Retirement</h3>
-          <p className="text-3xl font-bold text-secondary">
-            {formatCurrency(calculations.totalAtRetirement)}
-          </p>
-        </div>
-        <div>
-          <h3 className="text-lg font-medium mb-2">Sustainable Yearly Withdrawal</h3>
-          <p className="text-2xl font-semibold text-secondary">
-            {formatCurrency(calculations.maxYearlyWithdrawal)}
-          </p>
-          <p className="text-sm text-gray-600 mt-1">
-            (Until age 90, adjusted for inflation)
-          </p>
-        </div>
-      </div>
-
-      <div className="h-[300px]">
+    <div className="space-y-8">
+      <div className="h-96">
+        <CardTitle className="text-lg mb-4">Net Worth Projection</CardTitle>
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={calculations.yearlyData}
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-          >
+          <LineChart data={projectionData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="age" 
-              label={{ value: 'Age', position: 'bottom' }}
+              label={{ value: 'Age', position: 'bottom' }} 
             />
             <YAxis 
-              tickFormatter={(value) => `£${(value / 1000000).toFixed(1)}M`}
-              label={{ value: 'Savings', angle: -90, position: 'insideLeft' }}
+              tickFormatter={(value) => formatCurrency(value)}
+              label={{ 
+                value: 'Net Worth (Present Value)', 
+                angle: -90, 
+                position: 'insideLeft' 
+              }}
             />
             <Tooltip 
-              formatter={(value: number) => formatCurrency(value)}
-              labelFormatter={(label) => `Age: ${label}`}
+              formatter={(value) => [formatCurrency(value as number)]}
+              labelFormatter={(value) => `Age: ${value}`}
             />
-            <Area
-              type="monotone"
-              dataKey="savings"
-              stroke="#00703C"
-              fill="#00703C"
-              fillOpacity={0.2}
+            <Legend />
+            <Line 
+              type="monotone" 
+              name="Pension"
+              dataKey="pensionPot" 
+              stroke="#2563eb" 
+              dot={false}
             />
-          </AreaChart>
+            <Line 
+              type="monotone" 
+              name="Investments"
+              dataKey="investmentPot" 
+              stroke="#16a34a" 
+              dot={false}
+            />
+            <Line 
+              type="monotone" 
+              name="Total"
+              dataKey="totalWealth" 
+              stroke="#dc2626" 
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="h-96">
+        <CardTitle className="text-lg mb-4">Monthly Income in Retirement</CardTitle>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={projectionData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="age" 
+              label={{ value: 'Age', position: 'bottom' }} 
+            />
+            <YAxis 
+              tickFormatter={(value) => formatCurrency(value)}
+              label={{ 
+                value: 'Monthly Income (Present Value)', 
+                angle: -90, 
+                position: 'insideLeft' 
+              }}
+            />
+            <Tooltip 
+              formatter={(value) => [formatCurrency(value as number), 'Monthly Income']}
+              labelFormatter={(value) => `Age: ${value}`}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="monthlyIncome" 
+              stroke="#2563eb" 
+              dot={false}
+            />
+          </LineChart>
         </ResponsiveContainer>
       </div>
     </div>

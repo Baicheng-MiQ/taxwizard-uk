@@ -1,25 +1,25 @@
-export interface RetirementCalculatorProps {
-  formatCurrency: (value: number) => string;
-  pensionContribution: number;
-}
-
 export interface CalculationInputs {
   currentAge: number;
   retirementAge: number;
-  additionalInvestment: number;
+  salary: number;
+  personalContrib: number;
+  employerContrib: number;
+  salaryGrowth: number;
   investmentGrowth: number;
-  inflation: number;
-  employerContribution: number;
-  wageGrowth: number;
+  additionalInvestment: number;
+  inflationRate: number;
+  withdrawRate: number;
+  lumpSum: number;
 }
 
-export interface YearlyData {
+export interface RetirementCalculatorProps {
+  formatCurrency: (value: number) => string;
+}
+
+export interface ProjectionData {
   age: number;
-  savings: number;
-}
-
-export interface CalculationResults {
-  totalAtRetirement: number;
-  maxYearlyWithdrawal: number;
-  yearlyData: YearlyData[];
+  totalWealth: number;
+  pensionPot: number;
+  investmentPot: number;
+  monthlyIncome: number;
 }
