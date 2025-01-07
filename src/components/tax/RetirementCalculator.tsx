@@ -28,7 +28,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   const [inputs, setInputs] = useState<CalculationInputs>({
     currentAge: 22,
     retirementAge: 65,
-    additionalInvestment: 5000,
+    additionalInvestment: 20000,
     investmentGrowth: 7,
     inflation: 2.7,
     employerContribution: 5,
@@ -189,12 +189,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       
       <div className="grid md:grid-cols-2 gap-8">
         <RetirementInputs inputs={inputs} setInputs={setInputs} />
-        <RetirementResults 
-          calculations={calculations} 
-          formatCurrency={formatCurrency} 
-          inputs={inputs}
-          setInputs={setInputs}
-        />
+        <RetirementResults calculations={calculations} formatCurrency={formatCurrency} />
       </div>
 
       <Separator className="my-8" />
