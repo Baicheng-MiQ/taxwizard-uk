@@ -13,6 +13,44 @@ export const RetirementInputs = ({ inputs, setInputs }: RetirementInputsProps) =
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
+            <Label htmlFor="current-age" className="text-base font-medium">
+              Current Age
+            </Label>
+            <span className="text-lg font-semibold text-secondary">{inputs.currentAge}</span>
+          </div>
+          <Slider
+            id="current-age"
+            min={18}
+            max={80}
+            step={1}
+            value={[inputs.currentAge]}
+            onValueChange={(value) => setInputs({ ...inputs, currentAge: value[0] })}
+            className="my-2"
+            variant="retirement"
+          />
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label htmlFor="retirement-age" className="text-base font-medium">
+              Retirement Age
+            </Label>
+            <span className="text-lg font-semibold text-secondary">{inputs.retirementAge}</span>
+          </div>
+          <Slider
+            id="retirement-age"
+            min={inputs.currentAge + 1}
+            max={85}
+            step={1}
+            value={[inputs.retirementAge]}
+            onValueChange={(value) => setInputs({ ...inputs, retirementAge: value[0] })}
+            className="my-2"
+            variant="retirement"
+          />
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
             <Label htmlFor="additional-investment" className="text-base font-medium">
               Additional Yearly Investment
             </Label>
