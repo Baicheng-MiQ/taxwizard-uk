@@ -131,52 +131,52 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     {
       icon: <Calendar className="h-5 w-5" />,
       title: "Life Expectancy",
-      description: "Calculations assume a life expectancy of 90 years, based on current UK life expectancy trends"
+      description: "Calculations run until age 90, providing projections for both accumulation and drawdown phases"
     },
     {
       icon: <TrendingUp className="h-5 w-5" />,
       title: "Investment Returns",
-      description: "7% annual return is based on historical stock market performance adjusted for inflation"
+      description: "Investment returns are calculated after inflation (real returns) and compound annually"
     },
     {
       icon: <DollarSign className="h-5 w-5" />,
-      title: "Inflation",
-      description: "2.7% default inflation rate reflects the Bank of England's long-term target plus a margin"
+      title: "Inflation Impact",
+      description: "All projections are in today's money - future values are adjusted for inflation"
     },
     {
       icon: <PiggyBank className="h-5 w-5" />,
-      title: "Withdrawal Strategy",
-      description: "4% withdrawal rate is based on the Trinity study, adjusted for a 30-year retirement period"
+      title: "Pension Access",
+      description: "Pension funds can only be accessed from age 57, while other investments are available immediately at retirement"
     },
     {
       icon: <Clock className="h-5 w-5" />,
-      title: "Contribution Timing",
-      description: "Monthly contributions are assumed to be made at the end of each month"
+      title: "Investment Split",
+      description: "Separate tracking of pension and non-pension investments, each with their own growth calculations"
     },
     {
       icon: <Building className="h-5 w-5" />,
-      title: "State Pension",
-      description: "Calculations exclude state pension benefits, which would provide additional retirement income"
+      title: "Contribution Structure",
+      description: "Employee and employer pension contributions are calculated as percentages of salary"
     },
     {
       icon: <AlertCircle className="h-5 w-5" />,
-      title: "Tax Considerations",
-      description: "Tax relief on pension contributions and tax implications during withdrawal are not included"
+      title: "Withdrawal Strategy",
+      description: "Annual withdrawals are taken proportionally from both pension and investment pots when accessible"
     },
     {
       icon: <LineChart className="h-5 w-5" />,
-      title: "Market Volatility",
-      description: "Returns are smoothed and don't account for year-to-year market volatility"
+      title: "Growth Calculation",
+      description: "Real returns are calculated by adjusting nominal returns for inflation: (1 + return)/(1 + inflation) - 1"
     },
     {
       icon: <Briefcase className="h-5 w-5" />,
-      title: "Salary Growth",
-      description: "3% annual wage growth assumption based on UK historical average"
+      title: "Salary Progression",
+      description: "Annual salary increases compound based on the wage growth rate"
     },
     {
       icon: <BadgePercent className="h-5 w-5" />,
-      title: "Employer Match",
-      description: "5% default employer contribution reflects typical UK workplace pension schemes"
+      title: "Additional Savings",
+      description: "Non-pension investments can be added through fixed yearly contributions"
     }
   ];
 
