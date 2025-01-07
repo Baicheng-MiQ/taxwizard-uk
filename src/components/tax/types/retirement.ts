@@ -11,13 +11,15 @@ export interface CalculationInputs {
   inflation: number;
   employerContribution: number;
   wageGrowth: number;
-  withdrawalRate: number; // Added withdrawal rate
+  withdrawalRate: number;
 }
 
 export interface YearlyData {
   age: number;
   savings: number;
-  withdrawal: number; // Added withdrawal amount
+  pensionPot: number;
+  investmentPot: number;
+  withdrawal: number;
 }
 
 export interface CalculationResults {

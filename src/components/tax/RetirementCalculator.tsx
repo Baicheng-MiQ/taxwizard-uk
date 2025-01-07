@@ -32,7 +32,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     inflation: 2.7,
     employerContribution: 5,
     wageGrowth: 5,
-    withdrawalRate: 4 // Added withdrawal rate as a user input
+    withdrawalRate: 4
   });
 
   const calculations = useMemo(() => {
@@ -40,53 +40,76 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     const yearsInRetirement = 90 - inputs.retirementAge;
     const realReturn = (1 + inputs.investmentGrowth / 100) / (1 + inputs.inflation / 100) - 1;
     
-    let totalSavings = 0;
+    let pensionPot = 0;
+    let investmentPot = 0;
     let currentSalary = pensionContribution > 0 
       ? pensionContribution * 20
       : 20000;
       
     const yearlyData = [];
+    const PENSION_ACCESS_AGE = 57;
 
     // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
+      const currentAge = inputs.currentAge + year;
       const employeeContribution = pensionContribution;
       const employerContribution = currentSalary * (inputs.employerContribution / 100);
-      const totalContribution = employeeContribution + employerContribution + inputs.additionalInvestment;
       
-      if (totalContribution > 0) {
-        totalSavings = (totalSavings + totalContribution) * (1 + realReturn);
-      }
+      // Add pension contributions
+      pensionPot = (pensionPot + employeeContribution + employerContribution) * (1 + realReturn);
+      
+      // Add investment contributions
+      investmentPot = (investmentPot + inputs.additionalInvestment) * (1 + realReturn);
       
       yearlyData.push({
-        age: inputs.currentAge + year,
-        savings: Math.round(totalSavings),
-        withdrawal: 0 // No withdrawals during accumulation
+        age: currentAge,
+        savings: Math.round(pensionPot + investmentPot),
+        pensionPot: Math.round(pensionPot),
+        investmentPot: Math.round(investmentPot),
+        withdrawal: 0
       });
 
       currentSalary *= (1 + inputs.wageGrowth / 100);
     }
 
-    // Calculate drawdown phase with user-defined withdrawal rate
-    let remainingSavings = totalSavings;
+    // Calculate drawdown phase
+    let remainingPensionPot = pensionPot;
+    let remainingInvestmentPot = investmentPot;
+    
     for (let year = 1; year <= yearsInRetirement; year++) {
+      const currentAge = inputs.retirementAge + year;
       const withdrawalRate = inputs.withdrawalRate / 100;
-      const thisYearWithdrawal = remainingSavings * withdrawalRate;
-      
-      remainingSavings = (remainingSavings - thisYearWithdrawal) * (1 + realReturn);
-      
+      let totalWithdrawal = 0;
+
+      // Handle investment withdrawals (available from retirement age)
+      if (remainingInvestmentPot > 0) {
+        const investmentWithdrawal = remainingInvestmentPot * withdrawalRate;
+        totalWithdrawal += investmentWithdrawal;
+        remainingInvestmentPot = (remainingInvestmentPot - investmentWithdrawal) * (1 + realReturn);
+      }
+
+      // Handle pension withdrawals (only available from age 57)
+      if (currentAge >= PENSION_ACCESS_AGE && remainingPensionPot > 0) {
+        const pensionWithdrawal = remainingPensionPot * withdrawalRate;
+        totalWithdrawal += pensionWithdrawal;
+        remainingPensionPot = (remainingPensionPot - pensionWithdrawal) * (1 + realReturn);
+      }
+
       yearlyData.push({
-        age: inputs.retirementAge + year,
-        savings: Math.round(remainingSavings),
-        withdrawal: Math.round(thisYearWithdrawal)
+        age: currentAge,
+        savings: Math.round(remainingPensionPot + remainingInvestmentPot),
+        pensionPot: Math.round(remainingPensionPot),
+        investmentPot: Math.round(remainingInvestmentPot),
+        withdrawal: Math.round(totalWithdrawal)
       });
     }
 
     // Calculate initial and final withdrawal amounts for range display
-    const initialWithdrawal = totalSavings * (inputs.withdrawalRate / 100);
+    const initialWithdrawal = yearlyData.find(d => d.withdrawal > 0)?.withdrawal || 0;
     const finalWithdrawal = yearlyData[yearlyData.length - 1].withdrawal;
 
     return {
-      totalAtRetirement: totalSavings,
+      totalAtRetirement: pensionPot + investmentPot,
       initialWithdrawal,
       finalWithdrawal,
       yearlyData,

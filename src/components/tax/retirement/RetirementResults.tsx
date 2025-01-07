@@ -48,18 +48,26 @@ export const RetirementResults = ({ calculations, formatCurrency }: RetirementRe
             />
             <Area
               type="monotone"
-              dataKey="savings"
-              name="Total Savings"
+              dataKey="pensionPot"
+              name="Pension"
               stroke="#00703C"
               fill="#00703C"
               fillOpacity={0.2}
             />
             <Area
               type="monotone"
-              dataKey="withdrawal"
-              name="Annual Withdrawal"
+              dataKey="investmentPot"
+              name="Investments"
               stroke="#2563eb"
               fill="#2563eb"
+              fillOpacity={0.2}
+            />
+            <Area
+              type="monotone"
+              dataKey="withdrawal"
+              name="Annual Withdrawal"
+              stroke="#dc2626"
+              fill="#dc2626"
               fillOpacity={0.2}
             />
           </AreaChart>
