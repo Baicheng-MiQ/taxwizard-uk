@@ -61,7 +61,6 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       if (currentAge <= inputs.retirementAge) {
         pensionPot = (pensionPot + employeeContribution + employerContribution) * (1 + realReturn);
       } else {
-        // After retirement but before pension access age, continue growing the pension pot with investment returns
         pensionPot = pensionPot * (1 + realReturn);
       }
       
@@ -81,7 +80,7 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       currentSalary *= (1 + inputs.wageGrowth / 100);
     }
 
-    // Calculate drawdown phase
+    // Calculate drawdown phase with new withdrawal logic
     let remainingPensionPot = pensionPot;
     let remainingInvestmentPot = investmentPot;
     
@@ -90,21 +89,35 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       const withdrawalRate = inputs.withdrawalRate / 100;
       let totalWithdrawal = 0;
 
-      // Handle investment withdrawals (available from retirement age)
-      if (remainingInvestmentPot > 0) {
-        const investmentWithdrawal = remainingInvestmentPot * withdrawalRate;
-        totalWithdrawal += investmentWithdrawal;
-        remainingInvestmentPot = (remainingInvestmentPot - investmentWithdrawal) * (1 + realReturn);
-      }
+      // Calculate total withdrawal based on total available savings
+      const totalAvailableSavings = remainingInvestmentPot + 
+        (currentAge >= PENSION_ACCESS_AGE ? remainingPensionPot : 0);
+      
+      if (totalAvailableSavings > 0) {
+        totalWithdrawal = totalAvailableSavings * withdrawalRate;
 
-      // Handle pension withdrawals (only available from age 57)
-      if (currentAge >= PENSION_ACCESS_AGE && remainingPensionPot > 0) {
-        const pensionWithdrawal = remainingPensionPot * withdrawalRate;
-        totalWithdrawal += pensionWithdrawal;
-        remainingPensionPot = (remainingPensionPot - pensionWithdrawal) * (1 + realReturn);
-      } else if (remainingPensionPot > 0) {
-        // Continue growing pension pot with investment returns until access age
-        remainingPensionPot = remainingPensionPot * (1 + realReturn);
+        // Before pension access age, take everything from investments
+        if (currentAge < PENSION_ACCESS_AGE) {
+          if (remainingInvestmentPot >= totalWithdrawal) {
+            remainingInvestmentPot = (remainingInvestmentPot - totalWithdrawal) * (1 + realReturn);
+            remainingPensionPot = remainingPensionPot * (1 + realReturn);
+          } else {
+            // If not enough in investments, reduce withdrawal to what's available
+            totalWithdrawal = remainingInvestmentPot;
+            remainingInvestmentPot = 0;
+            remainingPensionPot = remainingPensionPot * (1 + realReturn);
+          }
+        } else {
+          // After pension access age, withdraw proportionally from both pots
+          const investmentProportion = remainingInvestmentPot / totalAvailableSavings;
+          const pensionProportion = remainingPensionPot / totalAvailableSavings;
+
+          const investmentWithdrawal = totalWithdrawal * investmentProportion;
+          const pensionWithdrawal = totalWithdrawal * pensionProportion;
+
+          remainingInvestmentPot = (remainingInvestmentPot - investmentWithdrawal) * (1 + realReturn);
+          remainingPensionPot = (remainingPensionPot - pensionWithdrawal) * (1 + realReturn);
+        }
       }
 
       yearlyData.push({
