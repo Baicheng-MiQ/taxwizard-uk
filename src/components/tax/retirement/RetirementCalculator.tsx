@@ -7,8 +7,16 @@ import { RetirementGraph } from "./RetirementGraph";
 import { ResetButton } from "./ResetButton";
 import { RetirementCalculatorProps, CalculationInputs } from "../types/retirement";
 import { 
-  Calendar, TrendingUp, DollarSign, AlertCircle, Briefcase,
-  Building, LineChart, PiggyBank, BadgePercent, Clock
+  Calendar, 
+  TrendingUp, 
+  DollarSign, 
+  AlertCircle,
+  Briefcase,
+  Building,
+  LineChart,
+  PiggyBank,
+  BadgePercent,
+  Clock
 } from "lucide-react";
 import {
   Accordion,
@@ -43,15 +51,22 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
     const yearlyData = [];
     const PENSION_ACCESS_AGE = 57;
 
-    // Calculate accumulation phase up to retirement
+    // Calculate accumulation phase
     for (let year = 0; year <= yearsToRetirement; year++) {
       const currentAge = inputs.currentAge + year;
       const employeeContribution = pensionContribution;
       const employerContribution = currentSalary * (inputs.employerContribution / 100);
       
-      // Add contributions and growth only until retirement
+      // Add pension contributions only until retirement
       if (currentAge <= inputs.retirementAge) {
         pensionPot = (pensionPot + employeeContribution + employerContribution) * (1 + realReturn);
+      } else {
+        // After retirement but before pension access age, continue growing the pension pot with investment returns
+        pensionPot = pensionPot * (1 + realReturn);
+      }
+      
+      // Add investment contributions until retirement
+      if (currentAge <= inputs.retirementAge) {
         investmentPot = (investmentPot + inputs.additionalInvestment) * (1 + realReturn);
       }
       
@@ -66,45 +81,30 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
       currentSalary *= (1 + inputs.wageGrowth / 100);
     }
 
-    // Calculate total pot at retirement for consistent withdrawal calculation
-    const totalPotAtRetirement = pensionPot + investmentPot;
-    const targetAnnualWithdrawal = totalPotAtRetirement * (inputs.withdrawalRate / 100);
-    
+    // Calculate drawdown phase
     let remainingPensionPot = pensionPot;
     let remainingInvestmentPot = investmentPot;
     
-    // Calculate drawdown phase
     for (let year = 1; year <= yearsInRetirement; year++) {
       const currentAge = inputs.retirementAge + year;
-      let totalWithdrawal = targetAnnualWithdrawal;
-      let actualWithdrawal = 0;
-      
-      // Before pension access age
-      if (currentAge < PENSION_ACCESS_AGE) {
-        // Can only withdraw from investments
-        actualWithdrawal = Math.min(totalWithdrawal, remainingInvestmentPot);
-        remainingInvestmentPot = Math.max(0, remainingInvestmentPot - actualWithdrawal);
-        // Pension pot continues to grow
-        remainingPensionPot *= (1 + realReturn);
-      } else {
-        // After pension access age, withdraw proportionally from both pots
-        const totalAvailable = remainingPensionPot + remainingInvestmentPot;
-        if (totalAvailable > 0) {
-          actualWithdrawal = Math.min(totalWithdrawal, totalAvailable);
-          const pensionProportion = remainingPensionPot / totalAvailable;
-          const investmentProportion = remainingInvestmentPot / totalAvailable;
-          
-          const pensionWithdrawal = actualWithdrawal * pensionProportion;
-          const investmentWithdrawal = actualWithdrawal * investmentProportion;
-          
-          remainingPensionPot = Math.max(0, (remainingPensionPot - pensionWithdrawal) * (1 + realReturn));
-          remainingInvestmentPot = Math.max(0, (remainingInvestmentPot - investmentWithdrawal) * (1 + realReturn));
-        }
+      const withdrawalRate = inputs.withdrawalRate / 100;
+      let totalWithdrawal = 0;
+
+      // Handle investment withdrawals (available from retirement age)
+      if (remainingInvestmentPot > 0) {
+        const investmentWithdrawal = remainingInvestmentPot * withdrawalRate;
+        totalWithdrawal += investmentWithdrawal;
+        remainingInvestmentPot = (remainingInvestmentPot - investmentWithdrawal) * (1 + realReturn);
       }
 
-      // Apply growth to remaining funds after withdrawal
-      if (remainingInvestmentPot > 0 && actualWithdrawal === 0) {
-        remainingInvestmentPot *= (1 + realReturn);
+      // Handle pension withdrawals (only available from age 57)
+      if (currentAge >= PENSION_ACCESS_AGE && remainingPensionPot > 0) {
+        const pensionWithdrawal = remainingPensionPot * withdrawalRate;
+        totalWithdrawal += pensionWithdrawal;
+        remainingPensionPot = (remainingPensionPot - pensionWithdrawal) * (1 + realReturn);
+      } else if (remainingPensionPot > 0) {
+        // Continue growing pension pot with investment returns until access age
+        remainingPensionPot = remainingPensionPot * (1 + realReturn);
       }
 
       yearlyData.push({
@@ -112,15 +112,16 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
         savings: Math.round(remainingPensionPot + remainingInvestmentPot),
         pensionPot: Math.round(remainingPensionPot),
         investmentPot: Math.round(remainingInvestmentPot),
-        withdrawal: Math.round(actualWithdrawal)
+        withdrawal: Math.round(totalWithdrawal)
       });
     }
 
+    // Calculate initial and final withdrawal amounts for range display
     const initialWithdrawal = yearlyData.find(d => d.withdrawal > 0)?.withdrawal || 0;
     const finalWithdrawal = yearlyData[yearlyData.length - 1].withdrawal;
 
     return {
-      totalAtRetirement: totalPotAtRetirement,
+      totalAtRetirement: pensionPot + investmentPot,
       initialWithdrawal,
       finalWithdrawal,
       yearlyData,
@@ -141,50 +142,46 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Retirement Calculator</h2>
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Retirement Calculator</h2>
         <ResetButton setInputs={setInputs} />
       </div>
       
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-4">
         <RetirementInputs inputs={inputs} setInputs={setInputs} />
         <RetirementResults calculations={calculations} formatCurrency={formatCurrency} />
       </div>
 
-      <Card className="p-6">
+      <Card className="p-4">
         <RetirementGraph calculations={calculations} formatCurrency={formatCurrency} />
       </Card>
 
-      <Separator className="my-8" />
-      
-      <div className="space-y-4">
-        <Accordion type="single" collapsible>
-          <AccordionItem value="assumptions">
-            <AccordionTrigger className="text-lg font-medium">
-              Calculator Assumptions
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                {assumptions.map((assumption, index) => (
-                  <div 
-                    key={index} 
-                    className="flex items-start gap-3 p-3 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
-                  >
-                    <div className="text-secondary mt-1">
-                      {assumption.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-sm">{assumption.title}</h4>
-                      <p className="text-sm text-muted-foreground">{assumption.description}</p>
-                    </div>
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="assumptions">
+          <AccordionTrigger className="text-base">
+            Calculator Assumptions
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+              {assumptions.map((assumption, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-start gap-2 p-2 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
+                >
+                  <div className="text-secondary mt-0.5">
+                    {assumption.icon}
                   </div>
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
+                  <div>
+                    <h4 className="font-medium text-sm">{assumption.title}</h4>
+                    <p className="text-xs text-muted-foreground">{assumption.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };
