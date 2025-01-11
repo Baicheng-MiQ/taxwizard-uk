@@ -157,46 +157,50 @@ export const RetirementCalculator = ({ formatCurrency, pensionContribution }: Re
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Retirement Calculator</h2>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Retirement Calculator</h2>
         <ResetButton setInputs={setInputs} />
       </div>
       
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-8">
         <RetirementInputs inputs={inputs} setInputs={setInputs} />
         <RetirementResults calculations={calculations} formatCurrency={formatCurrency} />
       </div>
 
-      <Card className="p-4">
+      <Card className="p-6">
         <RetirementGraph calculations={calculations} formatCurrency={formatCurrency} />
       </Card>
 
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="assumptions">
-          <AccordionTrigger className="text-base">
-            Calculator Assumptions
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
-              {assumptions.map((assumption, index) => (
-                <div 
-                  key={index} 
-                  className="flex items-start gap-2 p-2 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
-                >
-                  <div className="text-secondary mt-0.5">
-                    {assumption.icon}
+      <Separator className="my-8" />
+      
+      <div className="space-y-4">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="assumptions">
+            <AccordionTrigger className="text-lg font-medium">
+              Calculator Assumptions
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                {assumptions.map((assumption, index) => (
+                  <div 
+                    key={index} 
+                    className="flex items-start gap-3 p-3 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
+                  >
+                    <div className="text-secondary mt-1">
+                      {assumption.icon}
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm">{assumption.title}</h4>
+                      <p className="text-sm text-muted-foreground">{assumption.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-sm">{assumption.title}</h4>
-                    <p className="text-xs text-muted-foreground">{assumption.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
     </div>
   );
-});
+};
