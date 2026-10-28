@@ -13,13 +13,13 @@ export interface TaxBreakdown {
 }
 
 export const calculateTax = (grossIncome: number, pensionContribution: number): TaxBreakdown => {
-  // Constants for 2024/25 tax year
+  // 2026/27 tax year (England, Wales and Northern Ireland)
   const PERSONAL_ALLOWANCE_THRESHOLD = 100000;
   const PERSONAL_ALLOWANCE_BASE = 12570;
   const BASIC_RATE_THRESHOLD = 50270; // Total income threshold for basic rate
   const HIGHER_RATE_THRESHOLD = 125140;
-  const NI_LOWER_THRESHOLD = 12570; // Weekly £242 * 52
-  const NI_UPPER_THRESHOLD = 50268; // Weekly £967 * 52
+  const NI_LOWER_THRESHOLD = 12570;
+  const NI_UPPER_THRESHOLD = 50270;
   
   // Calculate adjusted income after pension
   const adjustedIncome = grossIncome - pensionContribution;
@@ -86,14 +86,15 @@ export const calculateTax = (grossIncome: number, pensionContribution: number): 
   const takeHomePay = grossIncome - totalDeductible;
   
   // Calculate effective tax rate
-  const effectiveTaxRate = ((incomeTax + nationalInsurance) / grossIncome) * 100;
+  const effectiveTaxRate = grossIncome > 0 ? ((incomeTax + nationalInsurance) / grossIncome) * 100 : 0;
   
-  // Calculate marginal tax rate
+  // Income tax + NI on the next £1; 60% income tax while the Personal Allowance is tapered
   let marginalTaxRate = 0;
-  if (adjustedIncome <= personalAllowance) marginalTaxRate = 0;
-  else if (adjustedIncome <= BASIC_RATE_THRESHOLD) marginalTaxRate = 20;
-  else if (adjustedIncome <= HIGHER_RATE_THRESHOLD) marginalTaxRate = 40;
-  else marginalTaxRate = 45;
+  if (adjustedIncome < NI_LOWER_THRESHOLD) marginalTaxRate = 0;
+  else if (adjustedIncome < BASIC_RATE_THRESHOLD) marginalTaxRate = 28;
+  else if (adjustedIncome < PERSONAL_ALLOWANCE_THRESHOLD) marginalTaxRate = 42;
+  else if (adjustedIncome < HIGHER_RATE_THRESHOLD) marginalTaxRate = 62;
+  else marginalTaxRate = 47;
   
   return {
     takeHomePay,
